@@ -43,7 +43,7 @@ public partial class TwitterCloneContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-         optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=TwitterClone;Persist Security Info=True;User ID=localuser;Password=qwert;trustServerCertificate=true");
+        optionsBuilder.UseSqlServer(_configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
 
     }
 
