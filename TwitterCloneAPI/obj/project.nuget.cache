@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "QRhgWRWejYM+S4ofVHClUTbKaEZ7kA2NdKfzeUgEChdKoIctjR9fDOj49ZvT+OET+DhlWPZyhCuOmpJOECDgOg==",
+  "dgSpecHash": "KO7UrteYUJsN0UUbyrQGivDNLuLL8OBxdJ4a6SO6Yc5CNj+ZkAYW1QP6swzD+DONP6yYVAE5xG15me4/m1HwRQ==",
   "success": true,
   "projectFilePath": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\TwitterCloneAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Igor\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\Igor\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.12\\microsoft.aspnetcore.authentication.jwtbearer.7.0.12.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.11\\microsoft.aspnetcore.openapi.7.0.11.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
