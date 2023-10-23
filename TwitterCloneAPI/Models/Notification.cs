@@ -17,7 +17,7 @@ public partial class Notification
 
     public bool IsReading { get; set; }
 
-    public byte[]? CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
     public virtual NotificationType NotificationTypeNavigation { get; set; } = null!;
 

@@ -17,7 +17,7 @@ public partial class Tweet
 
     public DateTime? CreateAt { get; set; }
 
-    public byte[]? UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
@@ -30,8 +30,6 @@ public partial class Tweet
     public virtual ICollection<SavedTweet> SavedTweets { get; set; } = new List<SavedTweet>();
 
     public virtual ICollection<TweetHashtag> TweetHashtags { get; set; } = new List<TweetHashtag>();
-
-    public virtual UserAuthentification TweetNavigation { get; set; } = null!;
 
     public virtual UserAuthentification User { get; set; } = null!;
 }

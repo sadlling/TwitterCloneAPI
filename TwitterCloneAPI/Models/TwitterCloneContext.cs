@@ -6,15 +6,13 @@ namespace TwitterCloneAPI.Models;
 
 public partial class TwitterCloneContext : DbContext
 {
-    private readonly IConfiguration _configuration;
     public TwitterCloneContext()
     {
     }
 
-    public TwitterCloneContext(DbContextOptions<TwitterCloneContext> options, IConfiguration configuration)
+    public TwitterCloneContext(DbContextOptions<TwitterCloneContext> options)
         : base(options)
     {
-        _configuration = configuration;
     }
 
     public virtual DbSet<Comment> Comments { get; set; }
@@ -42,10 +40,7 @@ public partial class TwitterCloneContext : DbContext
     public virtual DbSet<UserProfile> UserProfiles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer(_configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
-
-    }
+    { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -82,10 +77,7 @@ public partial class TwitterCloneContext : DbContext
             entity.ToTable("Follower");
 
             entity.Property(e => e.FollowerId).HasColumnName("followerId");
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken()
-                .HasColumnName("createdAt");
+            entity.Property(e => e.CreatedAt).HasColumnName("createdAt");
             entity.Property(e => e.FollowerUserId).HasColumnName("followerUserId");
             entity.Property(e => e.UserId).HasColumnName("userId");
 
@@ -106,10 +98,7 @@ public partial class TwitterCloneContext : DbContext
             entity.ToTable("Hashtag");
 
             entity.Property(e => e.HashtagId).HasColumnName("hashtagId");
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken()
-                .HasColumnName("createdAt");
+            entity.Property(e => e.CreatedAt).HasColumnName("createdAt");
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -123,10 +112,7 @@ public partial class TwitterCloneContext : DbContext
             entity.ToTable("Like");
 
             entity.Property(e => e.LikeId).HasColumnName("likeId");
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken()
-                .HasColumnName("createdAt");
+            entity.Property(e => e.CreatedAt).HasColumnName("createdAt");
             entity.Property(e => e.TweetId).HasColumnName("tweetId");
             entity.Property(e => e.UserId).HasColumnName("userId");
 
@@ -146,10 +132,7 @@ public partial class TwitterCloneContext : DbContext
             entity.ToTable("Notification");
 
             entity.Property(e => e.NotificationId).HasColumnName("notificationId");
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken()
-                .HasColumnName("createdAt");
+            entity.Property(e => e.CreatedAt).HasColumnName("createdAt");
             entity.Property(e => e.IsReading).HasColumnName("isReading");
             entity.Property(e => e.NotificationType).HasColumnName("notificationType");
             entity.Property(e => e.SourseUserId).HasColumnName("sourseUserId");
@@ -194,10 +177,7 @@ public partial class TwitterCloneContext : DbContext
             entity.ToTable("Retweet");
 
             entity.Property(e => e.RetweetId).HasColumnName("retweetId");
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken()
-                .HasColumnName("createdAt");
+            entity.Property(e => e.CreatedAt).HasColumnName("createdAt");
             entity.Property(e => e.TweetId).HasColumnName("tweetId");
             entity.Property(e => e.UserId).HasColumnName("userId");
 
@@ -217,10 +197,7 @@ public partial class TwitterCloneContext : DbContext
             entity.ToTable("SavedTweet");
 
             entity.Property(e => e.SavedTweetId).HasColumnName("savedTweetId");
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken()
-                .HasColumnName("createdAt");
+            entity.Property(e => e.CreatedAt).HasColumnName("createdAt");
             entity.Property(e => e.TweetId).HasColumnName("tweetId");
             entity.Property(e => e.UserId).HasColumnName("userId");
 
@@ -239,9 +216,7 @@ public partial class TwitterCloneContext : DbContext
 
             entity.ToTable("Tweet");
 
-            entity.Property(e => e.TweetId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("tweetId");
+            entity.Property(e => e.TweetId).HasColumnName("tweetId");
             entity.Property(e => e.Content)
                 .IsUnicode(false)
                 .HasColumnName("content");
@@ -252,18 +227,10 @@ public partial class TwitterCloneContext : DbContext
             entity.Property(e => e.TweetImage)
                 .IsUnicode(false)
                 .HasColumnName("tweetImage");
-            entity.Property(e => e.UpdatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken()
-                .HasColumnName("updatedAt");
+            entity.Property(e => e.UpdatedAt).HasColumnName("updatedAt");
             entity.Property(e => e.UserId).HasColumnName("userId");
 
-            entity.HasOne(d => d.TweetNavigation).WithOne(p => p.TweetTweetNavigation)
-                .HasForeignKey<Tweet>(d => d.TweetId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Tweet_UserAuthentification_userId");
-
-            entity.HasOne(d => d.User).WithMany(p => p.TweetUsers)
+            entity.HasOne(d => d.User).WithMany(p => p.Tweets)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tweet_UserAuthentification_userIdT");
@@ -292,9 +259,7 @@ public partial class TwitterCloneContext : DbContext
 
             entity.ToTable("UserAuthentification");
 
-            entity.Property(e => e.UserId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("userId");
+            entity.Property(e => e.UserId).HasColumnName("userId");
             entity.Property(e => e.Email)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -311,11 +276,6 @@ public partial class TwitterCloneContext : DbContext
             entity.Property(e => e.TokenExpires)
                 .HasColumnType("datetime")
                 .HasColumnName("tokenExpires");
-
-            entity.HasOne(d => d.User).WithOne(p => p.UserAuthentification)
-                .HasForeignKey<UserAuthentification>(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_UserAuthentification_UserProfile_profileId");
         });
 
         modelBuilder.Entity<UserProfile>(entity =>
@@ -324,17 +284,16 @@ public partial class TwitterCloneContext : DbContext
 
             entity.ToTable("UserProfile");
 
-            entity.Property(e => e.ProfileId).HasColumnName("profileId");
+            entity.Property(e => e.ProfileId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("profileId");
             entity.Property(e => e.BackPicture)
                 .IsUnicode(false)
                 .HasColumnName("backPicture");
             entity.Property(e => e.Bio)
                 .IsUnicode(false)
                 .HasColumnName("bio");
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken()
-                .HasColumnName("createdAt");
+            entity.Property(e => e.CreatedAt).HasColumnName("createdAt");
             entity.Property(e => e.FullName)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -346,6 +305,11 @@ public partial class TwitterCloneContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("userName");
+
+            entity.HasOne(d => d.Profile).WithOne(p => p.UserProfile)
+                .HasForeignKey<UserProfile>(d => d.ProfileId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UserProfile_UserAuthentification_userId");
         });
 
         OnModelCreatingPartial(modelBuilder);

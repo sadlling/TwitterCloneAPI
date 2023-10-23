@@ -33,9 +33,7 @@ public partial class UserAuthentification
 
     public virtual ICollection<SavedTweet> SavedTweets { get; set; } = new List<SavedTweet>();
 
-    public virtual Tweet? TweetTweetNavigation { get; set; }
+    public virtual ICollection<Tweet> Tweets { get; set; } = new List<Tweet>();
 
-    public virtual ICollection<Tweet> TweetUsers { get; set; } = new List<Tweet>();
-
-    public virtual UserProfile User { get; set; } = null!;
+    public virtual UserProfile? UserProfile { get; set; }
 }

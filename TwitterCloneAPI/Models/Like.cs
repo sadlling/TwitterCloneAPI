@@ -11,7 +11,7 @@ public partial class Like
 
     public int TweetId { get; set; }
 
-    public byte[]? CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
     public virtual Tweet Tweet { get; set; } = null!;
 

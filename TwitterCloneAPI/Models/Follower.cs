@@ -11,7 +11,7 @@ public partial class Follower
 
     public int FollowerUserId { get; set; }
 
-    public byte[]? CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
     public virtual UserAuthentification FollowerUser { get; set; } = null!;
 

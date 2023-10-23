@@ -17,7 +17,7 @@ public partial class UserProfile
 
     public string? BackPicture { get; set; }
 
-    public byte[]? CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
-    public virtual UserAuthentification? UserAuthentification { get; set; }
+    public virtual UserAuthentification Profile { get; set; } = null!;
 }

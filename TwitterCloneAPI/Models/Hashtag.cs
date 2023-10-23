@@ -9,7 +9,7 @@ public partial class Hashtag
 
     public string Name { get; set; } = null!;
 
-    public byte[]? CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
     public virtual ICollection<TweetHashtag> TweetHashtags { get; set; } = new List<TweetHashtag>();
 }
