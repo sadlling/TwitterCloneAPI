@@ -35,7 +35,7 @@ public partial class TwitterCloneContext : DbContext
 
     public virtual DbSet<TweetHashtag> TweetHashtags { get; set; }
 
-    public virtual DbSet<UserAuthentification> UserAuthentifications { get; set; }
+    public virtual DbSet<UserAuthentication> UserAuthentifications { get; set; }
 
     public virtual DbSet<UserProfile> UserProfiles { get; set; }
 
@@ -253,7 +253,7 @@ public partial class TwitterCloneContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<UserAuthentification>(entity =>
+        modelBuilder.Entity<UserAuthentication>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("PK_UserAuthentification_Id");
 

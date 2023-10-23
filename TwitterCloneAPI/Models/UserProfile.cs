@@ -19,5 +19,5 @@ public partial class UserProfile
 
     public DateTime? CreatedAt { get; set; }
 
-    public virtual UserAuthentification Profile { get; set; } = null!;
+    public virtual UserAuthentication Profile { get; set; } = null!;
 }

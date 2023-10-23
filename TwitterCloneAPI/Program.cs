@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using TwitterCloneAPI.Models;
+using TwitterCloneAPI.Services.Token;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//add scoped for repository pattern
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 //add db context
 
@@ -17,16 +20,6 @@ builder.Services.AddDbContext<TwitterCloneContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
 });
-
-
-
-
-
-
-
-
-
-
 
 
 

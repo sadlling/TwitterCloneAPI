@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TwitterCloneAPI.Models;
 
-public partial class UserAuthentification
+public partial class UserAuthentication
 {
     public int UserId { get; set; }
 

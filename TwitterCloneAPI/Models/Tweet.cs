@@ -31,5 +31,5 @@ public partial class Tweet
 
     public virtual ICollection<TweetHashtag> TweetHashtags { get; set; } = new List<TweetHashtag>();
 
-    public virtual UserAuthentification User { get; set; } = null!;
+    public virtual UserAuthentication User { get; set; } = null!;
 }

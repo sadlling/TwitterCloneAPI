@@ -13,7 +13,7 @@ public partial class Follower
 
     public DateTime? CreatedAt { get; set; }
 
-    public virtual UserAuthentification FollowerUser { get; set; } = null!;
+    public virtual UserAuthentication FollowerUser { get; set; } = null!;
 
-    public virtual UserAuthentification User { get; set; } = null!;
+    public virtual UserAuthentication User { get; set; } = null!;
 }

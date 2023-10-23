@@ -346,7 +346,7 @@ namespace TwitterCloneAPI.Migrations
 
                     b.HasIndex("TweetId");
 
-                    b.ToTable("TweetHashtags");
+                    b.ToTable("TweetHashtags", (string)null);
                 });
 
             modelBuilder.Entity("TwitterCloneAPI.Models.UserAuthentification", b =>

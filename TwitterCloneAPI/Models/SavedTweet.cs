@@ -15,5 +15,5 @@ public partial class SavedTweet
 
     public virtual Tweet Tweet { get; set; } = null!;
 
-    public virtual UserAuthentification User { get; set; } = null!;
+    public virtual UserAuthentication User { get; set; } = null!;
 }
