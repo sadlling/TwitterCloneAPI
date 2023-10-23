@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Services.Token;
+using TwitterCloneAPI.Services.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,14 +17,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //add scoped for repository pattern
 builder.Services.AddScoped<ITokenService, TokenService>();
-
+builder.Services.AddScoped<IUserService,UserService>();
 //add db context
 builder.Services.AddDbContext<TwitterCloneContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
 });
 
-//add configuration for jwt authentification
+//add configuration for jwt authentication
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
     options.Events = new JwtBearerEvents

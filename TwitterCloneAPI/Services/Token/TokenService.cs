@@ -43,6 +43,7 @@ namespace TwitterCloneAPI.Services.Token
             var refreshToken = new RefreshToken
             {
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                Created = DateTime.Now,
                 Expired = DateTime.Now.AddDays(7)
             };
             return refreshToken;
