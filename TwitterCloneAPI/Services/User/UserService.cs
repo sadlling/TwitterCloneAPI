@@ -27,8 +27,31 @@ namespace TwitterCloneAPI.Services.User
                 user.RefreshToken = refreshToken.Token;
                 user.TokenCreated = DateTime.Now;
                 user.TokenExpires = refreshToken.Expired;
-                _context.UserAuthentifications.Add(user);
-                await _context.SaveChangesAsync();
+                await _context.UserAuthentications.AddAsync(user);
+                _context.SaveChanges();
+                response.Success = true;
+                response.Message = "Success registration!";
+
+            }
+            catch (Exception)
+            {
+                response.Success = false;
+                response.Message = "User with this email already exists";
+            }
+            return response;
+
+        }
+
+        public async Task<ResponseModel<UserAuthentication>> GetUserByEmail(UserRequestModel request)
+        {
+            UserAuthentication user;
+            var response = new ResponseModel<UserAuthentication>();
+            try
+            {
+                user = _context.UserAuthentications.FirstOrDefault(x => x.Email.Equals(request.Email))!;
+                response.Data = user;
+                response.Success = true;
+                response.Message = "User found!";
 
             }
             catch (Exception ex)
@@ -36,11 +59,7 @@ namespace TwitterCloneAPI.Services.User
                 response.Success = false;
                 response.Message = ex.Message;
             }
-            
-            response.Success = true;
-            response.Message = "Success registration!";
             return response;
-
         }
 
         public async Task<ResponseModel<UserProfile>> GetUserById(int id)
@@ -59,6 +78,7 @@ namespace TwitterCloneAPI.Services.User
             {
                 response.Success = false;
                 response.Message = ex.Message;
+
             }
             return response;
         }

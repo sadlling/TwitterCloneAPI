@@ -8,5 +8,6 @@ namespace TwitterCloneAPI.Services.User
     {
         public Task<ResponseModel<string>> CreateUser(UserRequestModel newUser);
         public Task<ResponseModel<UserProfile>> GetUserById(int id);
+        public Task<ResponseModel<UserAuthentication>> GetUserByEmail(UserRequestModel request);
     }
 }

@@ -107,3 +107,5 @@ E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\ru
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\BCrypt.Net-Next.dll
+E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
