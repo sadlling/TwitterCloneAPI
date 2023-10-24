@@ -346,10 +346,10 @@ namespace TwitterCloneAPI.Migrations
 
                     b.HasIndex("TweetId");
 
-                    b.ToTable("TweetHashtags", (string)null);
+                    b.ToTable("TweetHashtags");
                 });
 
-            modelBuilder.Entity("TwitterCloneAPI.Models.UserAuthentification", b =>
+            modelBuilder.Entity("TwitterCloneAPI.Models.UserAuthentication", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -388,7 +388,10 @@ namespace TwitterCloneAPI.Migrations
                     b.HasKey("UserId")
                         .HasName("PK_UserAuthentification_Id");
 
-                    b.ToTable("UserAuthentification", (string)null);
+                    b.HasIndex(new[] { "Email" }, "UQ_UserAuthentification_Email")
+                        .IsUnique();
+
+                    b.ToTable("UserAuthentication", (string)null);
                 });
 
             modelBuilder.Entity("TwitterCloneAPI.Models.UserProfile", b =>
@@ -397,6 +400,8 @@ namespace TwitterCloneAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("profileId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProfileId"));
 
                     b.Property<string>("BackPicture")
                         .IsUnicode(false)
@@ -423,6 +428,10 @@ namespace TwitterCloneAPI.Migrations
                         .HasColumnType("varchar(max)")
                         .HasColumnName("profilePicture");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("userId");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(50)
                         .IsUnicode(false)
@@ -431,6 +440,9 @@ namespace TwitterCloneAPI.Migrations
 
                     b.HasKey("ProfileId")
                         .HasName("PK_UserProfile_Id");
+
+                    b.HasIndex(new[] { "UserId" }, "UQ_UserProfile_UserId")
+                        .IsUnique();
 
                     b.ToTable("UserProfile", (string)null);
                 });
@@ -442,10 +454,11 @@ namespace TwitterCloneAPI.Migrations
                         .HasForeignKey("TweetId")
                         .IsRequired();
 
-                    b.HasOne("TwitterCloneAPI.Models.UserAuthentification", "User")
+                    b.HasOne("TwitterCloneAPI.Models.UserAuthentication", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Comment_UserAuthentification_userId");
 
                     b.Navigation("Tweet");
 
@@ -454,16 +467,17 @@ namespace TwitterCloneAPI.Migrations
 
             modelBuilder.Entity("TwitterCloneAPI.Models.Follower", b =>
                 {
-                    b.HasOne("TwitterCloneAPI.Models.UserAuthentification", "FollowerUser")
+                    b.HasOne("TwitterCloneAPI.Models.UserAuthentication", "FollowerUser")
                         .WithMany("FollowerFollowerUsers")
                         .HasForeignKey("FollowerUserId")
                         .IsRequired()
                         .HasConstraintName("FK_Follower_UserAuthentification_followeruserId");
 
-                    b.HasOne("TwitterCloneAPI.Models.UserAuthentification", "User")
+                    b.HasOne("TwitterCloneAPI.Models.UserAuthentication", "User")
                         .WithMany("FollowerUsers")
                         .HasForeignKey("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Follower_UserAuthentification_userId");
 
                     b.Navigation("FollowerUser");
 
@@ -477,10 +491,11 @@ namespace TwitterCloneAPI.Migrations
                         .HasForeignKey("TweetId")
                         .IsRequired();
 
-                    b.HasOne("TwitterCloneAPI.Models.UserAuthentification", "User")
+                    b.HasOne("TwitterCloneAPI.Models.UserAuthentication", "User")
                         .WithMany("Likes")
                         .HasForeignKey("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Like_UserAuthentification_userId");
 
                     b.Navigation("Tweet");
 
@@ -495,20 +510,22 @@ namespace TwitterCloneAPI.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Notification_NotificationType_typeId");
 
-                    b.HasOne("TwitterCloneAPI.Models.UserAuthentification", "SourseUser")
+                    b.HasOne("TwitterCloneAPI.Models.UserAuthentication", "SourseUser")
                         .WithMany("NotificationSourseUsers")
                         .HasForeignKey("SourseUserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Notification_UserAuthentification_sourseUserId");
 
                     b.HasOne("TwitterCloneAPI.Models.Tweet", "Tweet")
                         .WithMany("Notifications")
                         .HasForeignKey("TweetId")
                         .IsRequired();
 
-                    b.HasOne("TwitterCloneAPI.Models.UserAuthentification", "User")
+                    b.HasOne("TwitterCloneAPI.Models.UserAuthentication", "User")
                         .WithMany("NotificationUsers")
                         .HasForeignKey("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Notification_UserAuthentification_userId");
 
                     b.Navigation("NotificationTypeNavigation");
 
@@ -526,10 +543,11 @@ namespace TwitterCloneAPI.Migrations
                         .HasForeignKey("TweetId")
                         .IsRequired();
 
-                    b.HasOne("TwitterCloneAPI.Models.UserAuthentification", "User")
+                    b.HasOne("TwitterCloneAPI.Models.UserAuthentication", "User")
                         .WithMany("Retweets")
                         .HasForeignKey("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Retweet_UserAuthentification_userId");
 
                     b.Navigation("Tweet");
 
@@ -543,10 +561,11 @@ namespace TwitterCloneAPI.Migrations
                         .HasForeignKey("TweetId")
                         .IsRequired();
 
-                    b.HasOne("TwitterCloneAPI.Models.UserAuthentification", "User")
+                    b.HasOne("TwitterCloneAPI.Models.UserAuthentication", "User")
                         .WithMany("SavedTweets")
                         .HasForeignKey("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_SavedTweet_UserAuthentification_userId");
 
                     b.Navigation("Tweet");
 
@@ -555,7 +574,7 @@ namespace TwitterCloneAPI.Migrations
 
             modelBuilder.Entity("TwitterCloneAPI.Models.Tweet", b =>
                 {
-                    b.HasOne("TwitterCloneAPI.Models.UserAuthentification", "User")
+                    b.HasOne("TwitterCloneAPI.Models.UserAuthentication", "User")
                         .WithMany("Tweets")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -583,13 +602,12 @@ namespace TwitterCloneAPI.Migrations
 
             modelBuilder.Entity("TwitterCloneAPI.Models.UserProfile", b =>
                 {
-                    b.HasOne("TwitterCloneAPI.Models.UserAuthentification", "Profile")
+                    b.HasOne("TwitterCloneAPI.Models.UserAuthentication", "User")
                         .WithOne("UserProfile")
-                        .HasForeignKey("TwitterCloneAPI.Models.UserProfile", "ProfileId")
-                        .IsRequired()
-                        .HasConstraintName("FK_UserProfile_UserAuthentification_userId");
+                        .HasForeignKey("TwitterCloneAPI.Models.UserProfile", "UserId")
+                        .IsRequired();
 
-                    b.Navigation("Profile");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TwitterCloneAPI.Models.Hashtag", b =>
@@ -617,7 +635,7 @@ namespace TwitterCloneAPI.Migrations
                     b.Navigation("TweetHashtags");
                 });
 
-            modelBuilder.Entity("TwitterCloneAPI.Models.UserAuthentification", b =>
+            modelBuilder.Entity("TwitterCloneAPI.Models.UserAuthentication", b =>
                 {
                     b.Navigation("Comments");
 

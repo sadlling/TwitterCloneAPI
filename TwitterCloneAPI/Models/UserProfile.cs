@@ -7,6 +7,8 @@ public partial class UserProfile
 {
     public int ProfileId { get; set; }
 
+    public int UserId { get; set; }
+
     public string? UserName { get; set; }
 
     public string? FullName { get; set; }
@@ -19,5 +21,5 @@ public partial class UserProfile
 
     public DateTime? CreatedAt { get; set; }
 
-    public virtual UserAuthentication Profile { get; set; } = null!;
+    public virtual UserAuthentication User { get; set; } = null!;
 }

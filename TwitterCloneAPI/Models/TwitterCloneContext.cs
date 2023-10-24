@@ -67,7 +67,8 @@ public partial class TwitterCloneContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Comment_UserAuthentification_userId");
         });
 
         modelBuilder.Entity<Follower>(entity =>
@@ -88,7 +89,8 @@ public partial class TwitterCloneContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.FollowerUsers)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Follower_UserAuthentification_userId");
         });
 
         modelBuilder.Entity<Hashtag>(entity =>
@@ -122,7 +124,8 @@ public partial class TwitterCloneContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.Likes)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Like_UserAuthentification_userId");
         });
 
         modelBuilder.Entity<Notification>(entity =>
@@ -146,7 +149,8 @@ public partial class TwitterCloneContext : DbContext
 
             entity.HasOne(d => d.SourseUser).WithMany(p => p.NotificationSourseUsers)
                 .HasForeignKey(d => d.SourseUserId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Notification_UserAuthentification_sourseUserId");
 
             entity.HasOne(d => d.Tweet).WithMany(p => p.Notifications)
                 .HasForeignKey(d => d.TweetId)
@@ -154,7 +158,8 @@ public partial class TwitterCloneContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.NotificationUsers)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Notification_UserAuthentification_userId");
         });
 
         modelBuilder.Entity<NotificationType>(entity =>
@@ -187,7 +192,8 @@ public partial class TwitterCloneContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.Retweets)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Retweet_UserAuthentification_userId");
         });
 
         modelBuilder.Entity<SavedTweet>(entity =>
@@ -207,7 +213,8 @@ public partial class TwitterCloneContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.SavedTweets)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SavedTweet_UserAuthentification_userId");
         });
 
         modelBuilder.Entity<Tweet>(entity =>
@@ -259,6 +266,8 @@ public partial class TwitterCloneContext : DbContext
 
             entity.ToTable("UserAuthentication");
 
+            entity.HasIndex(e => e.Email, "UQ_UserAuthentification_Email").IsUnique();
+
             entity.Property(e => e.UserId).HasColumnName("userId");
             entity.Property(e => e.Email)
                 .HasMaxLength(50)
@@ -284,9 +293,9 @@ public partial class TwitterCloneContext : DbContext
 
             entity.ToTable("UserProfile");
 
-            entity.Property(e => e.ProfileId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("profileId");
+            entity.HasIndex(e => e.UserId, "UQ_UserProfile_UserId").IsUnique();
+
+            entity.Property(e => e.ProfileId).HasColumnName("profileId");
             entity.Property(e => e.BackPicture)
                 .IsUnicode(false)
                 .HasColumnName("backPicture");
@@ -301,15 +310,15 @@ public partial class TwitterCloneContext : DbContext
             entity.Property(e => e.ProfilePicture)
                 .IsUnicode(false)
                 .HasColumnName("profilePicture");
+            entity.Property(e => e.UserId).HasColumnName("userId");
             entity.Property(e => e.UserName)
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("userName");
 
-            entity.HasOne(d => d.Profile).WithOne(p => p.UserProfile)
-                .HasForeignKey<UserProfile>(d => d.ProfileId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_UserProfile_UserAuthentification_userId");
+            entity.HasOne(d => d.User).WithOne(p => p.UserProfile)
+                .HasForeignKey<UserProfile>(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         OnModelCreatingPartial(modelBuilder);

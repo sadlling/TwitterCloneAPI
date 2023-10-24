@@ -39,7 +39,7 @@ namespace TwitterCloneAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserAuthentification",
+                name: "UserAuthentication",
                 columns: table => new
                 {
                     userId = table.Column<int>(type: "int", nullable: false)
@@ -71,12 +71,12 @@ namespace TwitterCloneAPI.Migrations
                     table.ForeignKey(
                         name: "FK_Follower_UserAuthentification_followeruserId",
                         column: x => x.followerUserId,
-                        principalTable: "UserAuthentification",
+                        principalTable: "UserAuthentication",
                         principalColumn: "userId");
                     table.ForeignKey(
                         name: "FK_Follower_UserAuthentification_userId",
                         column: x => x.userId,
-                        principalTable: "UserAuthentification",
+                        principalTable: "UserAuthentication",
                         principalColumn: "userId");
                 });
 
@@ -99,7 +99,7 @@ namespace TwitterCloneAPI.Migrations
                     table.ForeignKey(
                         name: "FK_Tweet_UserAuthentification_userIdT",
                         column: x => x.userId,
-                        principalTable: "UserAuthentification",
+                        principalTable: "UserAuthentication",
                         principalColumn: "userId");
                 });
 
@@ -107,7 +107,9 @@ namespace TwitterCloneAPI.Migrations
                 name: "UserProfile",
                 columns: table => new
                 {
-                    profileId = table.Column<int>(type: "int", nullable: false),
+                    profileId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    userId = table.Column<int>(type: "int", nullable: false),
                     userName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
                     fullName = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     bio = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
@@ -119,9 +121,9 @@ namespace TwitterCloneAPI.Migrations
                 {
                     table.PrimaryKey("PK_UserProfile_Id", x => x.profileId);
                     table.ForeignKey(
-                        name: "FK_UserProfile_UserAuthentification_userId",
-                        column: x => x.profileId,
-                        principalTable: "UserAuthentification",
+                        name: "FK_UserProfile_UserAuthentication_userId",
+                        column: x => x.userId,
+                        principalTable: "UserAuthentication",
                         principalColumn: "userId");
                 });
 
@@ -147,7 +149,7 @@ namespace TwitterCloneAPI.Migrations
                     table.ForeignKey(
                         name: "FK_Comment_UserAuthentification_userId",
                         column: x => x.userId,
-                        principalTable: "UserAuthentification",
+                        principalTable: "UserAuthentication",
                         principalColumn: "userId");
                 });
 
@@ -172,7 +174,7 @@ namespace TwitterCloneAPI.Migrations
                     table.ForeignKey(
                         name: "FK_Like_UserAuthentification_userId",
                         column: x => x.userId,
-                        principalTable: "UserAuthentification",
+                        principalTable: "UserAuthentication",
                         principalColumn: "userId");
                 });
 
@@ -205,12 +207,12 @@ namespace TwitterCloneAPI.Migrations
                     table.ForeignKey(
                         name: "FK_Notification_UserAuthentification_sourseUserId",
                         column: x => x.sourseUserId,
-                        principalTable: "UserAuthentification",
+                        principalTable: "UserAuthentication",
                         principalColumn: "userId");
                     table.ForeignKey(
                         name: "FK_Notification_UserAuthentification_userId",
                         column: x => x.userId,
-                        principalTable: "UserAuthentification",
+                        principalTable: "UserAuthentication",
                         principalColumn: "userId");
                 });
 
@@ -235,7 +237,7 @@ namespace TwitterCloneAPI.Migrations
                     table.ForeignKey(
                         name: "FK_Retweet_UserAuthentification_userId",
                         column: x => x.userId,
-                        principalTable: "UserAuthentification",
+                        principalTable: "UserAuthentication",
                         principalColumn: "userId");
                 });
 
@@ -260,7 +262,7 @@ namespace TwitterCloneAPI.Migrations
                     table.ForeignKey(
                         name: "FK_SavedTweet_UserAuthentification_userId",
                         column: x => x.userId,
-                        principalTable: "UserAuthentification",
+                        principalTable: "UserAuthentication",
                         principalColumn: "userId");
                 });
 
@@ -372,6 +374,18 @@ namespace TwitterCloneAPI.Migrations
                 name: "IX_TweetHashtags_tweetId",
                 table: "TweetHashtags",
                 column: "tweetId");
+
+            migrationBuilder.CreateIndex(
+                name: "UQ_UserAuthentification_Email",
+                table: "UserAuthentication",
+                column: "email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "UQ_UserProfile_UserId",
+                table: "UserProfile",
+                column: "userId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -411,7 +425,7 @@ namespace TwitterCloneAPI.Migrations
                 name: "Tweet");
 
             migrationBuilder.DropTable(
-                name: "UserAuthentification");
+                name: "UserAuthentication");
         }
     }
 }

@@ -29,6 +29,7 @@ namespace TwitterCloneAPI.Services.User
                 user.TokenExpires = refreshToken.Expired;
                 await _context.UserAuthentications.AddAsync(user);
                 _context.SaveChanges();
+               
                 response.Success = true;
                 response.Message = "Success registration!";
 
