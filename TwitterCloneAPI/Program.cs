@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Services.Token;
 using TwitterCloneAPI.Services.User;
@@ -23,7 +24,9 @@ builder.Services.AddDbContext<TwitterCloneContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
 });
-
+//ignore cycles 
+builder.Services.AddControllers().AddJsonOptions(x =>
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 //add configuration for jwt authentication
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {

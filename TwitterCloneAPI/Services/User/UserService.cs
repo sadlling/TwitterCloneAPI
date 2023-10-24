@@ -1,4 +1,6 @@
-﻿using TwitterCloneAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.RefreshToken;
 using TwitterCloneAPI.Models.ServiceResponse;
 using TwitterCloneAPI.Models.UserRequest;
@@ -29,7 +31,13 @@ namespace TwitterCloneAPI.Services.User
                 user.TokenExpires = refreshToken.Expired;
                 await _context.UserAuthentications.AddAsync(user);
                 _context.SaveChanges();
-               
+                await _context.UserProfiles.AddAsync(new UserProfile
+                {
+                    UserId = user.UserId,
+                    UserName = "User - "+ RandomNumberGenerator.GetInt32(50000),
+                    CreatedAt = DateTime.Now,
+                });
+                _context.SaveChanges();
                 response.Success = true;
                 response.Message = "Success registration!";
 
@@ -49,7 +57,7 @@ namespace TwitterCloneAPI.Services.User
             var response = new ResponseModel<UserAuthentication>();
             try
             {
-                user = _context.UserAuthentications.FirstOrDefault(x => x.Email.Equals(request.Email))!;
+                user = await _context.UserAuthentications.Include(x=>x.UserProfile).FirstAsync(x => x.Email.Equals(request.Email))!;
                 response.Data = user;
                 response.Success = true;
                 response.Message = "User found!";
@@ -63,13 +71,13 @@ namespace TwitterCloneAPI.Services.User
             return response;
         }
 
-        public async Task<ResponseModel<UserProfile>> GetUserById(int id)
+        public async Task<ResponseModel<UserAuthentication>> GetUserById(int id)
         {
-            UserProfile user;
-            var response = new ResponseModel<UserProfile>();
+            UserAuthentication user;
+            var response = new ResponseModel<UserAuthentication>();
             try
             {
-                user = _context.UserProfiles.FirstOrDefault(x => x.ProfileId == id)!;
+                user = await _context.UserAuthentications.FirstAsync(x => x.UserId == id)!;
                 response.Data = user;
                 response.Success = true;
                 response.Message = "User found!";
@@ -80,6 +88,25 @@ namespace TwitterCloneAPI.Services.User
                 response.Success = false;
                 response.Message = ex.Message;
 
+            }
+            return response;
+        }
+
+        public async Task<ResponseModel<UserAuthentication>> UpdateUserAuthentification(UserAuthentication request)
+        {
+            var response = new ResponseModel<UserAuthentication>();
+            try
+            {
+                _context.Entry(request).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                response.Data = request;
+                response.Success = true;
+                response.Message = "User updated";
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
             }
             return response;
         }
