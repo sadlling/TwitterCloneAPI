@@ -109,3 +109,4 @@ E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\ru
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\BCrypt.Net-Next.dll
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\TwitterCloneAPI.staticwebassets.runtime.json

@@ -96,7 +96,7 @@ namespace TwitterCloneAPI.Controllers
                     }
                     var cookieOptions = new CookieOptions
                     {
-                        Expires = DateTime.Now.AddHours(4),
+                        Expires = DateTime.Now.AddHours(1),
                         HttpOnly = true,
                         Domain = Request.Host.Host,
                         SameSite = SameSiteMode.Strict,
