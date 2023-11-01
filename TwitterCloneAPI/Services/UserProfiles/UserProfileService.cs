@@ -33,7 +33,7 @@ namespace TwitterCloneAPI.Services.UserProfiles
             return response;
         }
 
-        public async Task<ResponseModel<UserProfile>> UpdateProfile(UpdateUserFrofileRequest profile, int userId)
+        public async Task<ResponseModel<UserProfile>> UpdateProfile(UpdateUserProfileRequest profile, int userId)
         {
             ResponseModel<UserProfile> response = new();
             try
@@ -41,6 +41,38 @@ namespace TwitterCloneAPI.Services.UserProfiles
                 var updatedProfile = await _context.UserProfiles.FirstOrDefaultAsync(x => x.UserId == userId);
                 if (updatedProfile is not null)
                 {
+                    string filePath = $"{_environment.WebRootPath}\\{updatedProfile.UserId}";
+                    string profileImagePath = $"{filePath}\\{DateTime.Now.ToString("dd.MM.yyyy.HH.mm.ss.ffffff")}.png";
+                    string backImagePath = $"{filePath}\\{DateTime.Now.ToString("dd.MM.yyyy.HH.mm.ss.ffffff")}.png";
+                    if (!Directory.Exists(filePath))
+                    {
+                        Directory.CreateDirectory(filePath);
+                    }
+                    if (File.Exists(profileImagePath))
+                    {
+                        File.Delete(profileImagePath);
+                    }
+                    if (File.Exists(backImagePath))
+                    {
+                        File.Delete(backImagePath);
+                    }
+                    if (profile.profilePicture is not null)
+                    {
+                        using (FileStream stream = File.Create(profileImagePath))
+                        {
+                            await profile.profilePicture!.CopyToAsync(stream);
+                        }
+                        updatedProfile.ProfilePicture = profileImagePath;
+                    }
+                    if(profile.backPicture is not null)
+                    {
+                        using (FileStream stream = File.Create(backImagePath))
+                        {
+                            await profile.backPicture!.CopyToAsync(stream);
+                        }
+                        updatedProfile.BackPicture = backImagePath;
+                    }
+
                     updatedProfile.UserName = profile.userName;
                     updatedProfile.FullName = profile.fullName;
                     updatedProfile.Bio = profile.bio;

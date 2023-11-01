@@ -29,10 +29,10 @@ namespace TwitterCloneAPI.Controllers
             return NotFound(userProfile);
         }
         [HttpPut("UpdateUserProfile")]
-        public async Task<IActionResult> UpdateUserProfile(UpdateUserFrofileRequest profile,IFormFile profilePicture,IFormFile backPicure)
+        public async Task<IActionResult> UpdateUserProfile([FromForm]UpdateUserProfileRequest profile)
         {
-            var response = await _userProfileService.UpdateProfile(profile,Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-            if(response.Data is not null)
+            var response = await _userProfileService.UpdateProfile(profile,15); //Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
+            if (response.Data is not null)
             {
                 return Ok(response);
 

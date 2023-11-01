@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\15\\02.11.2023 0_06_34.png",
+      "PackagePath": "staticwebassets\\15\\02.11.2023 0_06_34.png"
+    },
+    {
+      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\15\\02.11.2023 0_07_51.png",
+      "PackagePath": "staticwebassets\\15\\02.11.2023 0_07_51.png"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.TwitterCloneAPI.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.TwitterCloneAPI.props",
+      "PackagePath": "build\\TwitterCloneAPI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.TwitterCloneAPI.props",
+      "PackagePath": "buildMultiTargeting\\TwitterCloneAPI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.TwitterCloneAPI.props",
+      "PackagePath": "buildTransitive\\TwitterCloneAPI.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
