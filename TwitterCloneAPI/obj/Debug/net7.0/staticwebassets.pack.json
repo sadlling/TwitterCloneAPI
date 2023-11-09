@@ -1,12 +1,16 @@
 {
   "Files": [
     {
-      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\15\\02.11.2023 0_06_34.png",
-      "PackagePath": "staticwebassets\\15\\02.11.2023 0_06_34.png"
+      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\15\\02.11.2023.00.16.02.099984.png",
+      "PackagePath": "staticwebassets\\15\\02.11.2023.00.16.02.099984.png"
     },
     {
-      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\15\\02.11.2023 0_07_51.png",
-      "PackagePath": "staticwebassets\\15\\02.11.2023 0_07_51.png"
+      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\15\\02.11.2023.00.16.02.100129.png",
+      "PackagePath": "staticwebassets\\15\\02.11.2023.00.16.02.100129.png"
+    },
+    {
+      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\15\\02.11.2023.22.21.17.689858.png",
+      "PackagePath": "staticwebassets\\15\\02.11.2023.22.21.17.689858.png"
     },
     {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.TwitterCloneAPI.Microsoft.AspNetCore.StaticWebAssets.props",
