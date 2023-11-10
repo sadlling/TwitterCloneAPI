@@ -1,0 +1,71 @@
+{
+  "Version": 1,
+  "Hash": "keb8csM0Q8xOezU2U6H+EpSyZvE7GAn/tggmCIfK59c=",
+  "Source": "TwitterCloneAPI",
+  "BasePath": "_content/TwitterCloneAPI",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "TwitterCloneAPI\\wwwroot",
+      "Source": "TwitterCloneAPI",
+      "ContentRoot": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\",
+      "BasePath": "_content/TwitterCloneAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\15\\02.11.2023.00.16.02.099984.png",
+      "SourceId": "TwitterCloneAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\",
+      "BasePath": "_content/TwitterCloneAPI",
+      "RelativePath": "15/02.11.2023.00.16.02.099984.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\15\\02.11.2023.00.16.02.099984.png"
+    },
+    {
+      "Identity": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\15\\02.11.2023.00.16.02.100129.png",
+      "SourceId": "TwitterCloneAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\",
+      "BasePath": "_content/TwitterCloneAPI",
+      "RelativePath": "15/02.11.2023.00.16.02.100129.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\15\\02.11.2023.00.16.02.100129.png"
+    },
+    {
+      "Identity": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\15\\02.11.2023.22.21.17.689858.png",
+      "SourceId": "TwitterCloneAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\",
+      "BasePath": "_content/TwitterCloneAPI",
+      "RelativePath": "15/02.11.2023.22.21.17.689858.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\15\\02.11.2023.22.21.17.689858.png"
+    }
+  ]
+}

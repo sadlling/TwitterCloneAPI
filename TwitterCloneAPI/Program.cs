@@ -50,15 +50,39 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!))
     };
 });
-
+//add CORS in production
+if (builder.Environment.IsProduction())
+{
+    builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(
+            policy =>
+            {
+                policy.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+    });
+}
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+ //Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+if(app.Environment.IsProduction())
+{
+
+
+    app.UseSwagger();
+    app.UseSwaggerUI(configurations =>
+    {
+        configurations.SwaggerEndpoint("swagger/v1/swagger.json", "Dispatch API V1");
+        configurations.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseHttpsRedirection();
@@ -67,5 +91,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors();
 
 app.Run();
