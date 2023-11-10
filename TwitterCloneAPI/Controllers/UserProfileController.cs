@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TwitterCloneAPI.Models;
@@ -19,6 +20,7 @@ namespace TwitterCloneAPI.Controllers
         }
 
         [HttpGet("GetUserProfile")]
+        [Authorize]
         public async Task<IActionResult> GetProfileByUserId(int id)
         {
             var userProfile = await _userProfileService.GetProfileByUserId(id);
@@ -31,7 +33,7 @@ namespace TwitterCloneAPI.Controllers
         [HttpPut("UpdateUserProfile")]
         public async Task<IActionResult> UpdateUserProfile([FromForm]UpdateUserProfileRequest profile)
         {
-            var response = await _userProfileService.UpdateProfile(profile, 15); //Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))
+            var response = await _userProfileService.UpdateProfile(profile, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             if (response.Data is not null)
             {
                 return Ok(response);

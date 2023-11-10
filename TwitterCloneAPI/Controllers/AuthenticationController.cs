@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.UserRequest;
@@ -14,13 +15,11 @@ namespace TwitterCloneAPI.Controllers
     public class AuthenticationController : ControllerBase
     {
 
-        private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
 
-        public AuthenticationController(IConfiguration configuration, IUserService userService, ITokenService tokenService)
+        public AuthenticationController(IUserService userService, ITokenService tokenService)
         {
-            _configuration = configuration;
             _userService = userService;
             _tokenService = tokenService;
         }
@@ -53,7 +52,11 @@ namespace TwitterCloneAPI.Controllers
                 return BadRequest("Wrong password or username");
             }
             var token = _tokenService.CreateJwtToken(user.Data);
-
+            user = await _userService.UpdateUserRefreshToken(user.Data);
+            if (user.Data is null)
+            {
+                return StatusCode(500);
+            }
             var cookieOptions = new CookieOptions
             {
                 Expires = DateTime.Now.AddHours(4),
@@ -64,15 +67,17 @@ namespace TwitterCloneAPI.Controllers
                 Secure = true
             };
             Response.Cookies.Append("JWT", token, cookieOptions);
-            return Ok(user);
+            return Ok(user.Data.UserProfile);//TODO: return custom object
         }
 
         [HttpPost("RefreshToken")]
         public async Task<IActionResult> RefreshToken()
         {
-            int localUserId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.ReadJwtToken(Request.Cookies["JWT"]);
+            int localUserId = Convert.ToInt32(token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
             UserAuthentication user = new();
-            if (localUserId <=0)
+            if (localUserId <= 0)
             {
                 return BadRequest("User not found");
             }
@@ -85,18 +90,14 @@ namespace TwitterCloneAPI.Controllers
                     {
                         return Unauthorized();
                     }
-                    var newRefreshToken = _tokenService.CreateRefreshToken();
-                    user.RefreshToken = newRefreshToken.Token;
-                    user.TokenCreated = newRefreshToken.Created;
-                    user.TokenExpires = newRefreshToken.Expired;
-                    var updatedUser = await _userService.UpdateUserAuthentification(user);
+                    var updatedUser = await _userService.UpdateUserRefreshToken(user);
                     if (updatedUser.Data is null)
                     {
                         return StatusCode(500);
                     }
                     var cookieOptions = new CookieOptions
                     {
-                        Expires = DateTime.Now.AddHours(1),
+                        Expires = DateTime.Now.AddHours(4),
                         HttpOnly = true,
                         Domain = Request.Host.Host,
                         SameSite = SameSiteMode.Strict,
@@ -108,7 +109,7 @@ namespace TwitterCloneAPI.Controllers
                 }
                 return BadRequest("User not found");
             }
-       
+
 
         }
     }
