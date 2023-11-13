@@ -35,6 +35,10 @@ namespace TwitterCloneAPI.Services.User
                 {
                     UserId = user.UserId,
                     UserName = "User - " + RandomNumberGenerator.GetInt32(50000),
+                    FullName = "",
+                    Bio = "",
+                    ProfilePicture = "",
+                    BackPicture = "",
                     CreatedAt = DateTime.Now,
                 });
                 _context.SaveChanges();

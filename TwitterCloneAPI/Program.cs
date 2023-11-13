@@ -80,7 +80,7 @@ if(app.Environment.IsProduction())
     app.UseSwagger();
     app.UseSwaggerUI(configurations =>
     {
-        configurations.SwaggerEndpoint("swagger/v1/swagger.json", "Dispatch API V1");
+        configurations.SwaggerEndpoint("swagger/v1/swagger.json", "TwitterClone API V1");
         configurations.RoutePrefix = string.Empty;
     });
 }
