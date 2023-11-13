@@ -20,7 +20,6 @@ namespace TwitterCloneAPI.Controllers
         }
 
         [HttpGet("GetUserProfile")]
-        [Authorize]
         public async Task<IActionResult> GetProfileByUserId(int id)
         {
             var userProfile = await _userProfileService.GetProfileByUserId(id);
@@ -30,6 +29,21 @@ namespace TwitterCloneAPI.Controllers
             }
             return NotFound(userProfile);
         }
+
+        [HttpGet("GetCurrentUserProfile")]
+
+        public async Task<IActionResult> GetCurrentUserProfile()
+        {
+            var userProfile = await _userProfileService.GetProfileByUserId(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            if (userProfile.Data is not null)
+            {
+                return Ok(userProfile);
+            }
+            return NotFound(userProfile);
+        }
+
+
+
         [HttpPut("UpdateUserProfile")]
         public async Task<IActionResult> UpdateUserProfile([FromForm]UpdateUserProfileRequest profile)
         {

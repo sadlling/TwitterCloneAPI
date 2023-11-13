@@ -16,6 +16,23 @@ namespace TwitterCloneAPI.Services.UserProfiles
 
         }
 
+        public async Task<ResponseModel<UserProfile>> GetCurrentUserProfile(int id)
+        {
+            ResponseModel<UserProfile> response = new();
+            try
+            {
+                response.Data = await _context.UserProfiles.FirstAsync(x => x.UserId == id);
+                response.Success = true;
+                response.Message = "Profile found";
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
         public async Task<ResponseModel<UserProfile>> GetProfileByUserId(int id)
         {
             ResponseModel<UserProfile> response = new();
