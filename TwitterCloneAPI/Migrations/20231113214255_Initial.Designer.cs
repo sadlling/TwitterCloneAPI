@@ -12,7 +12,7 @@ using TwitterCloneAPI.Models;
 namespace TwitterCloneAPI.Migrations
 {
     [DbContext(typeof(TwitterCloneContext))]
-    [Migration("20231024084652_Initial")]
+    [Migration("20231113214255_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
