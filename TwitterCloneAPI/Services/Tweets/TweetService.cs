@@ -1,6 +1,8 @@
-﻿using TwitterCloneAPI.Models;
+﻿using System.IO.Pipes;
+using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.ServiceResponse;
 using TwitterCloneAPI.Models.TweetRequest;
+using TwitterCloneAPI.Models.TweetResponse;
 
 namespace TwitterCloneAPI.Services.Tweets
 {
@@ -15,9 +17,40 @@ namespace TwitterCloneAPI.Services.Tweets
 
         }
 
-        public async Task<ResponseModel<Tweet>> CreateTweet(TweetRequestModel request,int userId)
+        //public ResponseModel<IList<object>> GetAllTweets()
+        //{
+        //    ResponseModel<IList<object>> response = new();
+
+        //    try
+        //    {
+        //        var tweets = _context.Tweets.Select(x => new
+        //        {
+        //            tweetId = x.TweetId,
+        //            postedUserId = x.UserId,
+        //            content = x.Content ?? "",
+        //            image = x.TweetImage ?? "",
+        //            isPublic = x.IsPublic,
+        //            createdAt = x.CreateAt,
+        //            commentsCount = x.Comments.Count,
+        //            comments = x.Comments,
+        //            retweetCount = x.Retweets.Count,
+        //            likesCount = x.Likes.Count,
+        //        }).ToList();
+        //        response.Data = (IList<object>)tweets;
+        //        response.Success = true;
+        //        response.Message = "All tweets";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.Success = false;
+        //        response.Message = ex.Message;
+        //    }
+        //    return response;
+        //}
+
+        public async Task<ResponseModel<Tweet>> CreateTweet(TweetRequestModel request, int userId)
         {
-            ResponseModel<Tweet> response = new ();
+            ResponseModel<Tweet> response = new();
             Tweet newTweet = new();
             try
             {
@@ -57,6 +90,35 @@ namespace TwitterCloneAPI.Services.Tweets
                 response.Success = false;
             }
             return response;
+        }
+
+        public async Task<ResponseModel<List<TweetResponseModel>>> GetAllTweets()
+        {
+            ResponseModel<List<TweetResponseModel>> response = new();
+            try
+            {
+                response.Data = _context.Tweets.Select(x => new TweetResponseModel
+                {
+                    TweetId = x.TweetId,
+                    PostedUserId = x.UserId,
+                    Content = x.Content ?? " ",
+                    Image = x.TweetImage ?? " ",
+                    IsPublic = x.IsPublic,
+                    CreatedAt = x.CreateAt ?? DateTime.Now,
+                    CommentsCount = x.Comments.Count,
+                    RetweetCount = x.Retweets.Count,
+                    LikesCount = x.Likes.Count,
+                }).ToList();
+                response.Success = true;
+                response.Message = "All tweets";
+            }
+            catch (Exception ex)
+            {
+                response.Success= false;
+                response.Message = ex.Message;
+            }
+            return response;
+
         }
     }
 }

@@ -18,7 +18,7 @@ namespace TwitterCloneAPI.Controllers
         }
 
         [HttpPut("CreateTweet")]
-        public async Task<IActionResult> CreateTweet([FromForm]TweetRequestModel request)
+        public async Task<IActionResult> CreateTweet([FromForm] TweetRequestModel request)
         {
             if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
             {
@@ -32,10 +32,21 @@ namespace TwitterCloneAPI.Controllers
             }
             return BadRequest(request);
 
+        }
 
+        [HttpGet("GetAllTweets")]
 
+        public async Task<IActionResult> GetAllTweets()
+        {
+            var responce = await _tweetService.GetAllTweets();
+            if(responce.Data is not null)
+            {
+                return Ok(responce);
+            }
+            return BadRequest(responce);
 
         }
+
 
 
     }
