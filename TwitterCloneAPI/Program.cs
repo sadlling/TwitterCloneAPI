@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Services.Token;
+using TwitterCloneAPI.Services.Tweets;
 using TwitterCloneAPI.Services.User;
 using TwitterCloneAPI.Services.UserProfiles;
 
@@ -21,6 +22,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<IUserProfileService,UserProfileService>();
+builder.Services.AddScoped<ITweetService, TweetService>();
 //add db context
 builder.Services.AddDbContext<TwitterCloneContext>(options =>
 {

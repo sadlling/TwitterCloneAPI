@@ -2,11 +2,11 @@
 {
     public class UpdateUserProfileRequest
     {
-        public string? userName {  get; set; } = string.Empty;
-        public string? fullName { get; set; } = string.Empty;
-        public string? bio { get; set; } = string.Empty;
-        public IFormFile? profilePicture { get; set; } = null!;
-        public IFormFile? backPicture { get; set; } = null!;
+        public string? UserName {  get; set; } = string.Empty;
+        public string? FullName { get; set; } = string.Empty;
+        public string? Bio { get; set; } = string.Empty;
+        public IFormFile? ProfilePicture { get; set; } = null!;
+        public IFormFile? BackPicture { get; set; } = null!;
 
     }
 }

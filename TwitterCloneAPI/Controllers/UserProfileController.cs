@@ -31,7 +31,6 @@ namespace TwitterCloneAPI.Controllers
         }
 
         [HttpGet("GetCurrentUserProfile")]
-
         public async Task<IActionResult> GetCurrentUserProfile()
         {
             var userProfile = await _userProfileService.GetProfileByUserId(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
@@ -41,8 +40,6 @@ namespace TwitterCloneAPI.Controllers
             }
             return NotFound(userProfile);
         }
-
-
 
         [HttpPut("UpdateUserProfile")]
         public async Task<IActionResult> UpdateUserProfile([FromForm]UpdateUserProfileRequest profile)
