@@ -79,6 +79,7 @@ namespace TwitterCloneAPI.Services.Tweets
                     CommentsCount = x.Comments.Count,
                     RetweetCount = x.Retweets.Count,
                     LikesCount = x.Likes.Count,
+                    SaveCount = x.SavedTweets.Count,
                 }).ToListAsync();
                 response.Success = true;
                 response.Message = "All tweets";

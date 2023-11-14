@@ -15,6 +15,7 @@ namespace TwitterCloneAPI.Models.TweetResponse
         public int CommentsCount { get; set; }
         public int RetweetCount { get; set; }
         public int LikesCount { get; set; }
+        public int SaveCount {  get; set; }
 
     }
 }
