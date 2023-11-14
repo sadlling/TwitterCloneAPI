@@ -1,4 +1,5 @@
-﻿using System.IO.Pipes;
+﻿using Microsoft.EntityFrameworkCore;
+using System.IO.Pipes;
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.ServiceResponse;
 using TwitterCloneAPI.Models.TweetRequest;
@@ -17,36 +18,6 @@ namespace TwitterCloneAPI.Services.Tweets
 
         }
 
-        //public ResponseModel<IList<object>> GetAllTweets()
-        //{
-        //    ResponseModel<IList<object>> response = new();
-
-        //    try
-        //    {
-        //        var tweets = _context.Tweets.Select(x => new
-        //        {
-        //            tweetId = x.TweetId,
-        //            postedUserId = x.UserId,
-        //            content = x.Content ?? "",
-        //            image = x.TweetImage ?? "",
-        //            isPublic = x.IsPublic,
-        //            createdAt = x.CreateAt,
-        //            commentsCount = x.Comments.Count,
-        //            comments = x.Comments,
-        //            retweetCount = x.Retweets.Count,
-        //            likesCount = x.Likes.Count,
-        //        }).ToList();
-        //        response.Data = (IList<object>)tweets;
-        //        response.Success = true;
-        //        response.Message = "All tweets";
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        response.Success = false;
-        //        response.Message = ex.Message;
-        //    }
-        //    return response;
-        //}
 
         public async Task<ResponseModel<Tweet>> CreateTweet(TweetRequestModel request, int userId)
         {
@@ -97,7 +68,7 @@ namespace TwitterCloneAPI.Services.Tweets
             ResponseModel<List<TweetResponseModel>> response = new();
             try
             {
-                response.Data = _context.Tweets.Select(x => new TweetResponseModel
+                response.Data = await _context.Tweets.Select(x => new TweetResponseModel
                 {
                     TweetId = x.TweetId,
                     PostedUserId = x.UserId,
@@ -108,7 +79,7 @@ namespace TwitterCloneAPI.Services.Tweets
                     CommentsCount = x.Comments.Count,
                     RetweetCount = x.Retweets.Count,
                     LikesCount = x.Likes.Count,
-                }).ToList();
+                }).ToListAsync();
                 response.Success = true;
                 response.Message = "All tweets";
             }
