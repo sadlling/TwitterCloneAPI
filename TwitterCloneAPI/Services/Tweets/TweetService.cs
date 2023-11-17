@@ -81,12 +81,13 @@ namespace TwitterCloneAPI.Services.Tweets
                     LikesCount = x.Likes.Count,
                     SaveCount = x.SavedTweets.Count,
                 }).ToListAsync();
+
                 response.Success = true;
                 response.Message = "All tweets";
             }
             catch (Exception ex)
             {
-                response.Success= false;
+                response.Success = false;
                 response.Message = ex.Message;
             }
             return response;
