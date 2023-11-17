@@ -18,6 +18,32 @@ namespace TwitterCloneAPI.Services.Tweets
 
         }
 
+        public async Task<ResponseModel<int>> AddTweetInSaved(int tweetId, int userId)
+        {
+            ResponseModel<int> response = new();
+            try
+            {
+                var currentTweet = await _context.Tweets.FirstAsync(x => x.TweetId == tweetId);
+
+                await _context.SavedTweets.AddAsync(new SavedTweet
+                {
+                    TweetId = tweetId,
+                    UserId = userId,
+                    CreatedAt = DateTime.Now,
+                });
+                await _context.SaveChangesAsync();
+
+                response.Data = currentTweet.SavedTweets.Count;
+                response.Success = true;
+                response.Message = "Tweet aded in bookmarks";
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Success = false;
+            }
+            return response;
+        }
 
         public async Task<ResponseModel<Tweet>> CreateTweet(TweetRequestModel request, int userId)
         {
