@@ -10,5 +10,6 @@ namespace TwitterCloneAPI.Services.Tweets
         public Task<ResponseModel<Tweet>> CreateTweet(TweetRequestModel request,int userId);
         public Task<ResponseModel<List<TweetResponseModel>>> GetAllTweets();
         public Task<ResponseModel<int>> AddTweetInSaved(int tweetId, int userId);
+        public Task<ResponseModel<List<TweetResponseModel>>> GetFollowersTweets(int userId);
     }
 }

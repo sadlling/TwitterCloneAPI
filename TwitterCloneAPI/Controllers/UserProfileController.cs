@@ -33,7 +33,7 @@ namespace TwitterCloneAPI.Controllers
         [HttpGet("GetCurrentUserProfile")]
         public async Task<IActionResult> GetCurrentUserProfile()
         {
-            var userProfile = await _userProfileService.GetProfileByUserId(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var userProfile = await _userProfileService.GetProfileByUserId(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));//TODO: check id 
             if (userProfile.Data is not null)
             {
                 return Ok(userProfile);
