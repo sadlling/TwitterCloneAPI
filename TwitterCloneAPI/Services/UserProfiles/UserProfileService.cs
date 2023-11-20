@@ -73,26 +73,26 @@ namespace TwitterCloneAPI.Services.UserProfiles
                     {
                         File.Delete(backImagePath);
                     }
-                    if (profile.profilePicture is not null)
+                    if (profile.ProfilePicture is not null)
                     {
                         using (FileStream stream = File.Create(profileImagePath))
                         {
-                            await profile.profilePicture!.CopyToAsync(stream);
+                            await profile.ProfilePicture!.CopyToAsync(stream);
                         }
                         updatedProfile.ProfilePicture = profileImagePath;
                     }
-                    if(profile.backPicture is not null)
+                    if(profile.BackPicture is not null)
                     {
                         using (FileStream stream = File.Create(backImagePath))
                         {
-                            await profile.backPicture!.CopyToAsync(stream);
+                            await profile.BackPicture!.CopyToAsync(stream);
                         }
                         updatedProfile.BackPicture = backImagePath;
                     }
 
-                    updatedProfile.UserName = profile.userName;
-                    updatedProfile.FullName = profile.fullName;
-                    updatedProfile.Bio = profile.bio;
+                    updatedProfile.UserName = profile.UserName;
+                    updatedProfile.FullName = profile.FullName;
+                    updatedProfile.Bio = profile.Bio;
                     await _context.SaveChangesAsync();
                     response.Data = updatedProfile;
                     response.Success = true;

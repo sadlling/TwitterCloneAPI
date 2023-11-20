@@ -11,7 +11,7 @@ GO
 BEGIN TRANSACTION;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE TABLE [Hashtag] (
         [hashtagId] int NOT NULL IDENTITY,
@@ -22,7 +22,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE TABLE [NotificationType] (
         [typeId] int NOT NULL IDENTITY,
@@ -32,7 +32,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE TABLE [UserAuthentication] (
         [userId] int NOT NULL IDENTITY,
@@ -46,7 +46,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE TABLE [Follower] (
         [followerId] int NOT NULL IDENTITY,
@@ -60,7 +60,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE TABLE [Tweet] (
         [tweetId] int NOT NULL IDENTITY,
@@ -76,7 +76,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE TABLE [UserProfile] (
         [profileId] int NOT NULL IDENTITY,
@@ -93,7 +93,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE TABLE [Comment] (
         [commentId] int NOT NULL IDENTITY,
@@ -108,7 +108,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE TABLE [Like] (
         [likeId] int NOT NULL IDENTITY,
@@ -122,7 +122,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE TABLE [Notification] (
         [notificationId] int NOT NULL IDENTITY,
@@ -141,7 +141,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE TABLE [Retweet] (
         [retweetId] int NOT NULL IDENTITY,
@@ -155,7 +155,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE TABLE [SavedTweet] (
         [savedTweetId] int NOT NULL IDENTITY,
@@ -169,7 +169,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE TABLE [TweetHashtags] (
         [id] int NOT NULL IDENTITY,
@@ -182,124 +182,124 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_Comment_tweetId] ON [Comment] ([tweetId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_Comment_userId] ON [Comment] ([userId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_Follower_followerUserId] ON [Follower] ([followerUserId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_Follower_userId] ON [Follower] ([userId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_Like_tweetId] ON [Like] ([tweetId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_Like_userId] ON [Like] ([userId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_Notification_notificationType] ON [Notification] ([notificationType]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_Notification_sourseUserId] ON [Notification] ([sourseUserId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_Notification_tweetId] ON [Notification] ([tweetId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_Notification_userId] ON [Notification] ([userId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_Retweet_tweetId] ON [Retweet] ([tweetId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_Retweet_userId] ON [Retweet] ([userId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_SavedTweet_tweetId] ON [SavedTweet] ([tweetId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_SavedTweet_userId] ON [SavedTweet] ([userId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_Tweet_userId] ON [Tweet] ([userId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_TweetHashtags_hashtagId] ON [TweetHashtags] ([hashtagId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE INDEX [IX_TweetHashtags_tweetId] ON [TweetHashtags] ([tweetId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE UNIQUE INDEX [UQ_UserAuthentification_Email] ON [UserAuthentication] ([email]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     CREATE UNIQUE INDEX [UQ_UserProfile_UserId] ON [UserProfile] ([userId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231024084652_Initial')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20231113214255_Initial')
 BEGIN
     INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-    VALUES (N'20231024084652_Initial', N'7.0.12');
+    VALUES (N'20231113214255_Initial', N'7.0.12');
 END;
 GO
 

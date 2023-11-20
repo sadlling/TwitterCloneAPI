@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Этот файл используется процессом публикации или упаковки вашего веб-проекта. Можно настроить поведение этого процесса,
+изменив этот файл MSBuild. Подробности см. на странице https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAnZS/0sCak0yyaMAScWWx+wAAAAACAAAAAAAQZgAAAAEAACAAAACC83cG2CPBOM1mHtAiKNCjvfaOgYxYzagCwuuhBBldpAAAAAAOgAAAAAIAACAAAACVLikM4uOFD3shl0qJZu3KPwsgHmyBT+TZFafrEquOe4AAAADaaIfjQivJVXafzDtI2euF44EUxyz4fLpmjrk8Rd+U5T8+dqSOM5SsSgnwkcdfI6zaOYu5b5wMj0JGTzClH29Vxyb10n5HPSOO4BsMi4uxfAz9pnhyxzoZ+6W3PMC3XgFuCZjIbOOikY48q5+lOtZoBmisq10eNKusherCerbWMEAAAADAYtb3A3CcZ7NtWzcwOxF09WH3xzq2DDojCFOI1icqvGFCiZ2SmaE0uKbDMKEg/B4SlJETOpiw0OpKqWJmDCoR</EncryptedPassword>
+    <History>True|2023-11-15T21:56:37.0508445Z;True|2023-11-16T00:47:58.1106840+03:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Data Source=twittercloneapiproductiondbserver.database.windows.net,1433%3bInitial Catalog=TwitterCloneAPIProduction_db%3bUser ID=DBadmin%3bPassword=Aaa1111!</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="TwitterCloneAPI.Models.TwitterCloneContext">
+      <Value>Data Source=twittercloneapiproductiondbserver.database.windows.net,1433%3bInitial Catalog=TwitterCloneAPIProduction_db%3bUser ID=DBadmin%3bPassword=Aaa1111!</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>
