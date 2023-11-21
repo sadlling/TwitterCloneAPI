@@ -33,7 +33,11 @@ namespace TwitterCloneAPI.Controllers
         [HttpGet("GetCurrentUserProfile")]
         public async Task<IActionResult> GetCurrentUserProfile()
         {
-            var userProfile = await _userProfileService.GetProfileByUserId(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));//TODO: check id 
+            if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
+            {
+                return Unauthorized();
+            }
+            var userProfile = await _userProfileService.GetProfileByUserId(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             if (userProfile.Data is not null)
             {
                 return Ok(userProfile);
@@ -44,6 +48,10 @@ namespace TwitterCloneAPI.Controllers
         [HttpPut("UpdateUserProfile")]
         public async Task<IActionResult> UpdateUserProfile([FromForm]UpdateUserProfileRequest profile)
         {
+            if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
+            {
+                return Unauthorized();
+            }
             var response = await _userProfileService.UpdateProfile(profile, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             if (response.Data is not null)
             {
