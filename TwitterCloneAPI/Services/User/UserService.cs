@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.RefreshToken;
 using TwitterCloneAPI.Models.ServiceResponse;
+using TwitterCloneAPI.Models.UserResponse;
 using TwitterCloneAPI.Models.UserRequest;
 using TwitterCloneAPI.Services.Token;
 
@@ -82,7 +83,7 @@ namespace TwitterCloneAPI.Services.User
             try
             {
                 user = await _context.UserAuthentications.FirstAsync(x => x.UserId == id)!;
-                response.Data = user;
+                response.Data= user;
                 response.Success = true;
                 response.Message = "User found!";
 

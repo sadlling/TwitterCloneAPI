@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using TwitterCloneAPI.Models;
+using TwitterCloneAPI.Models.UserResponse;
 using TwitterCloneAPI.Models.UserRequest;
 using TwitterCloneAPI.Services.Token;
 using TwitterCloneAPI.Services.User;
@@ -71,7 +72,18 @@ namespace TwitterCloneAPI.Controllers
                 //SameSite = SameSiteMode.Strict,
             };
             Response.Cookies.Append("JWT", token, cookieOptions);
-            return Ok(user.Data.UserProfile);//TODO: return custom object
+            return Ok(new UserResponseModel
+            {
+                UserID = user.Data.UserId,
+                UserEmail = user.Data.Email,
+                UserName = user.Data.UserProfile!.UserName ?? "Default UserName",
+                FullName = user.Data.UserProfile!.FullName ?? "Default FullName",
+                ProfilePicture = user.Data.UserProfile.ProfilePicture ?? "",
+                BackPicture = user.Data.UserProfile.BackPicture ?? "",
+                QuantityOfFollowers = user.Data.FollowerFollowerUsers.Count(),
+                QuantityOfFollowing = user.Data.FollowerUsers.Where(x => x.UserId == user.Data.UserId).Count(),
+                ProfileDescription = user.Data.UserProfile.Bio ?? ""
+            });
         }
 
         [HttpPost("RefreshToken")]
@@ -85,36 +97,33 @@ namespace TwitterCloneAPI.Controllers
             {
                 return BadRequest("User not found");
             }
-            else
+            user = _userService.GetUserById(localUserId).Result.Data!;
+            if (user is not null)
             {
-                user = _userService.GetUserById(localUserId).Result.Data!;
-                if (user is not null)
+                if (user.TokenExpires < DateTime.Now)
                 {
-                    if (user.TokenExpires < DateTime.Now)
-                    {
-                        return Unauthorized();
-                    }
-                    var updatedUser = await _userService.UpdateUserRefreshToken(user);
-                    if (updatedUser.Data is null)
-                    {
-                        return StatusCode(500);
-                    }
-                    var cookieOptions = new CookieOptions
-                    {
-                        Expires = DateTime.Now.AddHours(4),
-                        HttpOnly = true,
-                        Domain = Request.Host.Host,
-                        SameSite = SameSiteMode.None,
-                        Path = "/",
-                        Secure = true
-                    };
-                    Response.Cookies.Append("JWT", _tokenService.CreateJwtToken(user), cookieOptions);
-                    return Ok();
+                    return Unauthorized();
                 }
-                return BadRequest("User not found");
+                var updatedUser = await _userService.UpdateUserRefreshToken(user);
+                if (updatedUser.Data is null)
+                {
+                    return StatusCode(500);
+                }
+                var cookieOptions = new CookieOptions
+                {
+                    Expires = DateTime.Now.AddHours(4),
+                    HttpOnly = true,
+                    Domain = Request.Host.Host,
+                    SameSite = SameSiteMode.None,
+                    Path = "/",
+                    Secure = true
+                };
+                Response.Cookies.Append("JWT", _tokenService.CreateJwtToken(user), cookieOptions);
+                return Ok();
             }
-
-
+            return BadRequest("User not found");
         }
+
+
     }
 }

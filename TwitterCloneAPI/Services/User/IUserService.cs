@@ -1,5 +1,6 @@
 ﻿using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.ServiceResponse;
+using TwitterCloneAPI.Models.UserProfileResponse;
 using TwitterCloneAPI.Models.UserRequest;
 
 namespace TwitterCloneAPI.Services.User
