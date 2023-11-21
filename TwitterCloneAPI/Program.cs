@@ -20,8 +20,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //add scoped for repository pattern
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IUserService,UserService>();
-builder.Services.AddScoped<IUserProfileService,UserProfileService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<ITweetService, TweetService>();
 //add db context
 builder.Services.AddDbContext<TwitterCloneContext>(options =>
@@ -57,25 +57,25 @@ if (builder.Environment.IsProduction())
 {
     builder.Services.AddCors(options =>
     {
-        options.AddDefaultPolicy(
-            policy =>
-            {
-                policy.AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-            });
+        options.AddDefaultPolicy(policy =>
+        {
+            policy.SetIsOriginAllowed(_ => true)
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+        });
     });
 }
 
 var app = builder.Build();
 
- //Configure the HTTP request pipeline.
+//Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-if(app.Environment.IsProduction())
+if (app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI(configurations =>

@@ -77,3 +77,4 @@ E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\obj\Release\net7.0\
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\obj\Release\net7.0\TwitterCloneAPI.pdb
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\obj\Release\net7.0\TwitterCloneAPI.genruntimeconfig.cache
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\obj\Release\net7.0\ref\TwitterCloneAPI.dll
+E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\obj\Release\net7.0\TwitterCloneAPI.sourcelink.json

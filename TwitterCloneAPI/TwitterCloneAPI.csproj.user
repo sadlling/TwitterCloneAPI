@@ -4,6 +4,6 @@
     <ActiveDebugProfile>https</ActiveDebugProfile>
     <Controller_SelectedScaffolderID>ApiControllerEmptyScaffolder</Controller_SelectedScaffolderID>
     <Controller_SelectedScaffolderCategoryPath>root/Common/Api</Controller_SelectedScaffolderCategoryPath>
-    <NameOfLastUsedPublishProfile>E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\Properties\PublishProfiles\TwitterCloneAPI - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\Properties\PublishProfiles\TwitterCloneAPIProductionEnv - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

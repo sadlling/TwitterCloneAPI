@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.UserRequest;
@@ -59,12 +60,15 @@ namespace TwitterCloneAPI.Controllers
             }
             var cookieOptions = new CookieOptions
             {
-                Expires = DateTime.Now.AddHours(4),
+                Expires = DateTime.UtcNow.AddHours(4),
                 HttpOnly = true,
                 Domain = Request.Host.Host,
-                SameSite = SameSiteMode.Strict,
+                SameSite = SameSiteMode.None,
                 Path = "/",
-                Secure = true
+                Secure = true,
+                //for Http
+                //Secure = Request.IsHttps
+                //SameSite = SameSiteMode.Strict,
             };
             Response.Cookies.Append("JWT", token, cookieOptions);
             return Ok(user.Data.UserProfile);//TODO: return custom object
@@ -100,7 +104,7 @@ namespace TwitterCloneAPI.Controllers
                         Expires = DateTime.Now.AddHours(4),
                         HttpOnly = true,
                         Domain = Request.Host.Host,
-                        SameSite = SameSiteMode.Strict,
+                        SameSite = SameSiteMode.None,
                         Path = "/",
                         Secure = true
                     };

@@ -19,10 +19,10 @@ namespace TwitterCloneAPI.Controllers
             _userProfileService = userProfileService;
         }
 
-        [HttpGet("GetUserProfileById")]
-        public async Task<IActionResult> GetProfileByUserId(int id)
+        [HttpGet("GetUserProfileById{userId}")]
+        public async Task<IActionResult> GetProfileByUserId(int userId)
         {
-            var userProfile = await _userProfileService.GetProfileByUserId(id);
+            var userProfile = await _userProfileService.GetProfileByUserId(userId);
             if(userProfile.Data is not null)
             {
                 return Ok(userProfile);
