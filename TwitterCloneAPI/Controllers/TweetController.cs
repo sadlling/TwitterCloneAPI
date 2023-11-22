@@ -30,7 +30,7 @@ namespace TwitterCloneAPI.Controllers
             {
                 return Ok(tweet);
             }
-            return BadRequest(request);
+            return BadRequest();
 
         }
 

@@ -47,11 +47,11 @@ namespace TwitterCloneAPI.Controllers
 
             if (user.Data == null)
             {
-                return BadRequest("User not found");
+                return BadRequest(new { Message =  "User not found" });
             }
             if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Data!.PasswordHash))
             {
-                return BadRequest("Wrong password or username");
+                return BadRequest(new { Message = "Wrong password or username" });
             }
             var token = _tokenService.CreateJwtToken(user.Data);
             user = await _userService.UpdateUserRefreshToken(user.Data);
@@ -95,7 +95,7 @@ namespace TwitterCloneAPI.Controllers
             UserAuthentication user = new();
             if (localUserId <= 0)
             {
-                return BadRequest("User not found");
+                return BadRequest(new { Message = "User not found" });
             }
             user = _userService.GetUserById(localUserId).Result.Data!;
             if (user is not null)
@@ -121,7 +121,7 @@ namespace TwitterCloneAPI.Controllers
                 Response.Cookies.Append("JWT", _tokenService.CreateJwtToken(user), cookieOptions);
                 return Ok();
             }
-            return BadRequest("User not found");
+            return BadRequest(new { Message = "User not found" });
         }
 
 

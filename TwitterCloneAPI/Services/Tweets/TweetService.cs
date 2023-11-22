@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.IO.Pipes;
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.ServiceResponse;
 using TwitterCloneAPI.Models.TweetRequest;
@@ -45,9 +44,9 @@ namespace TwitterCloneAPI.Services.Tweets
             return response;
         }
 
-        public async Task<ResponseModel<Tweet>> CreateTweet(TweetRequestModel request, int userId)
+        public async Task<ResponseModel<TweetResponseModel>> CreateTweet(TweetRequestModel request, int userId)
         {
-            ResponseModel<Tweet> response = new();
+            ResponseModel<TweetResponseModel> response = new();
             Tweet newTweet = new();
             try
             {
@@ -76,7 +75,19 @@ namespace TwitterCloneAPI.Services.Tweets
                 newTweet.UpdatedAt = DateTime.Now;
                 await _context.Tweets.AddAsync(newTweet);
                 await _context.SaveChangesAsync();
-                response.Data = newTweet;
+                response.Data = new TweetResponseModel
+                {
+                    TweetId = newTweet.TweetId,
+                    PostedUserId = newTweet.UserId,
+                    Content = newTweet.Content ?? " ",
+                    Image = newTweet.TweetImage ?? " ",
+                    IsPublic = newTweet.IsPublic,
+                    CreatedAt = newTweet.CreateAt ?? DateTime.Now,
+                    CommentsCount = newTweet.Comments.Count,
+                    RetweetCount = newTweet.Retweets.Count,
+                    LikesCount = newTweet.Likes.Count,
+                    SaveCount = newTweet.SavedTweets.Count,
+                };
                 response.Message = "Tweet Created!";
                 response.Success = true;
 
