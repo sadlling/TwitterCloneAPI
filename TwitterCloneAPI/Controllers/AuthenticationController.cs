@@ -63,11 +63,11 @@ namespace TwitterCloneAPI.Controllers
             {
                 Expires = DateTime.UtcNow.AddHours(4),
                 HttpOnly = true,
-                Domain = Request.Host.Host,
                 SameSite = SameSiteMode.None,
                 Path = "/",
                 Secure = true,
                 //for Http
+                //Domain = Request.Host.Host,
                 //Secure = Request.IsHttps
                 //SameSite = SameSiteMode.Strict,
             };
@@ -80,8 +80,8 @@ namespace TwitterCloneAPI.Controllers
                 FullName = user.Data.UserProfile!.FullName ?? "Default FullName",
                 ProfilePicture = user.Data.UserProfile.ProfilePicture ?? "",
                 BackPicture = user.Data.UserProfile.BackPicture ?? "",
-                QuantityOfFollowers = user.Data.FollowerFollowerUsers.Count(),
-                QuantityOfFollowing = user.Data.FollowerUsers.Where(x => x.UserId == user.Data.UserId).Count(),
+                QuantityOfFollowers = user.Data.FollowerUsers.Where(x=>x.UserId == user.Data.UserId).Count(),
+                QuantityOfFollowing = user.Data.FollowerFollowerUsers.Where(x => x.FollowerUserId== user.Data.UserId).Count(),
                 ProfileDescription = user.Data.UserProfile.Bio ?? ""
             });
         }
@@ -113,7 +113,6 @@ namespace TwitterCloneAPI.Controllers
                 {
                     Expires = DateTime.Now.AddHours(4),
                     HttpOnly = true,
-                    Domain = Request.Host.Host,
                     SameSite = SameSiteMode.None,
                     Path = "/",
                     Secure = true

@@ -19,9 +19,9 @@ public partial class UserAuthentication
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-    public virtual ICollection<Follower> FollowerFollowerUsers { get; set; } = new List<Follower>();
+    public virtual ICollection<Follower> FollowerFollowerUsers { get; set; } = new List<Follower>();//followers
 
-    public virtual ICollection<Follower> FollowerUsers { get; set; } = new List<Follower>();
+    public virtual ICollection<Follower> FollowerUsers { get; set; } = new List<Follower>();//following
 
     public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
 

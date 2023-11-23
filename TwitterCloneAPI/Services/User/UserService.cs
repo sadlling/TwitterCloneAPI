@@ -62,7 +62,10 @@ namespace TwitterCloneAPI.Services.User
             var response = new ResponseModel<UserAuthentication>();
             try
             {
-                user = await _context.UserAuthentications.Include(x => x.UserProfile).FirstAsync(x => x.Email.Equals(request.Email))!;
+                user = await _context.UserAuthentications.Include(x => x.FollowerUsers)
+                    .Include(x => x.FollowerFollowerUsers)
+                    .Include(x => x.UserProfile)
+                    .FirstAsync(x => x.Email.Equals(request.Email))!;
                 response.Data = user;
                 response.Success = true;
                 response.Message = "User found!";
@@ -83,7 +86,7 @@ namespace TwitterCloneAPI.Services.User
             try
             {
                 user = await _context.UserAuthentications.FirstAsync(x => x.UserId == id)!;
-                response.Data= user;
+                response.Data = user;
                 response.Success = true;
                 response.Message = "User found!";
 
