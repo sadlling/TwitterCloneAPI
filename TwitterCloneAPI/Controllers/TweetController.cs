@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TwitterCloneAPI.Models;
@@ -24,13 +25,14 @@ namespace TwitterCloneAPI.Controllers
             {
                 return Unauthorized();
             }
-            var tweet = await _tweetService.CreateTweet(request, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-
-            if (tweet.Data is not null)
+            var response = await _tweetService.CreateTweet(request, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+            if (response.Data is not null)
             {
-                return Ok(tweet);
+                response.Data.Image = $"{hostUrl}{response.Data.Image}";
+                return Ok(response);
             }
-            return BadRequest();
+            return BadRequest(response);
 
         }
 
@@ -53,8 +55,14 @@ namespace TwitterCloneAPI.Controllers
         public async Task<IActionResult> GetAllTweets()
         {
             var responce = await _tweetService.GetAllTweets();
-            if(responce.Data is not null)
+            string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+            if (responce.Data is not null)
             {
+                responce.Data.ForEach(x =>
+                {
+                    if (!string.IsNullOrEmpty(x.Image))
+                        x.Image = $"{hostUrl}{x.Image}";
+                });
                 return Ok(responce);
             }
             return BadRequest(responce);
@@ -68,9 +76,15 @@ namespace TwitterCloneAPI.Controllers
             {
                 return Unauthorized();
             }
-            var responce = await _tweetService.GetFollowersTweets(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier))); 
+            var responce = await _tweetService.GetFollowersTweets(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (responce.Data is not null)
             {
+                responce.Data.ForEach(x =>
+                {
+                    if (!string.IsNullOrEmpty(x.Image))
+                        x.Image = $"{hostUrl}{x.Image}";
+                });
                 return Ok(responce);
             }
             return BadRequest(responce);

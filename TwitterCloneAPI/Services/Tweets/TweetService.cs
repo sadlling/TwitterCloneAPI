@@ -50,7 +50,7 @@ namespace TwitterCloneAPI.Services.Tweets
             Tweet newTweet = new();
             try
             {
-                string filePath = $"{_environment.WebRootPath}\\{userId}";
+                string filePath = $"wwwroot\\{userId}";
                 string tweetImagePath = $"{filePath}\\{DateTime.Now.ToString("dd.MM.yyyy.HH.mm.ss.ffffff")}.png";
                 if (!Directory.Exists(filePath))
                 {
@@ -80,7 +80,7 @@ namespace TwitterCloneAPI.Services.Tweets
                     TweetId = newTweet.TweetId,
                     PostedUserId = newTweet.UserId,
                     Content = newTweet.Content ?? " ",
-                    Image = newTweet.TweetImage ?? " ",
+                    Image = newTweet.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     IsPublic = newTweet.IsPublic,
                     CreatedAt = newTweet.CreateAt ?? DateTime.Now,
                     CommentsCount = newTweet.Comments.Count,
@@ -110,7 +110,7 @@ namespace TwitterCloneAPI.Services.Tweets
                     TweetId = x.TweetId,
                     PostedUserId = x.UserId,
                     Content = x.Content ?? " ",
-                    Image = x.TweetImage ?? " ",
+                    Image = x.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     IsPublic = x.IsPublic,
                     CreatedAt = x.CreateAt ?? DateTime.Now,
                     CommentsCount = x.Comments.Count,
@@ -142,7 +142,7 @@ namespace TwitterCloneAPI.Services.Tweets
 
                 foreach (var follower in followersList)
                 {
-                    followersTweets.AddRange(await GetTweetsAsync( follower.FollowerUserId));
+                    followersTweets.AddRange(await GetTweetsAsync(follower.FollowerUserId));
                 }
 
                 response.Data = followersTweets;
@@ -158,7 +158,7 @@ namespace TwitterCloneAPI.Services.Tweets
             return response;
 
         }
-        private async Task<List<TweetResponseModel>> GetTweetsAsync( int userId)
+        private async Task<List<TweetResponseModel>> GetTweetsAsync(int userId)
         {
             return await _context.Tweets
                 .Where(y => y.UserId == userId).Select(x => new TweetResponseModel
@@ -166,7 +166,7 @@ namespace TwitterCloneAPI.Services.Tweets
                     TweetId = x.TweetId,
                     PostedUserId = x.UserId,
                     Content = x.Content ?? " ",
-                    Image = x.TweetImage ?? " ",
+                    Image = x.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     IsPublic = x.IsPublic,
                     CreatedAt = x.CreateAt ?? DateTime.Now,
                     CommentsCount = x.Comments.Count,
