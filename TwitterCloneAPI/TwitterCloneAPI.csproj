@@ -22,6 +22,7 @@
     <Folder Include="Helpers\" />
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\4\" />
   </ItemGroup>
 
 </Project>

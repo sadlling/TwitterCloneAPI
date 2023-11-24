@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.UserProfileRequest;
 using TwitterCloneAPI.Services.UserProfiles;
@@ -22,12 +24,15 @@ namespace TwitterCloneAPI.Controllers
         [HttpGet("GetUserProfileById{userId}")]
         public async Task<IActionResult> GetProfileByUserId(int userId)
         {
-            var userProfile = await _userProfileService.GetProfileByUserId(userId);
-            if(userProfile.Data is not null)
+            var response = await _userProfileService.GetProfileByUserId(userId);
+            string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+            if (response.Data is not null)
             {
-                return Ok(userProfile);
+                response.Data.ProfilePicture = $"{hostUrl}{response.Data.ProfilePicture}";
+                response.Data.BackPicture = $"{hostUrl}{response.Data.BackPicture}";
+                return Ok(response);
             }
-            return NotFound(userProfile);
+            return NotFound(response);
         }
 
         [HttpGet("GetCurrentUserProfile")]
@@ -37,12 +42,15 @@ namespace TwitterCloneAPI.Controllers
             {
                 return Unauthorized();
             }
-            var userProfile = await _userProfileService.GetProfileByUserId(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-            if (userProfile.Data is not null)
+            var response = await _userProfileService.GetCurrentUserProfile(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+            if (response.Data is not null)
             {
-                return Ok(userProfile);
+                response.Data.ProfilePicture = $"{hostUrl}{response.Data.ProfilePicture}";
+                response.Data.BackPicture = $"{hostUrl}{response.Data.BackPicture}";
+                return Ok(response);
             }
-            return NotFound(userProfile);
+            return NotFound(response);
         }
 
         [HttpPut("UpdateUserProfile")]
@@ -53,8 +61,11 @@ namespace TwitterCloneAPI.Controllers
                 return Unauthorized();
             }
             var response = await _userProfileService.UpdateProfile(profile, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (response.Data is not null)
             {
+                response.Data.ProfilePicture = $"{hostUrl}{response.Data.ProfilePicture}";
+                response.Data.BackPicture = $"{hostUrl}{response.Data.BackPicture}";
                 return Ok(response);
 
             }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "TFkv0RsEGYDI28D/SODTI3Tl597lfgcknViPekW/tx4=",
+  "Hash": "C+7MSd4JucfhiRKJccl28hP03peFFe7weWNbt0gWIb0=",
   "Source": "TwitterCloneAPI",
   "BasePath": "_content/TwitterCloneAPI",
   "Mode": "Default",
@@ -110,6 +110,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\15\\09.11.2023.22.42.51.872233.png"
+    },
+    {
+      "Identity": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\4\\24.11.2023.23.52.20.778951.png",
+      "SourceId": "TwitterCloneAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\",
+      "BasePath": "_content/TwitterCloneAPI",
+      "RelativePath": "4/24.11.2023.23.52.20.778951.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\4\\24.11.2023.23.52.20.778951.png"
     }
   ]
 }

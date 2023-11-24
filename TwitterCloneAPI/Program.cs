@@ -53,7 +53,7 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
     };
 });
 //add CORS in production
-if (builder.Environment.IsDevelopment())
+if (builder.Environment.IsProduction())
 {
     builder.Services.AddCors(options =>
     {
@@ -85,12 +85,15 @@ if (app.Environment.IsProduction())
     });
 }
 
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseStaticFiles();
 
 app.UseCors();
 
