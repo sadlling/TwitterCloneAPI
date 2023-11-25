@@ -75,7 +75,7 @@ namespace TwitterCloneAPI.Controllers
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             return Ok(new UserResponseModel
             {
-                UserID = user.Data.UserId,
+                UserId = user.Data.UserId,
                 UserEmail = user.Data.Email,
                 UserName = user.Data.UserProfile!.UserName ?? "Default UserName",
                 FullName = user.Data.UserProfile!.FullName ?? "Default FullName",
@@ -90,6 +90,10 @@ namespace TwitterCloneAPI.Controllers
         [HttpPost("RefreshToken")]
         public async Task<IActionResult> RefreshToken()
         {
+            if(string.IsNullOrEmpty(Request.Cookies["JWT"]))
+            {
+                return Unauthorized();
+            }
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.ReadJwtToken(Request.Cookies["JWT"]);
             int localUserId = Convert.ToInt32(token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);

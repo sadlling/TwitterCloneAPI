@@ -2,29 +2,44 @@
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.ServiceResponse;
 using TwitterCloneAPI.Models.UserProfileRequest;
-using TwitterCloneAPI.Models.UserProfileResponse;
+using TwitterCloneAPI.Models.UserResponse;
 
 namespace TwitterCloneAPI.Services.UserProfiles
 {
     public class UserProfileService : IUserProfileService
     {
         private readonly TwitterCloneContext _context;
-        private readonly IWebHostEnvironment _environment;
-        public UserProfileService(TwitterCloneContext context, IWebHostEnvironment environment)
+
+        public UserProfileService(TwitterCloneContext context)
         {
             _context = context;
-            _environment = environment;
 
         }
 
-        public async Task<ResponseModel<UserProfile>> GetCurrentUserProfile(int id)
+        public async Task<ResponseModel<UserResponseModel>> GetCurrentUserProfile(int userId)
         {
-            ResponseModel<UserProfile> response = new();
+            ResponseModel<UserResponseModel> response = new();
             try
             {
-                response.Data = await _context.UserProfiles.FirstAsync(x => x.UserId == id);
-                response.Data.ProfilePicture = response.Data.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "");
-                response.Data.BackPicture = response.Data.BackPicture!.Replace("\\", "/").Replace("wwwroot/", "");
+                var user = await _context.UserAuthentications
+                    .Include(x => x.UserProfile)
+                    .Include(x => x.FollowerUsers)
+                    .Include(x => x.FollowerFollowerUsers)
+                    .AsSplitQuery()
+                    .FirstAsync(x => x.UserId == userId);
+                response.Data = new UserResponseModel
+                {
+                    UserId = user.UserId,
+                    UserEmail = user.Email,
+                    UserName = user.UserProfile?.UserName ?? "",
+                    FullName = user.UserProfile?.FullName ?? "",
+                    ProfilePicture = user.UserProfile!.ProfilePicture?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                    BackPicture = user.UserProfile!.BackPicture?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                    QuantityOfFollowers = user.FollowerUsers.Count(),
+                    QuantityOfFollowing = user.FollowerFollowerUsers.Count(),
+                    ProfileDescription = user.UserProfile?.Bio ?? ""
+                };
+
                 response.Success = true;
                 response.Message = "Profile found";
             }
@@ -36,14 +51,30 @@ namespace TwitterCloneAPI.Services.UserProfiles
             return response;
         }
 
-        public async Task<ResponseModel<UserProfile>> GetProfileByUserId(int id)
+        public async Task<ResponseModel<UserResponseModel>> GetProfileByUserId(int userId)
         {
-            ResponseModel<UserProfile> response = new();
+            ResponseModel<UserResponseModel> response = new();
             try
             {
-                response.Data = await _context.UserProfiles.FirstAsync(x => x.UserId == id);
-                response.Data.ProfilePicture = response.Data.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "");
-                response.Data.BackPicture = response.Data.BackPicture!.Replace("\\", "/").Replace("wwwroot/", "");
+                var user = await _context.UserAuthentications
+                  .Include(x => x.UserProfile)
+                  .Include(x => x.FollowerUsers)
+                  .Include(x => x.FollowerFollowerUsers)
+                  .AsSplitQuery()
+                  .FirstAsync(x => x.UserId == userId);
+
+                response.Data = new UserResponseModel
+                {
+                    UserId = user.UserId,
+                    UserEmail = user.Email,
+                    UserName = user.UserProfile?.UserName ?? "",
+                    FullName = user.UserProfile?.FullName ?? "",
+                    ProfilePicture = user.UserProfile!.ProfilePicture?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                    BackPicture = user.UserProfile!.BackPicture?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                    QuantityOfFollowers = user.FollowerUsers.Count(),
+                    QuantityOfFollowing = user.FollowerFollowerUsers.Count(),
+                    ProfileDescription = user.UserProfile?.Bio ?? ""
+                };
                 response.Success = true;
                 response.Message = "Profile found";
             }
@@ -55,12 +86,18 @@ namespace TwitterCloneAPI.Services.UserProfiles
             return response;
         }
 
-        public async Task<ResponseModel<UserProfile>> UpdateProfile(UpdateUserProfileRequest profile, int userId)
+        public async Task<ResponseModel<UserResponseModel>> UpdateProfile(UpdateUserProfileRequest profile, int userId)
         {
-            ResponseModel<UserProfile> response = new();
+            ResponseModel<UserResponseModel> response = new();
             try
             {
-                var updatedProfile = await _context.UserProfiles.FirstOrDefaultAsync(x => x.UserId == userId);
+                var updatedProfile = await _context.UserAuthentications
+                  .Include(x => x.UserProfile)
+                  .Include(x => x.FollowerUsers)
+                  .Include(x => x.FollowerFollowerUsers)
+                  .AsSplitQuery()
+                  .FirstAsync(x => x.UserId == userId);
+
                 if (updatedProfile is not null)
                 {
                     string filePath = $"wwwroot\\{updatedProfile.UserId}";
@@ -84,7 +121,7 @@ namespace TwitterCloneAPI.Services.UserProfiles
                         {
                             await profile.ProfilePicture!.CopyToAsync(stream);
                         }
-                        updatedProfile.ProfilePicture = profileImagePath;
+                        updatedProfile.UserProfile!.ProfilePicture = profileImagePath;
                     }
                     if (profile.BackPicture is not null)
                     {
@@ -92,16 +129,25 @@ namespace TwitterCloneAPI.Services.UserProfiles
                         {
                             await profile.BackPicture!.CopyToAsync(stream);
                         }
-                        updatedProfile.BackPicture = backImagePath;
+                        updatedProfile.UserProfile!.BackPicture = backImagePath;
                     }
 
-                    updatedProfile.UserName = profile.UserName;
-                    updatedProfile.FullName = profile.FullName;
-                    updatedProfile.Bio = profile.Bio;
+                    updatedProfile.UserProfile!.UserName = profile.UserName;
+                    updatedProfile.UserProfile!.FullName = profile.FullName;
+                    updatedProfile.UserProfile!.Bio = profile.Bio;
                     await _context.SaveChangesAsync();
-                    updatedProfile.ProfilePicture = updatedProfile.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "");
-                    updatedProfile.BackPicture = updatedProfile.BackPicture!.Replace("\\", "/").Replace("wwwroot/", "");
-                    response.Data = updatedProfile;
+                    response.Data = new UserResponseModel
+                    {
+                        UserId = updatedProfile.UserId,
+                        UserEmail = updatedProfile.Email,
+                        UserName = updatedProfile.UserProfile?.UserName ?? "",
+                        FullName = updatedProfile.UserProfile?.FullName ?? "",
+                        ProfilePicture = updatedProfile.UserProfile?.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                        BackPicture = updatedProfile.UserProfile?.BackPicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                        QuantityOfFollowers = updatedProfile.FollowerUsers.Count(),
+                        QuantityOfFollowing = updatedProfile.FollowerFollowerUsers.Count(),
+                        ProfileDescription = updatedProfile.UserProfile?.Bio ?? ""
+                    };
                     response.Success = true;
                     response.Message = "Profile update!";
                 }

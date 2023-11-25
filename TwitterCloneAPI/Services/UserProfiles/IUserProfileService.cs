@@ -1,15 +1,15 @@
 ﻿using TwitterCloneAPI.Models.ServiceResponse;
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.UserProfileRequest;
-using TwitterCloneAPI.Models.UserProfileResponse;
+using TwitterCloneAPI.Models.UserResponse;
 
 namespace TwitterCloneAPI.Services.UserProfiles
 {
     public interface IUserProfileService
     {
-        public Task<ResponseModel<UserProfile>> UpdateProfile(UpdateUserProfileRequest profile,int userId);
-        public Task<ResponseModel<UserProfile>> GetProfileByUserId(int  id);
-        public Task<ResponseModel<UserProfile>> GetCurrentUserProfile(int id);
+        public Task<ResponseModel<UserResponseModel>> UpdateProfile(UpdateUserProfileRequest profile,int userId);
+        public Task<ResponseModel<UserResponseModel>> GetProfileByUserId(int  id);
+        public Task<ResponseModel<UserResponseModel>> GetCurrentUserProfile(int id);
 
     }
 }
