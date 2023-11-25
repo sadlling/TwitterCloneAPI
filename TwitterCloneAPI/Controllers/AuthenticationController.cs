@@ -47,7 +47,7 @@ namespace TwitterCloneAPI.Controllers
 
             if (user.Data == null)
             {
-                return BadRequest(new { Message =  "User not found" });
+                return BadRequest(new { Message = "User not found" });
             }
             if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Data!.PasswordHash))
             {
@@ -72,16 +72,17 @@ namespace TwitterCloneAPI.Controllers
                 //SameSite = SameSiteMode.Strict,
             };
             Response.Cookies.Append("JWT", token, cookieOptions);
+            string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             return Ok(new UserResponseModel
             {
                 UserID = user.Data.UserId,
                 UserEmail = user.Data.Email,
                 UserName = user.Data.UserProfile!.UserName ?? "Default UserName",
                 FullName = user.Data.UserProfile!.FullName ?? "Default FullName",
-                ProfilePicture = user.Data.UserProfile.ProfilePicture ?? "",
-                BackPicture = user.Data.UserProfile.BackPicture ?? "",
-                QuantityOfFollowers = user.Data.FollowerUsers.Where(x=>x.UserId == user.Data.UserId).Count(),
-                QuantityOfFollowing = user.Data.FollowerFollowerUsers.Where(x => x.FollowerUserId== user.Data.UserId).Count(),
+                ProfilePicture = $"{hostUrl}{user.Data.UserProfile.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "")}" ?? "",
+                BackPicture = $"{hostUrl}{user.Data.UserProfile.BackPicture!.Replace("\\", "/").Replace("wwwroot/", "")}" ?? "",
+                QuantityOfFollowers = user.Data.FollowerUsers.Where(x => x.UserId == user.Data.UserId).Count(),
+                QuantityOfFollowing = user.Data.FollowerFollowerUsers.Where(x => x.FollowerUserId == user.Data.UserId).Count(),
                 ProfileDescription = user.Data.UserProfile.Bio ?? ""
             });
         }

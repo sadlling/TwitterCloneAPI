@@ -29,9 +29,13 @@ namespace TwitterCloneAPI.Controllers
             if (response.Data is not null)
             {
                 if (!string.IsNullOrEmpty(response.Data.ProfilePicture))
+                {
                     response.Data.ProfilePicture = $"{hostUrl}{response.Data.ProfilePicture}";
+                }
                 if (!string.IsNullOrEmpty(response.Data.BackPicture))
+                {
                     response.Data.BackPicture = $"{hostUrl}{response.Data.BackPicture}";
+                }
                 return Ok(response);
             }
             return NotFound(response);
@@ -48,8 +52,14 @@ namespace TwitterCloneAPI.Controllers
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (response.Data is not null)
             {
-                response.Data.ProfilePicture = $"{hostUrl}{response.Data.ProfilePicture}";
-                response.Data.BackPicture = $"{hostUrl}{response.Data.BackPicture}";
+                if (!string.IsNullOrEmpty(response.Data.ProfilePicture))
+                {
+                    response.Data.ProfilePicture = $"{hostUrl}{response.Data.ProfilePicture}";
+                }
+                if (!string.IsNullOrEmpty(response.Data.BackPicture))
+                {
+                    response.Data.BackPicture = $"{hostUrl}{response.Data.BackPicture}";
+                }
                 return Ok(response);
             }
             return NotFound(response);
@@ -66,8 +76,14 @@ namespace TwitterCloneAPI.Controllers
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (response.Data is not null)
             {
-                response.Data.ProfilePicture = $"{hostUrl}{response.Data.ProfilePicture}";
-                response.Data.BackPicture = $"{hostUrl}{response.Data.BackPicture}";
+                if (!string.IsNullOrEmpty(response.Data.ProfilePicture))
+                {
+                    response.Data.ProfilePicture = $"{hostUrl}{response.Data.ProfilePicture}";
+                }
+                if (!string.IsNullOrEmpty(response.Data.BackPicture))
+                {
+                    response.Data.BackPicture = $"{hostUrl}{response.Data.BackPicture}";
+                }
                 return Ok(response);
 
             }

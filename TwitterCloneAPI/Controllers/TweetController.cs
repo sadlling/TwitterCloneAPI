@@ -29,7 +29,10 @@ namespace TwitterCloneAPI.Controllers
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (response.Data is not null)
             {
-                response.Data.Image = $"{hostUrl}{response.Data.Image}";
+                if (!string.IsNullOrEmpty(response.Data.Image))
+                {
+                    response.Data.Image = $"{hostUrl}{response.Data.Image}";
+                }
                 return Ok(response);
             }
             return BadRequest(response);

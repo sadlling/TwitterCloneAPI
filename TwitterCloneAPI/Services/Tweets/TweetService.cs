@@ -9,12 +9,9 @@ namespace TwitterCloneAPI.Services.Tweets
     public class TweetService : ITweetService
     {
         private readonly TwitterCloneContext _context;
-        private readonly IWebHostEnvironment _environment;
-        public TweetService(TwitterCloneContext context, IWebHostEnvironment environment)
+        public TweetService(TwitterCloneContext context)
         {
             _context = context;
-            _environment = environment;
-
         }
 
         public async Task<ResponseModel<int>> AddTweetInSaved(int tweetId, int userId)
