@@ -79,18 +79,18 @@ namespace TwitterCloneAPI.Controllers
                 UserEmail = user.Data.Email,
                 UserName = user.Data.UserProfile!.UserName ?? "Default UserName",
                 FullName = user.Data.UserProfile!.FullName ?? "Default FullName",
-                ProfilePicture = $"{hostUrl}{user.Data.UserProfile.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "")}" ?? "",
-                BackPicture = $"{hostUrl}{user.Data.UserProfile.BackPicture!.Replace("\\", "/").Replace("wwwroot/", "")}" ?? "",
+                ProfilePicture = string.IsNullOrEmpty(user.Data.UserProfile!.ProfilePicture) ? "" : $"{hostUrl}{user.Data.UserProfile?.ProfilePicture.Replace("\\", "/").Replace("wwwroot/", "")}" ?? "",
+                BackPicture = string.IsNullOrEmpty(user.Data.UserProfile!.BackPicture) ? "" : $"{hostUrl}{user.Data.UserProfile?.BackPicture.Replace("\\", "/").Replace("wwwroot/", "")}" ?? "",
                 QuantityOfFollowers = user.Data.FollowerUsers.Where(x => x.UserId == user.Data.UserId).Count(),
                 QuantityOfFollowing = user.Data.FollowerFollowerUsers.Where(x => x.FollowerUserId == user.Data.UserId).Count(),
-                ProfileDescription = user.Data.UserProfile.Bio ?? ""
+                ProfileDescription = user.Data.UserProfile?.Bio ?? ""
             });
         }
 
         [HttpPost("RefreshToken")]
         public async Task<IActionResult> RefreshToken()
         {
-            if(string.IsNullOrEmpty(Request.Cookies["JWT"]))
+            if (string.IsNullOrEmpty(Request.Cookies["JWT"]))
             {
                 return Unauthorized();
             }
