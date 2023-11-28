@@ -65,6 +65,7 @@ namespace TwitterCloneAPI.Services.User
                 user = await _context.UserAuthentications.Include(x => x.FollowerUsers)
                     .Include(x => x.FollowerFollowerUsers)
                     .Include(x => x.UserProfile)
+                    .AsSplitQuery()
                     .FirstAsync(x => x.Email.Equals(request.Email))!;
                 response.Data = user;
                 response.Success = true;
