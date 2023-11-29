@@ -14,33 +14,6 @@ namespace TwitterCloneAPI.Services.Tweets
             _context = context;
         }
 
-        public async Task<ResponseModel<int>> AddTweetInSaved(int tweetId, int userId)
-        {
-            ResponseModel<int> response = new();
-            try
-            {
-                var currentTweet = await _context.Tweets.FirstAsync(x => x.TweetId == tweetId);
-
-                await _context.SavedTweets.AddAsync(new SavedTweet
-                {
-                    TweetId = tweetId,
-                    UserId = userId,
-                    CreatedAt = DateTime.Now,
-                });
-                await _context.SaveChangesAsync();
-
-                response.Data = currentTweet.SavedTweets.Count;
-                response.Success = true;
-                response.Message = "Tweet aded in bookmarks";
-            }
-            catch (Exception ex)
-            {
-                response.Message = ex.Message;
-                response.Success = false;
-            }
-            return response;
-        }
-
         public async Task<ResponseModel<TweetResponseModel>> CreateTweet(TweetRequestModel request, int userId)
         {
             ResponseModel<TweetResponseModel> response = new();
@@ -77,7 +50,7 @@ namespace TwitterCloneAPI.Services.Tweets
                     TweetId = newTweet.TweetId,
                     PostedUserId = newTweet.UserId,
                     Content = newTweet.Content ?? " ",
-                    Image = newTweet.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                    Image = newTweet.TweetImage?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     IsPublic = newTweet.IsPublic,
                     CreatedAt = newTweet.CreateAt ?? DateTime.Now,
                     CommentsCount = newTweet.Comments.Count,
