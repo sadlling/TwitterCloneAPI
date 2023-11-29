@@ -101,51 +101,5 @@ namespace TwitterCloneAPI.Services.Tweets
 
         }
 
-        public async Task<ResponseModel<List<TweetResponseModel>>> GetFollowersTweets(int userId)
-        {
-            ResponseModel<List<TweetResponseModel>> response = new();
-
-            try
-            {
-                var followersTweets = new List<TweetResponseModel>();
-                var followersList = await _context.Followers.Where(x => x.UserId == userId).ToListAsync();
-
-                foreach (var follower in followersList)
-                {
-                    followersTweets.AddRange(await GetTweetsAsync(follower.FollowerUserId));
-                }
-
-                response.Data = followersTweets;
-                response.Success = true;
-                response.Message = "Followers tweets founded!";
-
-            }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Message = ex.Message;
-            }
-            return response;
-
-        }
-        private async Task<List<TweetResponseModel>> GetTweetsAsync(int userId)
-        {
-            return await _context.Tweets
-                .Where(y => y.UserId == userId).Select(x => new TweetResponseModel
-                {
-                    TweetId = x.TweetId,
-                    PostedUserId = x.UserId,
-                    Content = x.Content ?? " ",
-                    Image = x.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
-                    IsPublic = x.IsPublic,
-                    CreatedAt = x.CreateAt ?? DateTime.Now,
-                    CommentsCount = x.Comments.Count,
-                    RetweetCount = x.Retweets.Count,
-                    LikesCount = x.Likes.Count,
-                    SaveCount = x.SavedTweets.Count,
-
-                }).ToListAsync();
-
-        }
     }
 }

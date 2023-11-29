@@ -9,10 +9,10 @@ namespace TwitterCloneAPI.Controllers
     [ApiController]
     public class SavedTweetController : ControllerBase
     {
-        private readonly ISavedTweetSevice savedTweetSevice;
+        private readonly ISavedTweetSevice _savedTweetSevice;
         public SavedTweetController(ISavedTweetSevice savedTweetSevice)
         {
-            this.savedTweetSevice = savedTweetSevice;
+            _savedTweetSevice = savedTweetSevice;
         }
 
         [HttpPost("AddTweetInSaved{tweetId}")]
@@ -22,7 +22,7 @@ namespace TwitterCloneAPI.Controllers
             {
                 return Unauthorized();
             }
-            var responce = await savedTweetSevice.AddTweetInSaved(tweetId, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var responce = await _savedTweetSevice.AddTweetInSaved(tweetId, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             if (responce.Success)
             {
                 return Ok(responce);
@@ -37,9 +37,29 @@ namespace TwitterCloneAPI.Controllers
             {
                 return Unauthorized();
             }
-            var responce = await savedTweetSevice.DeleteTweetInSaved(tweetId, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var responce = await _savedTweetSevice.DeleteTweetInSaved(tweetId, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             if (responce.Success)
             {
+                return Ok(responce);
+            }
+            return BadRequest(responce);
+        }
+        [HttpGet("GetSavedTweets")]
+        public async Task<IActionResult> GetSavedTweets()
+        {
+            if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
+            {
+                return Unauthorized();
+            }
+            var responce = await _savedTweetSevice.GetSavedTweets(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+            if (responce.Data is not null)
+            {
+                responce.Data.ForEach(x =>
+                {
+                    if (!string.IsNullOrEmpty(x.Image))
+                        x.Image = $"{hostUrl}{x.Image}";
+                });
                 return Ok(responce);
             }
             return BadRequest(responce);
