@@ -98,8 +98,7 @@ namespace TwitterCloneAPI.Services.SavedTweets
                 var savedTweets = await _context.SavedTweets.Where(x => x.UserId == userId).ToListAsync();
                 if (savedTweets.Count <= 0)
                 {
-                    response.Data = null;
-                    response.Success = false;
+                    response.Success = true;
                     response.Message = "No saved tweets(";
                     return response;
                 }

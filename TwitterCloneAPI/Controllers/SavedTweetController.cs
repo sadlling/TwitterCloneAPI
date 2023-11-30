@@ -47,6 +47,7 @@ namespace TwitterCloneAPI.Controllers
         [HttpGet("GetSavedTweets")]
         public async Task<IActionResult> GetSavedTweets()
         {
+            //TODO what return?? 200 or 400 if tweets null
             if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
             {
                 return Unauthorized();
@@ -54,12 +55,16 @@ namespace TwitterCloneAPI.Controllers
             var responce = await _savedTweetSevice.GetSavedTweets(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (responce.Data is not null)
-            {
+            {   
                 responce.Data.ForEach(x =>
                 {
                     if (!string.IsNullOrEmpty(x.Image))
                         x.Image = $"{hostUrl}{x.Image}";
                 });
+                return Ok(responce);
+            }
+            if(responce.Data is null && responce.Success)
+            {
                 return Ok(responce);
             }
             return BadRequest(responce);

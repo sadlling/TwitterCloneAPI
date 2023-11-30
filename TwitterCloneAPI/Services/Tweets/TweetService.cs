@@ -101,5 +101,27 @@ namespace TwitterCloneAPI.Services.Tweets
 
         }
 
+        public Task<ResponseModel<List<TweetResponseModel>>> GetCurrentUserTweets(int userId)
+        {
+            throw new NotImplementedException();
+        }
+        private async Task<List<TweetResponseModel>> GetTweetsByTweetId(int tweetId)
+        {
+            return await _context.Tweets
+                .Where(y => y.TweetId == tweetId).Select(x => new TweetResponseModel
+                {
+                    TweetId = x.TweetId,
+                    PostedUserId = x.UserId,
+                    Content = x.Content ?? " ",
+                    Image = x.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                    IsPublic = x.IsPublic,
+                    CreatedAt = x.CreateAt ?? DateTime.Now,
+                    CommentsCount = x.Comments.Count,
+                    RetweetCount = x.Retweets.Count,
+                    LikesCount = x.Likes.Count,
+                    SaveCount = x.SavedTweets.Count,
+
+                }).ToListAsync();
+        }
     }
 }
