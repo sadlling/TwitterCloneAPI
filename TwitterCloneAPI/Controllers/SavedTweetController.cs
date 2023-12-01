@@ -22,7 +22,7 @@ namespace TwitterCloneAPI.Controllers
             {
                 return Unauthorized();
             }
-            var responce = await _savedTweetSevice.AddTweetInSaved(tweetId, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var responce = await _savedTweetSevice.AddTweetInSaved(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), tweetId);
             if (responce.Success)
             {
                 return Ok(responce);
@@ -37,7 +37,7 @@ namespace TwitterCloneAPI.Controllers
             {
                 return Unauthorized();
             }
-            var responce = await _savedTweetSevice.DeleteTweetInSaved(tweetId, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var responce = await _savedTweetSevice.DeleteTweetInSaved(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), tweetId);
             if (responce.Success)
             {
                 return Ok(responce);

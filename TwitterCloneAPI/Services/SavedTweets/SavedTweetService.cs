@@ -12,9 +12,8 @@ namespace TwitterCloneAPI.Services.SavedTweets
         {
             _context = context;
         }
-        public async Task<ResponseModel<int>> AddTweetInSaved(int tweetId, int userId)
+        public async Task<ResponseModel<int>> AddTweetInSaved(int userId, int tweetId)
         {
-            //TODO check this tweet is not from this user
 
             ResponseModel<int> response = new();
             try
@@ -24,7 +23,7 @@ namespace TwitterCloneAPI.Services.SavedTweets
                     response.Success = false;
                     response.Message = "This tweet exists in saved";
                     return response;
-                }
+                }   
 
                 var currentTweet = await _context.Tweets.FirstOrDefaultAsync(x => x.TweetId == tweetId) ?? null;
 
@@ -54,12 +53,11 @@ namespace TwitterCloneAPI.Services.SavedTweets
             return response;
         }
 
-        public async Task<ResponseModel<int>> DeleteTweetInSaved(int tweetId, int userId)
+        public async Task<ResponseModel<int>> DeleteTweetInSaved(int userId, int tweetId)
         {
             ResponseModel<int> response = new();
             try
             {
-                
                 var currentTweet = await _context.Tweets.FirstOrDefaultAsync(x => x.TweetId == tweetId) ?? null;
 
                 if (currentTweet is null)
