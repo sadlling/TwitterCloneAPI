@@ -3,7 +3,7 @@
   <parameter name="IIS Web Application Name" description="" value="TwitterCloneAPIProductionEnv" tags="IisApp">
     <parameterEntry kind="ProviderPath" scope="IisApp" match="^E:\\Learning\\Projects\\ASP\.NET\\TwitterCloneAPI\\TwitterCloneAPI\\obj\\Release\\net7\.0\\PubTmp\\Out\\$" />
   </parameter>
-  <parameter name="TwitterCloneAPI.Models.TwitterCloneContext" description="" value="Data Source=twittercloneapiproductiondbserver.database.windows.net,1433;Initial Catalog=TwitterCloneAPIProduction_db;User ID=DBadmin;Password=Aaa1111!" tags="dbfullsql">
+  <parameter name="TwitterCloneAPI.Models.TwitterCloneContext" description="" value="Data Source=twittercloneapiproductionenvdbserver.database.windows.net,1433;Initial Catalog=TwitterCloneAPI_db;User ID=DBadmin;Password=Aaa1111!" tags="dbfullsql">
     <parameterEntry kind="ProviderPath" scope="dbfullsql" match="^E:\\Learning\\Projects\\ASP\.NET\\TwitterCloneAPI\\TwitterCloneAPI\\obj\\Release\\net7\.0\\PubTmp\\EFSQLScripts\\TwitterCloneAPI\.Models\.TwitterCloneContext\.sql$" />
   </parameter>
 </parameters>

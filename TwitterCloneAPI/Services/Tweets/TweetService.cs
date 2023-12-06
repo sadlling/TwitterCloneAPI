@@ -101,12 +101,27 @@ namespace TwitterCloneAPI.Services.Tweets
 
         }
 
-        public async Task<ResponseModel<List<TweetResponseModel>>> GetCurrentUserTweets(int userId)
+        public async Task<ResponseModel<List<TweetResponseModel>>> GetCurrentUserTweetsAndRetweets(int userId)
         {
             ResponseModel<List<TweetResponseModel>> response = new();
             try
             {
-                response.Data = await _context.Tweets.Where(x => x.UserId == userId).Select(x => new TweetResponseModel
+                var retweets = await _context.Retweets.Include(x => x.Tweet).Where(y => y.UserId == userId).Select(x => new TweetResponseModel
+                {
+                    TweetId = x.Tweet.TweetId,
+                    PostedUserId = x.Tweet.UserId,
+                    Content = x.Tweet.Content,
+                    Image = x.Tweet.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                    IsPublic = x.Tweet.IsPublic,
+                    CreatedAt = x.CreatedAt ?? DateTime.Now,
+                    CommentsCount = x.Tweet.Comments.Count,
+                    RetweetCount = x.Tweet.Retweets.Count,
+                    LikesCount = x.Tweet.Likes.Count,
+                    SaveCount = x.Tweet.SavedTweets.Count,
+                    IsRetweet = true,
+                }).ToListAsync();
+
+                var userTweets = await _context.Tweets.Where(x => x.UserId == userId).Select(x => new TweetResponseModel
                 {
                     TweetId = x.TweetId,
                     PostedUserId = x.UserId,
@@ -119,7 +134,10 @@ namespace TwitterCloneAPI.Services.Tweets
                     LikesCount = x.Likes.Count,
                     SaveCount = x.SavedTweets.Count,
                 }).ToListAsync();
-                if(response.Data.Count <= 0 ) 
+
+                response.Data = userTweets.Concat(retweets).OrderBy(x => x.CreatedAt).ToList();
+
+                if (response.Data.Count <= 0)
                 {
                     response.Success = true;
                     response.Message = "No tweets(";

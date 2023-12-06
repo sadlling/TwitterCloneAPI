@@ -2,7 +2,7 @@
   "dependencies": {
     "mssql1": {
       "restored": true,
-      "restoreTime": "2023-11-15T21:46:05.8128245Z"
+      "restoreTime": "2023-12-06T19:21:11.8645807Z"
     }
   },
   "parameters": {
@@ -11,10 +11,35 @@
       "Type": "subscription",
       "Value": "c66703c8-bffa-485d-bd48-15403bd45724"
     },
+    "mssql1.resourceGroupLocation": {
+      "Name": "mssql1.resourceGroupLocation",
+      "Type": "location",
+      "Value": "eastus"
+    },
     "mssql1.resourceGroupName": {
       "Name": "mssql1.resourceGroupName",
       "Type": "resourceGroup",
       "Value": "TwitterCloneAPIProductionEnv"
+    },
+    "TwitterCloneAPIProductionEnv.subscriptionId": {
+      "Name": "TwitterCloneAPIProductionEnv.subscriptionId",
+      "Type": "subscription",
+      "Value": "c66703c8-bffa-485d-bd48-15403bd45724"
+    },
+    "TwitterCloneAPIProductionEnv.resourceName": {
+      "Name": "TwitterCloneAPIProductionEnv.resourceName",
+      "Type": null,
+      "Value": "TwitterCloneAPIProductionEnv"
+    },
+    "TwitterCloneAPIProductionEnv.resourceGroupName": {
+      "Name": "TwitterCloneAPIProductionEnv.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "TwitterCloneAPIProductionEnv"
+    },
+    "TwitterCloneAPIProductionEnv.resourceGroupLocation": {
+      "Name": "TwitterCloneAPIProductionEnv.resourceGroupLocation",
+      "Type": null,
+      "Value": "eastus"
     }
   }
 }
