@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using TwitterCloneAPI.Models;
@@ -27,12 +30,14 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<ITweetService, TweetService>();
 builder.Services.AddScoped<IFolowerService, FolowerService>();
-builder.Services.AddScoped<ISavedTweetSevice,SavedTweetService>();
+builder.Services.AddScoped<ISavedTweetSevice, SavedTweetService>();
 builder.Services.AddScoped<IRetweetService, RetweetService>();
 //add db context
 builder.Services.AddDbContext<TwitterCloneContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
+    options.UseSqlServer(
+       Environment.GetEnvironmentVariable("Docker_ConnectionString")
+       ?? builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
 });
 //ignore cycles 
 builder.Services.AddControllers().AddJsonOptions(x =>
@@ -60,6 +65,20 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
 });
 //add CORS in production
 if (builder.Environment.IsProduction())
+{
+    builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(policy =>
+        {
+            policy.SetIsOriginAllowed(_ => true)
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+        });
+    });
+}
+//add CORS in dev
+if(builder.Environment.IsDevelopment())
 {
     builder.Services.AddCors(options =>
     {

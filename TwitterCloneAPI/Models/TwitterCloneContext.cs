@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace TwitterCloneAPI.Models;
 
@@ -13,6 +15,25 @@ public partial class TwitterCloneContext : DbContext
     public TwitterCloneContext(DbContextOptions<TwitterCloneContext> options)
         : base(options)
     {
+        try
+        {
+            var dbCreator = Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
+            if (dbCreator is not null)
+            {
+                if (!dbCreator.CanConnect())
+                {
+                    dbCreator.Create();
+                }
+                if (!dbCreator.HasTables())
+                {
+                    dbCreator.CreateTables();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 
     public virtual DbSet<Comment> Comments { get; set; }

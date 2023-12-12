@@ -30,8 +30,8 @@ namespace TwitterCloneAPI.Controllers
             return BadRequest(responce);
         }
 
-        [HttpDelete("RemoveTweetFromSaved")]
-        public async Task<IActionResult> RemoveTweetFromRetweets(int tweetId)
+        [HttpDelete("DeleteTweetFromSaved{tweetId}")]
+        public async Task<IActionResult> DeleteTweetFromRetweets(int tweetId)
         {
             if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
             {
