@@ -38,6 +38,7 @@ builder.Services.AddDbContext<TwitterCloneContext>(options =>
     options.UseSqlServer(
        Environment.GetEnvironmentVariable("Docker_ConnectionString")
        ?? builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
+    //options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
 });
 //ignore cycles 
 builder.Services.AddControllers().AddJsonOptions(x =>
@@ -78,7 +79,7 @@ if (builder.Environment.IsProduction())
     });
 }
 //add CORS in dev
-if(builder.Environment.IsDevelopment())
+if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddCors(options =>
     {
