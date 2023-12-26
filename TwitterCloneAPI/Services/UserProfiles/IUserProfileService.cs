@@ -10,6 +10,7 @@ namespace TwitterCloneAPI.Services.UserProfiles
         public Task<ResponseModel<UserResponseModel>> UpdateProfile(UpdateUserProfileRequest profile,int userId);
         public Task<ResponseModel<UserResponseModel>> GetProfileByUserId(int  id);
         public Task<ResponseModel<UserResponseModel>> GetCurrentUserProfile(int id);
+        public Task<ResponseModel<List<UserResponseModel>>> GetTwoPopularProfiles();
 
     }
 }

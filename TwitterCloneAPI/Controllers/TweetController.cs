@@ -42,7 +42,11 @@ namespace TwitterCloneAPI.Controllers
         [HttpGet("GetAllTweets")]
         public async Task<IActionResult> GetAllTweets()
         {
-            var responce = await _tweetService.GetAllTweets();
+            if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
+            {
+                return Unauthorized();
+            }
+            var responce = await _tweetService.GetAllTweets(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (responce.Data is not null)
             {

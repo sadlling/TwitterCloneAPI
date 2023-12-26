@@ -65,6 +65,29 @@ namespace TwitterCloneAPI.Controllers
             return NotFound(response);
         }
 
+        [HttpGet("GetTwoPopularProfiles")]
+        public async Task<IActionResult> GetTwoPopularProfiles()
+        {
+            var response = await _userProfileService.GetTwoPopularProfiles();
+            string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+            if (response.Data is not null)
+            {
+                response.Data.ForEach(x =>
+                {
+                    if (!string.IsNullOrEmpty(x.ProfilePicture))
+                    {
+                        x.ProfilePicture = $"{hostUrl}{x.ProfilePicture}";
+                    }
+                    if (!string.IsNullOrEmpty(x.BackPicture))
+                    {
+                        x.BackPicture = $"{hostUrl}{x.BackPicture}";
+                    }
+                });
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
+
         [HttpPut("UpdateUserProfile")]
         public async Task<IActionResult> UpdateUserProfile([FromForm] UpdateUserProfileRequest profile)
         {

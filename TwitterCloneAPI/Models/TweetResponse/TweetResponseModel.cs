@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
-using static System.Net.Mime.MediaTypeNames;
 using TwitterCloneAPI.Models;
 
 namespace TwitterCloneAPI.Models.TweetResponse

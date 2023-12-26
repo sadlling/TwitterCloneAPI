@@ -70,7 +70,7 @@ namespace TwitterCloneAPI.Services.Tweets
             return response;
         }
 
-        public async Task<ResponseModel<List<TweetResponseModel>>> GetAllTweets()
+        public async Task<ResponseModel<List<TweetResponseModel>>> GetAllTweets(int userId)
         {
             ResponseModel<List<TweetResponseModel>> response = new();
             try
@@ -88,6 +88,9 @@ namespace TwitterCloneAPI.Services.Tweets
                     LikesCount = x.Likes.Count,
                     SaveCount = x.SavedTweets.Count,
                 }).ToListAsync();
+
+                //TODO check this tweet if addded in retweets, likes,
+                //var retweets = await _context.Retweets.Where(x => x.UserId == userId).ToListAsync();
 
                 response.Success = true;
                 response.Message = "All tweets";

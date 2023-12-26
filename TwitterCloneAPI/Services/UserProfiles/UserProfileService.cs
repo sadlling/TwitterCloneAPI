@@ -86,6 +86,43 @@ namespace TwitterCloneAPI.Services.UserProfiles
             return response;
         }
 
+        public async Task<ResponseModel<List<UserResponseModel>>> GetTwoPopularProfiles()
+        {
+            ResponseModel<List<UserResponseModel>> response = new();
+            try
+            {
+                var users = await _context.UserAuthentications
+                 .Include(x => x.UserProfile)
+                 .Include(x => x.FollowerUsers)
+                 .Include(x => x.FollowerFollowerUsers)
+                 .AsSplitQuery()
+                 .OrderByDescending(x => x.FollowerUsers.Count())
+                 .Take(2).ToListAsync();
+
+                response.Data = users.Select(x => new UserResponseModel
+                {
+                    UserId = x.UserId,
+                    UserEmail = x.Email,
+                    UserName = x.UserProfile?.UserName ?? "",
+                    FullName = x.UserProfile?.FullName ?? "",
+                    ProfilePicture = x.UserProfile!.ProfilePicture?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                    BackPicture = x.UserProfile!.BackPicture?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                    QuantityOfFollowers = x.FollowerUsers.Count(),
+                    QuantityOfFollowing = x.FollowerFollowerUsers.Count(),
+                    ProfileDescription = x.UserProfile?.Bio ?? ""
+                }).ToList();
+
+                response.Success = true;
+                response.Message = "Profiles found";
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message; 
+            }
+            return response;
+        }
+
         public async Task<ResponseModel<UserResponseModel>> UpdateProfile(UpdateUserProfileRequest profile, int userId)
         {
             ResponseModel<UserResponseModel> response = new();
