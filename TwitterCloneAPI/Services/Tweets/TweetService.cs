@@ -89,8 +89,12 @@ namespace TwitterCloneAPI.Services.Tweets
                     SaveCount = x.SavedTweets.Count,
                 }).ToListAsync();
 
-                //TODO check this tweet if addded in retweets, likes,
-                //var retweets = await _context.Retweets.Where(x => x.UserId == userId).ToListAsync();
+                foreach (var item in response.Data)
+                {
+                    item.IsRetweeted = await _context.Retweets.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                    item.IsLiked = await _context.Likes.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                    item.IsSaved = await _context.SavedTweets.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                }
 
                 response.Success = true;
                 response.Message = "All tweets";
@@ -121,7 +125,7 @@ namespace TwitterCloneAPI.Services.Tweets
                     RetweetCount = x.Tweet.Retweets.Count,
                     LikesCount = x.Tweet.Likes.Count,
                     SaveCount = x.Tweet.SavedTweets.Count,
-                    IsRetweet = true,
+                    IsRetweeted = true,
                 }).ToListAsync();
 
                 var userTweets = await _context.Tweets.Where(x => x.UserId == userId).Select(x => new TweetResponseModel
@@ -139,6 +143,12 @@ namespace TwitterCloneAPI.Services.Tweets
                 }).ToListAsync();
 
                 response.Data = userTweets.Concat(retweets).OrderBy(x => x.CreatedAt).ToList();
+
+                foreach (var item in response.Data)
+                {
+                    item.IsLiked = await _context.Likes.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                    item.IsSaved = await _context.SavedTweets.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                }
 
                 if (response.Data.Count <= 0)
                 {
