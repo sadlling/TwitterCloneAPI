@@ -85,5 +85,19 @@ namespace TwitterCloneAPI.Controllers
             return BadRequest(responce);
 
         }
+        [HttpDelete("DeleteTweetById{tweetId}")]
+        public async Task<IActionResult> DeleteTweet(int tweetId)
+        {
+            if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
+            {
+                return Unauthorized();
+            }
+            var responce = await _tweetService.DeleteTweet(tweetId);
+            if(responce.Success)
+            {
+                return Ok(responce);
+            }
+            return BadRequest(responce);
+        }
     }
 }

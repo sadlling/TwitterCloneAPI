@@ -70,6 +70,31 @@ namespace TwitterCloneAPI.Services.Tweets
             return response;
         }
 
+        public async Task<ResponseModel<int>> DeleteTweet(int tweetId)
+        {
+            ResponseModel<int> response = new();
+            try
+            {
+                var deletableTweet = await _context.Tweets.FirstOrDefaultAsync(x => x.TweetId == tweetId) ?? null;
+                if (deletableTweet is not null)
+                {
+                    _context.Tweets.Remove(deletableTweet);
+                    await _context.SaveChangesAsync();
+                    response.Success = true;
+                    response.Message = "Tweet deleted!";
+                    return response;
+                }
+                response.Success= false;
+                response.Message = "Tweet is not exist";
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message= ex.Message;
+            }
+            return response;
+        }
+
         public async Task<ResponseModel<List<TweetResponseModel>>> GetAllTweets(int userId)
         {
             ResponseModel<List<TweetResponseModel>> response = new();
