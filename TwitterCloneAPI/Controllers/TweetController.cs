@@ -60,14 +60,10 @@ namespace TwitterCloneAPI.Controllers
             return BadRequest(responce);
 
         }
-        [HttpGet("GetCurrentUserTweetsAndRetweets")]
-        public async Task<IActionResult> GetCurrentUserTweetsAndRetweets()
+        [HttpGet("GetUserTweetsAndRetweets{userId}")]
+        public async Task<IActionResult> GetUserTweetsAndRetweets(int userId)
         {
-            if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
-            {
-                return Unauthorized();
-            }
-            var responce = await _tweetService.GetCurrentUserTweetsAndRetweets(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var responce = await _tweetService.GetCurrentUserTweetsAndRetweets(userId);
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (responce.Data is not null)
             {
