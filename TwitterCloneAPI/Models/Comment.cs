@@ -14,6 +14,8 @@ public partial class Comment
     public string? Content { get; set; }
 
     public string? CommentImage { get; set; }
+    public DateTime? CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public virtual Tweet Tweet { get; set; } = null!;
 
