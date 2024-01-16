@@ -68,12 +68,38 @@ namespace TwitterCloneAPI.Services.Comments
             return response;
         }
 
+        public async Task<ResponseModel<int>> DeleteComment(int userId, int commentId)
+        {
+            var response = new ResponseModel<int>();
+            try
+            {
+                var currentComment = await _context.Comments.FirstOrDefaultAsync(x => x.CommentId == commentId && x.UserId == userId) ?? null;
+                if (currentComment is null)
+                {
+                    response.Success = false;
+                    response.Message = "This comment not exist!";
+                    return response;
+                }
+                _context.Comments.Remove(currentComment);
+                await _context.SaveChangesAsync();
+                response.Success = true;
+                response.Message = "Comment deleted!";
+
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
         public Task<ResponseModel<CommentResponseModel>> GetComment(int commentId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ResponseModel<List<CommentResponseModel>>> GetTweetComments(int tweetId)
+        public async Task<ResponseModel<List<CommentResponseModel>>> GetTweetComments(int userId, int tweetId)
         {
             var response = new ResponseModel<List<CommentResponseModel>>();
             try
@@ -92,6 +118,7 @@ namespace TwitterCloneAPI.Services.Comments
                     Image = x.CommentImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     CreatedAt = x.CreatedAt ?? DateTime.Now,
                     UpdatedAt = x.UpdatedAt ?? DateTime.Now,
+                    isOwner = x.UserId == userId,
 
                 }).ToListAsync();
                 response.Message = "Tweet comments";

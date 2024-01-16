@@ -6,9 +6,10 @@ namespace TwitterCloneAPI.Services.Comments
 {
     public interface ICommentService
     {
-        public Task<ResponseModel<List<CommentResponseModel>>> GetTweetComments(int tweetId);
+        public Task<ResponseModel<List<CommentResponseModel>>> GetTweetComments(int userId,int tweetId);
         public Task<ResponseModel<CommentResponseModel>> GetComment(int commentId);
         public Task<ResponseModel<CommentResponseModel>> CreateComment(CommentRequestModel request,int userId,int tweetId);
         public Task<ResponseModel<CommentResponseModel>> UpdateComment(CommentRequestModel request,int userId,int commentId);
+        public Task<ResponseModel<int>> DeleteComment(int userId,int commentId);
     }
 }

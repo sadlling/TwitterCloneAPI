@@ -41,7 +41,7 @@ namespace TwitterCloneAPI.Controllers
         [HttpGet("GetTweetComments{tweetId}")]
         public async Task<IActionResult> GetTweetComments(int tweetId)
         {
-            var responce = await _commentService.GetTweetComments(tweetId);
+            var responce = await _commentService.GetTweetComments(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),tweetId);
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (responce.Data is not null)
             {
@@ -53,7 +53,21 @@ namespace TwitterCloneAPI.Controllers
                 return Ok(responce);
             }
             return BadRequest(responce);
+        }
 
+        [HttpDelete("DeleteComment{commentId}")]
+        public async Task<IActionResult> DeleteComment(int commentId)
+        {
+            if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
+            {
+                return Unauthorized();
+            }
+            var responce = await _commentService.DeleteComment(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), commentId);
+            if (responce.Success)
+            {
+                return Ok(responce);
+            }
+            return BadRequest(responce);
         }
     }
 }
