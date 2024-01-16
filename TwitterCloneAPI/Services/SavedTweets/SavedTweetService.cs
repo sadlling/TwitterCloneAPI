@@ -104,6 +104,12 @@ namespace TwitterCloneAPI.Services.SavedTweets
                 {
                     response.Data.Add(await GetTweetByTweetIdAsync(savedTweet.TweetId));
                 }
+                foreach (var item in response.Data)
+                {
+                    item.IsRetweeted = await _context.Retweets.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                    item.IsLiked = await _context.Likes.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                    item.IsSaved = await _context.SavedTweets.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                }
                 response.Success = true;
                 response.Message = "All saved tweets";
             }
