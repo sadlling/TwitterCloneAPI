@@ -7,6 +7,8 @@ namespace TwitterCloneAPI.Models.TweetResponse
     {
         public int TweetId {  get; set; }
         public int PostedUserId { get; set; }
+        public string PostedUserName {  get; set; } = string.Empty!;
+        public string PostedUserImage { get; set; } = string.Empty!;
         public string Content { get; set; } = string.Empty!;
         public string Image { get; set; } = string.Empty!;
         public bool IsPublic { get; set; } = true;

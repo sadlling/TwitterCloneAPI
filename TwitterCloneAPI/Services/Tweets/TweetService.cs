@@ -45,10 +45,13 @@ namespace TwitterCloneAPI.Services.Tweets
                 newTweet.UpdatedAt = DateTime.Now;
                 await _context.Tweets.AddAsync(newTweet);
                 await _context.SaveChangesAsync();
+                var currentUser = await _context.UserProfiles.FirstAsync(x=>x.UserId == userId); 
                 response.Data = new TweetResponseModel
                 {
                     TweetId = newTweet.TweetId,
                     PostedUserId = newTweet.UserId,
+                    PostedUserName = currentUser.FullName ?? currentUser.UserName ?? "",
+                    PostedUserImage = currentUser.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     Content = newTweet.Content ?? " ",
                     Image = newTweet.TweetImage?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     IsPublic = newTweet.IsPublic,
@@ -100,10 +103,12 @@ namespace TwitterCloneAPI.Services.Tweets
             ResponseModel<List<TweetResponseModel>> response = new();
             try
             {
-                response.Data = await _context.Tweets.Select(x => new TweetResponseModel
+                response.Data = await _context.Tweets.Include(y=>y.User).Select(x => new TweetResponseModel
                 {
                     TweetId = x.TweetId,
                     PostedUserId = x.UserId,
+                    PostedUserName = x.User.UserProfile!.FullName ?? x.User.UserProfile!.UserName ?? "",
+                    PostedUserImage = x.User.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     Content = x.Content ?? " ",
                     Image = x.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     IsPublic = x.IsPublic,
@@ -138,10 +143,12 @@ namespace TwitterCloneAPI.Services.Tweets
             ResponseModel<List<TweetResponseModel>> response = new();
             try
             {
-                var retweets = await _context.Retweets.Include(x => x.Tweet).Where(y => y.UserId == userId).Select(x => new TweetResponseModel
+                var retweets = await _context.Retweets.Include(p=>p.User).Include(x => x.Tweet).Where(y => y.UserId == userId).Select(x => new TweetResponseModel
                 {
                     TweetId = x.Tweet.TweetId,
                     PostedUserId = x.Tweet.UserId,
+                    PostedUserName = x.User.UserProfile!.FullName ?? x.User.UserProfile!.UserName ?? "",
+                    PostedUserImage = x.User.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     Content = x.Tweet.Content,
                     Image = x.Tweet.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     IsPublic = x.Tweet.IsPublic,
@@ -153,10 +160,12 @@ namespace TwitterCloneAPI.Services.Tweets
                     IsRetweeted = true,
                 }).ToListAsync();
 
-                var userTweets = await _context.Tweets.Where(x => x.UserId == userId).Select(x => new TweetResponseModel
+                var userTweets = await _context.Tweets.Include(y=>y.User).Where(x => x.UserId == userId).Select(x => new TweetResponseModel
                 {
                     TweetId = x.TweetId,
                     PostedUserId = x.UserId,
+                    PostedUserName = x.User.UserProfile!.FullName ?? x.User.UserProfile!.UserName ?? "",
+                    PostedUserImage = x.User.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     Content = x.Content ?? " ",
                     Image = x.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     IsPublic = x.IsPublic,

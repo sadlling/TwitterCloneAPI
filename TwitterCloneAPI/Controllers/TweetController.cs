@@ -33,12 +33,16 @@ namespace TwitterCloneAPI.Controllers
                 {
                     response.Data.Image = $"{hostUrl}{response.Data.Image}";
                 }
+                if (!string.IsNullOrEmpty(response.Data.PostedUserImage))
+                {
+                    response.Data.PostedUserImage = $"{hostUrl}{response.Data.PostedUserImage}";
+                }
                 return Ok(response);
             }
             return BadRequest(response);
 
         }
-     
+
         [HttpGet("GetAllTweets")]
         public async Task<IActionResult> GetAllTweets()
         {
@@ -53,7 +57,13 @@ namespace TwitterCloneAPI.Controllers
                 responce.Data.ForEach(x =>
                 {
                     if (!string.IsNullOrEmpty(x.Image))
+                    {
                         x.Image = $"{hostUrl}{x.Image}";
+                    }
+                    if (!string.IsNullOrEmpty(x.PostedUserImage))
+                    {
+                        x.PostedUserImage = $"{hostUrl}{x.PostedUserImage}";
+                    }
                 });
                 return Ok(responce);
             }
@@ -70,7 +80,13 @@ namespace TwitterCloneAPI.Controllers
                 responce.Data.ForEach(x =>
                 {
                     if (!string.IsNullOrEmpty(x.Image))
+                    {
                         x.Image = $"{hostUrl}{x.Image}";
+                    }
+                    if (!string.IsNullOrEmpty(x.PostedUserImage))
+                    {
+                        x.PostedUserImage = $"{hostUrl}{x.PostedUserImage}";
+                    }
                 });
                 return Ok(responce);
             }
@@ -89,7 +105,7 @@ namespace TwitterCloneAPI.Controllers
                 return Unauthorized();
             }
             var responce = await _tweetService.DeleteTweet(tweetId);
-            if(responce.Success)
+            if (responce.Success)
             {
                 return Ok(responce);
             }

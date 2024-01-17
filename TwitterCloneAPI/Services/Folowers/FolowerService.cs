@@ -97,6 +97,14 @@ namespace TwitterCloneAPI.Services.Folowers
                 }
 
                 response.Data = followersTweets;
+
+                foreach (var item in response.Data)
+                {
+                    item.IsRetweeted = await _context.Retweets.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                    item.IsLiked = await _context.Likes.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                    item.IsSaved = await _context.SavedTweets.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                }
+
                 response.Success = true;
                 response.Message = "Followers tweets founded!";
 

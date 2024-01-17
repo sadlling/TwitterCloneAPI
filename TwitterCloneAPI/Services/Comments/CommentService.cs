@@ -56,6 +56,7 @@ namespace TwitterCloneAPI.Services.Comments
                     Image = newComment.CommentImage?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     CreatedAt = newComment.CreatedAt ?? DateTime.Now,
                     UpdatedAt = newComment.UpdatedAt ?? DateTime.Now,
+                    isOwner = newComment.UserId ==userId
                 };
                 response.Message = "Comment Created!";
                 response.Success = true;

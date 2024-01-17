@@ -306,3 +306,28 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20240115230204_added_timestamps_in_comment_table')
+BEGIN
+    ALTER TABLE [Comment] ADD [createdAt] datetime2 NULL;
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20240115230204_added_timestamps_in_comment_table')
+BEGIN
+    ALTER TABLE [Comment] ADD [updatedAt] datetime2 NULL;
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20240115230204_added_timestamps_in_comment_table')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20240115230204_added_timestamps_in_comment_table', N'7.0.12');
+END;
+GO
+
+COMMIT;
+GO
+
