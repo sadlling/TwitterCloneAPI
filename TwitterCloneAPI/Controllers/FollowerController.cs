@@ -59,7 +59,13 @@ namespace TwitterCloneAPI.Controllers
                 responce.Data.ForEach(x =>
                 {
                     if (!string.IsNullOrEmpty(x.Image))
+                    {
                         x.Image = $"{hostUrl}{x.Image}";
+                    }
+                    if (!string.IsNullOrEmpty(x.PostedUserImage))
+                    {
+                        x.PostedUserImage = $"{hostUrl}{x.PostedUserImage}";
+                    }
                 });
                 return Ok(responce);
             }

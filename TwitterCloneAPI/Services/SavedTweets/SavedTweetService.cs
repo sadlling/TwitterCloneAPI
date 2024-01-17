@@ -123,11 +123,13 @@ namespace TwitterCloneAPI.Services.SavedTweets
         }
         private async Task<TweetResponseModel> GetTweetByTweetIdAsync(int tweetId)
         {
-            return await _context.Tweets
+            return await _context.Tweets.Include(y=>y.User)
                 .Where(y => y.TweetId == tweetId).Select(x => new TweetResponseModel
                 {
                     TweetId = x.TweetId,
                     PostedUserId = x.UserId,
+                    PostedUserName = !string.IsNullOrEmpty(x.User.UserProfile!.FullName) ? x.User.UserProfile!.FullName : x.User.UserProfile!.UserName ?? "",
+                    PostedUserImage = x.User.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     Content = x.Content ?? " ",
                     Image = x.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     IsPublic = x.IsPublic,

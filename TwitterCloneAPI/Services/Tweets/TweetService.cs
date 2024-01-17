@@ -107,7 +107,7 @@ namespace TwitterCloneAPI.Services.Tweets
                 {
                     TweetId = x.TweetId,
                     PostedUserId = x.UserId,
-                    PostedUserName = x.User.UserProfile!.FullName ?? x.User.UserProfile!.UserName ?? "",
+                    PostedUserName = !string.IsNullOrEmpty(x.User.UserProfile!.FullName) ? x.User.UserProfile!.FullName : x.User.UserProfile!.UserName ?? "",
                     PostedUserImage = x.User.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     Content = x.Content ?? " ",
                     Image = x.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
@@ -147,7 +147,7 @@ namespace TwitterCloneAPI.Services.Tweets
                 {
                     TweetId = x.Tweet.TweetId,
                     PostedUserId = x.Tweet.UserId,
-                    PostedUserName = x.User.UserProfile!.FullName ?? x.User.UserProfile!.UserName ?? "",
+                    PostedUserName = !string.IsNullOrEmpty(x.User.UserProfile!.FullName) ? x.User.UserProfile!.FullName : x.User.UserProfile!.UserName ?? "",
                     PostedUserImage = x.User.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     Content = x.Tweet.Content,
                     Image = x.Tweet.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
@@ -164,7 +164,7 @@ namespace TwitterCloneAPI.Services.Tweets
                 {
                     TweetId = x.TweetId,
                     PostedUserId = x.UserId,
-                    PostedUserName = x.User.UserProfile!.FullName ?? x.User.UserProfile!.UserName ?? "",
+                    PostedUserName = !string.IsNullOrEmpty(x.User.UserProfile!.FullName) ? x.User.UserProfile!.FullName : x.User.UserProfile!.UserName ?? "",
                     PostedUserImage = x.User.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     Content = x.Content ?? " ",
                     Image = x.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",

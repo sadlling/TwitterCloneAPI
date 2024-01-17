@@ -119,11 +119,13 @@ namespace TwitterCloneAPI.Services.Folowers
         }
         private async Task<List<TweetResponseModel>> GetTweetsByUserIdAsync(int userId)
         {
-            return await _context.Tweets
+            return await _context.Tweets.Include(p=>p.User)
                 .Where(y => y.UserId == userId).Select(x => new TweetResponseModel
                 {
                     TweetId = x.TweetId,
                     PostedUserId = x.UserId,
+                    PostedUserName = !string.IsNullOrEmpty(x.User.UserProfile!.FullName) ? x.User.UserProfile!.FullName : x.User.UserProfile!.UserName ?? "",
+                    PostedUserImage = x.User.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     Content = x.Content ?? " ",
                     Image = x.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     IsPublic = x.IsPublic,
