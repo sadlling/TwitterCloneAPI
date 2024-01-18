@@ -60,7 +60,8 @@ namespace TwitterCloneAPI.Services.Comments
                     Image = newComment.CommentImage?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     CreatedAt = newComment.CreatedAt ?? DateTime.Now,
                     UpdatedAt = newComment.UpdatedAt ?? DateTime.Now,
-                    IsOwner = newComment.UserId ==userId
+                    LikesCount = newComment.CommentLikes.Count(),
+                    IsOwner = newComment.UserId ==userId,
                 };
                 response.Message = "Comment Created!";
                 response.Success = true;
@@ -132,7 +133,7 @@ namespace TwitterCloneAPI.Services.Comments
 
                 foreach (var item in response.Data)
                 {
-                    //item.IsLiked = await _context.
+                    item.IsLiked = await _context.CommentLike.AnyAsync(x => x.UserId == userId && x.CommentId == item.CommentId);
                 }
 
                 response.Message = "Tweet comments";
@@ -144,11 +145,6 @@ namespace TwitterCloneAPI.Services.Comments
                 response.Message = ex.Message;
             }
             return response;
-        }
-
-        public Task<ResponseModel<CommentResponseModel>> UpdateComment(CommentRequestModel request, int userId, int commentId)
-        {
-            throw new NotImplementedException();
         }
     }
 }
