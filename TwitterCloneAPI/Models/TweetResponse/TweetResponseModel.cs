@@ -20,6 +20,7 @@ namespace TwitterCloneAPI.Models.TweetResponse
         public bool IsRetweeted {  get; set; } = false;
         public bool IsLiked { get; set; } = false;
         public bool IsSaved { get; set; } = false;
+        public bool IsOwner {  get; set; } = false;
 
     }
 }

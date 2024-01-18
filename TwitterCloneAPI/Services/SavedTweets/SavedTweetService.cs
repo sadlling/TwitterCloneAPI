@@ -109,6 +109,7 @@ namespace TwitterCloneAPI.Services.SavedTweets
                     item.IsRetweeted = await _context.Retweets.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
                     item.IsLiked = await _context.Likes.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
                     item.IsSaved = await _context.SavedTweets.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                    item.IsOwner = item.PostedUserId == userId;
                 }
                 response.Success = true;
                 response.Message = "All saved tweets";

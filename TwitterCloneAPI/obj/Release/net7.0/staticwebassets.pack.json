@@ -9,6 +9,10 @@
       "PackagePath": "staticwebassets\\4\\16.12.2023.16.16.41.829538.png"
     },
     {
+      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\4\\19.01.2024.02.16.10.706171.png",
+      "PackagePath": "staticwebassets\\4\\19.01.2024.02.16.10.706171.png"
+    },
+    {
       "Id": "obj\\Release\\net7.0\\staticwebassets\\msbuild.TwitterCloneAPI.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

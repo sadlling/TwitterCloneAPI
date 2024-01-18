@@ -97,6 +97,30 @@ namespace TwitterCloneAPI.Controllers
             return BadRequest(responce);
 
         }
+        [HttpPut("UpdateTweet{tweetId}")]
+        public async Task<IActionResult> UpdateTweet([FromForm] TweetRequestModel request,int tweetId)
+        {
+            if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
+            {
+                return Unauthorized();
+            }
+            var response = await _tweetService.UpdateTweet(request, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),tweetId);
+            string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+            if (response.Data is not null)
+            {
+                if (!string.IsNullOrEmpty(response.Data.Image))
+                {
+                    response.Data.Image = $"{hostUrl}{response.Data.Image}";
+                }
+                if (!string.IsNullOrEmpty(response.Data.PostedUserImage))
+                {
+                    response.Data.PostedUserImage = $"{hostUrl}{response.Data.PostedUserImage}";
+                }
+                return Ok(response);
+            }
+            return BadRequest(response);
+
+        }
         [HttpDelete("DeleteTweetById{tweetId}")]
         public async Task<IActionResult> DeleteTweet(int tweetId)
         {

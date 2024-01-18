@@ -331,3 +331,42 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20240118152527_add_comment_likes_table_and_connect_with_comments')
+BEGIN
+    CREATE TABLE [CommentLike] (
+        [CommentLikeId] int NOT NULL IDENTITY,
+        [UserId] int NOT NULL,
+        [CommentId] int NOT NULL,
+        [CreatedAt] datetime2 NULL,
+        CONSTRAINT [PK_CommentLike] PRIMARY KEY ([CommentLikeId]),
+        CONSTRAINT [FK_CommentLike_Comment_CommentId] FOREIGN KEY ([CommentId]) REFERENCES [Comment] ([commentId]) ON DELETE CASCADE,
+        CONSTRAINT [FK_CommentLike_UserAuthentication_UserId] FOREIGN KEY ([UserId]) REFERENCES [UserAuthentication] ([userId]) ON DELETE CASCADE
+    );
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20240118152527_add_comment_likes_table_and_connect_with_comments')
+BEGIN
+    CREATE INDEX [IX_CommentLike_CommentId] ON [CommentLike] ([CommentId]);
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20240118152527_add_comment_likes_table_and_connect_with_comments')
+BEGIN
+    CREATE INDEX [IX_CommentLike_UserId] ON [CommentLike] ([UserId]);
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20240118152527_add_comment_likes_table_and_connect_with_comments')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20240118152527_add_comment_likes_table_and_connect_with_comments', N'7.0.12');
+END;
+GO
+
+COMMIT;
+GO
+

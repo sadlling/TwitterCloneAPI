@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.ServiceResponse;
 using TwitterCloneAPI.Models.TweetRequest;
@@ -45,7 +46,7 @@ namespace TwitterCloneAPI.Services.Tweets
                 newTweet.UpdatedAt = DateTime.Now;
                 await _context.Tweets.AddAsync(newTweet);
                 await _context.SaveChangesAsync();
-                var currentUser = await _context.UserProfiles.FirstAsync(x=>x.UserId == userId); 
+                var currentUser = await _context.UserProfiles.FirstAsync(x => x.UserId == userId);
                 response.Data = new TweetResponseModel
                 {
                     TweetId = newTweet.TweetId,
@@ -60,6 +61,7 @@ namespace TwitterCloneAPI.Services.Tweets
                     RetweetCount = newTweet.Retweets.Count,
                     LikesCount = newTweet.Likes.Count,
                     SaveCount = newTweet.SavedTweets.Count,
+                    IsOwner = true,
                 };
                 response.Message = "Tweet Created!";
                 response.Success = true;
@@ -87,13 +89,13 @@ namespace TwitterCloneAPI.Services.Tweets
                     response.Message = "Tweet deleted!";
                     return response;
                 }
-                response.Success= false;
+                response.Success = false;
                 response.Message = "Tweet is not exist";
             }
             catch (Exception ex)
             {
                 response.Success = false;
-                response.Message= ex.Message;
+                response.Message = ex.Message;
             }
             return response;
         }
@@ -103,7 +105,7 @@ namespace TwitterCloneAPI.Services.Tweets
             ResponseModel<List<TweetResponseModel>> response = new();
             try
             {
-                response.Data = await _context.Tweets.Include(y=>y.User).Select(x => new TweetResponseModel
+                response.Data = await _context.Tweets.Include(y => y.User).Select(x => new TweetResponseModel
                 {
                     TweetId = x.TweetId,
                     PostedUserId = x.UserId,
@@ -117,6 +119,8 @@ namespace TwitterCloneAPI.Services.Tweets
                     RetweetCount = x.Retweets.Count,
                     LikesCount = x.Likes.Count,
                     SaveCount = x.SavedTweets.Count,
+                    IsOwner = x.UserId == userId
+
                 }).ToListAsync();
 
                 foreach (var item in response.Data)
@@ -143,7 +147,7 @@ namespace TwitterCloneAPI.Services.Tweets
             ResponseModel<List<TweetResponseModel>> response = new();
             try
             {
-                var retweets = await _context.Retweets.Include(p=>p.User).Include(x => x.Tweet).Where(y => y.UserId == userId).Select(x => new TweetResponseModel
+                var retweets = await _context.Retweets.Include(p => p.User).Include(x => x.Tweet).Where(y => y.UserId == userId).Select(x => new TweetResponseModel
                 {
                     TweetId = x.Tweet.TweetId,
                     PostedUserId = x.Tweet.UserId,
@@ -160,7 +164,7 @@ namespace TwitterCloneAPI.Services.Tweets
                     IsRetweeted = true,
                 }).ToListAsync();
 
-                var userTweets = await _context.Tweets.Include(y=>y.User).Where(x => x.UserId == userId).Select(x => new TweetResponseModel
+                var userTweets = await _context.Tweets.Include(y => y.User).Where(x => x.UserId == userId).Select(x => new TweetResponseModel
                 {
                     TweetId = x.TweetId,
                     PostedUserId = x.UserId,
@@ -174,6 +178,7 @@ namespace TwitterCloneAPI.Services.Tweets
                     RetweetCount = x.Retweets.Count,
                     LikesCount = x.Likes.Count,
                     SaveCount = x.SavedTweets.Count,
+                    IsOwner = x.UserId == userId
                 }).ToListAsync();
 
                 response.Data = userTweets.Concat(retweets).OrderBy(x => x.CreatedAt).ToList();
@@ -193,6 +198,69 @@ namespace TwitterCloneAPI.Services.Tweets
                 response.Success = true;
                 response.Message = "UserTweets";
 
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseModel<TweetResponseModel>> UpdateTweet(TweetRequestModel request, int userId, int tweetId)
+        {
+            var response = new ResponseModel<TweetResponseModel>();
+            try
+            {
+                var updatedTweet = await _context.Tweets.Include(y => y.User).FirstOrDefaultAsync(x => x.TweetId == tweetId) ?? null;
+                if (updatedTweet is not null)
+                {
+                    string filePath = $"wwwroot\\{userId}";
+                    string tweetImagePath = $"{filePath}\\{DateTime.Now.ToString("dd.MM.yyyy.HH.mm.ss.ffffff")}.png";
+                    if (!Directory.Exists(filePath))
+                    {
+                        Directory.CreateDirectory(filePath);
+                    }
+                    if (File.Exists(tweetImagePath))
+                    {
+                        File.Delete(tweetImagePath);
+                    }
+                    if (request.TweetImage is not null)
+                    {
+                        using (FileStream stream = File.Create(tweetImagePath))
+                        {
+                            await request.TweetImage!.CopyToAsync(stream);
+                        }
+                        updatedTweet.TweetImage = tweetImagePath;
+                    }
+                    updatedTweet.Content = request.Content;
+                    updatedTweet.IsPublic = request.IsPublic;
+                    updatedTweet.UpdatedAt = DateTime.Now;
+                    await _context.SaveChangesAsync();
+                    var currentUser = await _context.UserProfiles.FirstAsync(x => x.UserId == userId);
+                    response.Data = new TweetResponseModel
+                    {
+                        TweetId = updatedTweet.TweetId,
+                        PostedUserId = updatedTweet.UserId,
+                        PostedUserName = currentUser.FullName ?? currentUser.UserName ?? "",
+                        PostedUserImage = currentUser.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                        Content = updatedTweet.Content ?? " ",
+                        Image = updatedTweet.TweetImage?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                        IsPublic = updatedTweet.IsPublic,
+                        CreatedAt = updatedTweet.CreateAt ?? DateTime.Now,
+                        CommentsCount = updatedTweet.Comments.Count,
+                        RetweetCount = updatedTweet.Retweets.Count,
+                        LikesCount = updatedTweet.Likes.Count,
+                        SaveCount = updatedTweet.SavedTweets.Count,
+                        IsRetweeted = await _context.Retweets.AnyAsync(x => x.UserId == userId && x.TweetId == updatedTweet.TweetId),
+                        IsLiked = await _context.Likes.AnyAsync(x => x.UserId == userId && x.TweetId == updatedTweet.TweetId),
+                        IsSaved = await _context.SavedTweets.AnyAsync(x => x.UserId == userId && x.TweetId == updatedTweet.TweetId),
+                        IsOwner = true,
+                    };
+
+                    response.Message = "Tweet Updated!";
+                    response.Success = true;
+                }
             }
             catch (Exception ex)
             {
