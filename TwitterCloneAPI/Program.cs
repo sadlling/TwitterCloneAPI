@@ -8,6 +8,7 @@ using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using TwitterCloneAPI.Models;
+using TwitterCloneAPI.Services.CommentLikes;
 using TwitterCloneAPI.Services.Comments;
 using TwitterCloneAPI.Services.Folowers;
 using TwitterCloneAPI.Services.Likes;
@@ -36,6 +37,7 @@ builder.Services.AddScoped<ISavedTweetSevice, SavedTweetService>();
 builder.Services.AddScoped<IRetweetService, RetweetService>();
 builder.Services.AddScoped<ILikeService, LikeService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<ICommentLikeService, CommentLikeService>();
 //add db context
 builder.Services.AddDbContext<TwitterCloneContext>(options =>
 {

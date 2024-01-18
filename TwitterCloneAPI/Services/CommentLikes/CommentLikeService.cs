@@ -12,7 +12,7 @@ namespace TwitterCloneAPI.Services.CommentLikes
             _context = context;
         }
 
-        public async Task<ResponseModel<int>> AddLikeInComment(int userId, int commentId)
+        public async Task<ResponseModel<int>> AddLikeOnComment(int userId, int commentId)
         {
             var response = new ResponseModel<int>();
             try
