@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TwitterCloneAPI.Models.CommentRequest;
@@ -32,6 +33,10 @@ namespace TwitterCloneAPI.Controllers
                 {
                     response.Data.Image = $"{hostUrl}{response.Data.Image}";
                 }
+                if (!string.IsNullOrEmpty(response.Data.PostedUserImage))
+                {
+                    response.Data.PostedUserImage = $"{hostUrl}{response.Data.PostedUserImage}";
+                }
                 return Ok(response);
             }
             return BadRequest(response);
@@ -48,7 +53,13 @@ namespace TwitterCloneAPI.Controllers
                 responce.Data.ForEach(x =>
                 {
                     if (!string.IsNullOrEmpty(x.Image))
+                    {
                         x.Image = $"{hostUrl}{x.Image}";
+                    }
+                    if (!string.IsNullOrEmpty(x.PostedUserImage))
+                    {
+                        x.PostedUserImage = $"{hostUrl}{x.PostedUserImage}";
+                    }
                 });
                 return Ok(responce);
             }

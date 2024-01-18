@@ -48,15 +48,19 @@ namespace TwitterCloneAPI.Services.Comments
                 await _context.Comments.AddAsync(newComment);
                 await _context.SaveChangesAsync();
 
+                var currentUser = await _context.UserProfiles.FirstAsync(x => x.UserId == userId);
+
                 response.Data = new CommentResponseModel
                 {
                     CommentId = newComment.CommentId,
                     PosterUserId = newComment.UserId,
+                    PostedUserName = currentUser.FullName ?? currentUser.UserName ?? "",
+                    PostedUserImage = currentUser.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     Content = newComment.Content,
                     Image = newComment.CommentImage?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     CreatedAt = newComment.CreatedAt ?? DateTime.Now,
                     UpdatedAt = newComment.UpdatedAt ?? DateTime.Now,
-                    isOwner = newComment.UserId ==userId
+                    IsOwner = newComment.UserId ==userId
                 };
                 response.Message = "Comment Created!";
                 response.Success = true;
@@ -111,15 +115,17 @@ namespace TwitterCloneAPI.Services.Comments
                     response.Success = false;
                     return response;
                 }
-                response.Data = await _context.Comments.Where(y=>y.TweetId== tweetId).Select(x=> new CommentResponseModel
+                response.Data = await _context.Comments.Include(x=>x.User).Where(y=>y.TweetId== tweetId).Select(x=> new CommentResponseModel
                 {
                     CommentId = x.CommentId,
                     PosterUserId = x.UserId,
+                    PostedUserName = !string.IsNullOrEmpty(x.User.UserProfile!.FullName) ? x.User.UserProfile!.FullName : x.User.UserProfile!.UserName ?? "",
+                    PostedUserImage = x.User.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     Content = x.Content ?? "",
                     Image = x.CommentImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     CreatedAt = x.CreatedAt ?? DateTime.Now,
                     UpdatedAt = x.UpdatedAt ?? DateTime.Now,
-                    isOwner = x.UserId == userId,
+                    IsOwner = x.UserId == userId,
 
                 }).ToListAsync();
                 response.Message = "Tweet comments";
