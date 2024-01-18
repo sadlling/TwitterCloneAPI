@@ -125,9 +125,16 @@ namespace TwitterCloneAPI.Services.Comments
                     Image = x.CommentImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     CreatedAt = x.CreatedAt ?? DateTime.Now,
                     UpdatedAt = x.UpdatedAt ?? DateTime.Now,
+                    LikesCount = x.CommentLikes.Count(),
                     IsOwner = x.UserId == userId,
 
                 }).ToListAsync();
+
+                foreach (var item in response.Data)
+                {
+                    //item.IsLiked = await _context.
+                }
+
                 response.Message = "Tweet comments";
                 response.Success = true;
             }

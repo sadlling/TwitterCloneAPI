@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TwitterCloneAPI.Models;
 
@@ -11,9 +12,11 @@ using TwitterCloneAPI.Models;
 namespace TwitterCloneAPI.Migrations
 {
     [DbContext(typeof(TwitterCloneContext))]
-    partial class TwitterCloneContextModelSnapshot : ModelSnapshot
+    [Migration("20240118152527_add_comment_likes_table_and_connect_with_comments")]
+    partial class add_comment_likes_table_and_connect_with_comments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,7 +92,7 @@ namespace TwitterCloneAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CommentLike", (string)null);
+                    b.ToTable("CommentLike");
                 });
 
             modelBuilder.Entity("TwitterCloneAPI.Models.Follower", b =>
@@ -378,7 +381,7 @@ namespace TwitterCloneAPI.Migrations
 
                     b.HasIndex("TweetId");
 
-                    b.ToTable("TweetHashtags", (string)null);
+                    b.ToTable("TweetHashtags");
                 });
 
             modelBuilder.Entity("TwitterCloneAPI.Models.UserAuthentication", b =>

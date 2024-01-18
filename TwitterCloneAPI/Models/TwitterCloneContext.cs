@@ -37,7 +37,7 @@ public partial class TwitterCloneContext : DbContext
     }
 
     public virtual DbSet<Comment> Comments { get; set; }
-
+    public virtual DbSet<CommentLike> CommentLike { get; set; }
     public virtual DbSet<Follower> Followers { get; set; }
 
     public virtual DbSet<Hashtag> Hashtags { get; set; }
