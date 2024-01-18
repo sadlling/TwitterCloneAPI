@@ -2,42 +2,42 @@
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.ServiceResponse;
 
-namespace TwitterCloneAPI.Services.Likes
+namespace TwitterCloneAPI.Services.CommentLikes
 {
-    public class LikeService : ILikeService
+    public class CommentLikeService : ICommentLikeService
     {
         private readonly TwitterCloneContext _context;
-        public LikeService(TwitterCloneContext context)
+        public CommentLikeService(TwitterCloneContext context)
         {
             _context = context;
         }
-        public async Task<ResponseModel<int>> AddTweetInLiked(int userId, int tweetId)
+
+        public async Task<ResponseModel<int>> AddLikeInComment(int userId, int commentId)
         {
             var response = new ResponseModel<int>();
             try
             {
-                if (await _context.Likes.AnyAsync(x => x.TweetId == tweetId && x.UserId == userId))
+                if (!await _context.Comments.AnyAsync(x => x.CommentId == commentId))
                 {
                     response.Success = false;
-                    response.Message = "This tweet exist in liked tweets!";
+                    response.Message = "This comment is not exists!";
                     return response;
                 }
-                if (!await _context.Tweets.AnyAsync(x => x.TweetId == tweetId))
+                if (await _context.CommentLike.AnyAsync(x => x.CommentId == commentId && x.UserId == userId))
                 {
                     response.Success = false;
-                    response.Message = "This tweet is not exists!";
+                    response.Message = "This comment is liked!";
                     return response;
                 }
-                await _context.Likes.AddAsync(new Like
+                await _context.CommentLike.AddAsync(new CommentLike
                 {
                     UserId = userId,
-                    TweetId = tweetId,
+                    CommentId = commentId,
                     CreatedAt = DateTime.Now,
                 });
                 await _context.SaveChangesAsync();
                 response.Success = true;
-                response.Message = "Tweet added in liked tweets!";
-
+                response.Message = "Comment liked!";
             }
             catch (Exception ex)
             {
@@ -47,28 +47,28 @@ namespace TwitterCloneAPI.Services.Likes
             return response;
         }
 
-        public async Task<ResponseModel<int>> DeleteTweetFromLiked(int userId, int tweetId)
+        public async Task<ResponseModel<int>> DeleteLikeFromComment(int userId, int commentId)
         {
             var response = new ResponseModel<int>();
             try
             {
-                if (!await _context.Tweets.AnyAsync(x => x.TweetId == tweetId))
+                if (!await _context.Comments.AnyAsync(x => x.CommentId == commentId))
                 {
                     response.Success = false;
-                    response.Message = "This tweet is not exists!";
+                    response.Message = "This comment is not exists!";
                     return response;
                 }
-                var currentLike = await _context.Likes.FirstOrDefaultAsync(x => x.TweetId == tweetId && x.UserId == userId) ?? null;
-                if (currentLike is null)
+                var currentCommentLike = await _context.CommentLike.FirstOrDefaultAsync(x => x.CommentId == commentId && x.UserId == userId) ?? null;
+                if (currentCommentLike is null)
                 {
                     response.Success = false;
-                    response.Message = "This tweet is not exist in liked tweets!";
+                    response.Message = "This comment not liked!";
                     return response;
                 }
-                _context.Likes.Remove(currentLike);
+                _context.CommentLike.Remove(currentCommentLike);
                 await _context.SaveChangesAsync();
                 response.Success = true;
-                response.Message = "Tweet delete from liked tweets!";
+                response.Message = "Like deleted!";
 
             }
             catch (Exception ex)
