@@ -225,7 +225,7 @@ namespace TwitterCloneAPI.Services.Tweets
                     {
                         File.Delete(tweetImagePath);
                     }
-                    if (!string.IsNullOrWhiteSpace(request.OldTweetImage))
+                    if (!string.IsNullOrEmpty(request.OldTweetImage))
                     {
                         if (!request.OldTweetImage.Contains(updatedTweet.TweetImage?.Replace("\\", "/").Replace("wwwroot/", "")?? ""))
                         {
@@ -240,10 +240,10 @@ namespace TwitterCloneAPI.Services.Tweets
                         }
                         updatedTweet.TweetImage = tweetImagePath;
                     }
-                    if(request.NewTweetImage is null && request.OldTweetImage is null)
-                    {
-                        updatedTweet.TweetImage = null;
-                    }
+                    //if(request.NewTweetImage is null && request.OldTweetImage is null)
+                    //{
+                    //    updatedTweet.TweetImage = null;
+                    //}
                     updatedTweet.Content = request.Content;
                     updatedTweet.IsPublic = request.IsPublic;
                     updatedTweet.UpdatedAt = DateTime.Now;
