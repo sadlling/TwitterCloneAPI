@@ -225,7 +225,7 @@ namespace TwitterCloneAPI.Services.Tweets
                     {
                         File.Delete(tweetImagePath);
                     }
-                    if (!string.IsNullOrEmpty(request.OldTweetImage))
+                    if (!string.IsNullOrEmpty(request.OldTweetImage) && request.NewTweetImage is null)
                     {
                         if (!request.OldTweetImage.Contains(updatedTweet.TweetImage?.Replace("\\", "/").Replace("wwwroot/", "")?? ""))
                         {
@@ -237,6 +237,10 @@ namespace TwitterCloneAPI.Services.Tweets
                         using (FileStream stream = File.Create(tweetImagePath))
                         {
                             await request.NewTweetImage!.CopyToAsync(stream);
+                        }
+                        if (File.Exists(updatedTweet.TweetImage))
+                        {
+                            File.Delete(updatedTweet.TweetImage);
                         }
                         updatedTweet.TweetImage = tweetImagePath;
                     }
