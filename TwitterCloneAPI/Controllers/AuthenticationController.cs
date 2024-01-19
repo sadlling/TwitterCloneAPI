@@ -40,7 +40,6 @@ namespace TwitterCloneAPI.Controllers
         }
 
         [HttpPost("Authorization")]
-
         public async Task<IActionResult> Authorization(UserRequestModel request)
         {
             var user = await _userService.GetUserByEmail(request);
@@ -126,6 +125,16 @@ namespace TwitterCloneAPI.Controllers
                 return Ok();
             }
             return BadRequest(new { Message = "User not found" });
+        }
+        [HttpPost("LogOut")]
+        public IActionResult LogOut()
+        {
+            if (string.IsNullOrEmpty(Request.Cookies["JWT"]))
+            {
+                return Unauthorized();
+            }
+            Response.Cookies.Append("JWT", "", new CookieOptions { Expires = DateTime.Now.AddDays(-1)});
+            return Ok();
         }
 
 
