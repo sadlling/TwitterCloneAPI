@@ -13,6 +13,38 @@
       "PackagePath": "staticwebassets\\4\\19.01.2024.02.16.10.706171.png"
     },
     {
+      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\4\\19.01.2024.22.15.25.986075.png",
+      "PackagePath": "staticwebassets\\4\\19.01.2024.22.15.25.986075.png"
+    },
+    {
+      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\4\\19.01.2024.22.32.56.242729.png",
+      "PackagePath": "staticwebassets\\4\\19.01.2024.22.32.56.242729.png"
+    },
+    {
+      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\4\\19.01.2024.22.35.08.033178.png",
+      "PackagePath": "staticwebassets\\4\\19.01.2024.22.35.08.033178.png"
+    },
+    {
+      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\4\\19.01.2024.22.38.49.931750.png",
+      "PackagePath": "staticwebassets\\4\\19.01.2024.22.38.49.931750.png"
+    },
+    {
+      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\4\\19.01.2024.22.40.37.981607.png",
+      "PackagePath": "staticwebassets\\4\\19.01.2024.22.40.37.981607.png"
+    },
+    {
+      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\4\\19.01.2024.22.56.39.549287.png",
+      "PackagePath": "staticwebassets\\4\\19.01.2024.22.56.39.549287.png"
+    },
+    {
+      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\4\\19.01.2024.22.57.42.677171.png",
+      "PackagePath": "staticwebassets\\4\\19.01.2024.22.57.42.677171.png"
+    },
+    {
+      "Id": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\wwwroot\\4\\19.01.2024.22.58.09.909189.png",
+      "PackagePath": "staticwebassets\\4\\19.01.2024.22.58.09.909189.png"
+    },
+    {
       "Id": "obj\\Release\\net7.0\\staticwebassets\\msbuild.TwitterCloneAPI.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

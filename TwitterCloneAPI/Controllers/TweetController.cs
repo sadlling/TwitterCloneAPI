@@ -98,7 +98,7 @@ namespace TwitterCloneAPI.Controllers
 
         }
         [HttpPut("UpdateTweet{tweetId}")]
-        public async Task<IActionResult> UpdateTweet([FromForm] TweetRequestModel request,int tweetId)
+        public async Task<IActionResult> UpdateTweet([FromForm] UpdateTweetRequestModel request,int tweetId)
         {
             if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
             {

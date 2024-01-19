@@ -207,7 +207,7 @@ namespace TwitterCloneAPI.Services.Tweets
             return response;
         }
 
-        public async Task<ResponseModel<TweetResponseModel>> UpdateTweet(TweetRequestModel request, int userId, int tweetId)
+        public async Task<ResponseModel<TweetResponseModel>> UpdateTweet(UpdateTweetRequestModel request, int userId, int tweetId)
         {
             var response = new ResponseModel<TweetResponseModel>();
             try
@@ -225,13 +225,24 @@ namespace TwitterCloneAPI.Services.Tweets
                     {
                         File.Delete(tweetImagePath);
                     }
-                    if (request.TweetImage is not null)
+                    if (!string.IsNullOrWhiteSpace(request.OldTweetImage))
+                    {
+                        if (!request.OldTweetImage.Contains(updatedTweet.TweetImage?.Replace("\\", "/").Replace("wwwroot/", "")?? ""))
+                        {
+                            updatedTweet.TweetImage = null;
+                        }
+                    }
+                    if (request.NewTweetImage is not null)
                     {
                         using (FileStream stream = File.Create(tweetImagePath))
                         {
-                            await request.TweetImage!.CopyToAsync(stream);
+                            await request.NewTweetImage!.CopyToAsync(stream);
                         }
                         updatedTweet.TweetImage = tweetImagePath;
+                    }
+                    if(request.NewTweetImage is null && request.OldTweetImage is null)
+                    {
+                        updatedTweet.TweetImage = null;
                     }
                     updatedTweet.Content = request.Content;
                     updatedTweet.IsPublic = request.IsPublic;
@@ -266,6 +277,7 @@ namespace TwitterCloneAPI.Services.Tweets
             {
                 response.Success = false;
                 response.Message = ex.Message;
+                response.Message += ex.StackTrace;
             }
             return response;
         }
