@@ -133,7 +133,12 @@ namespace TwitterCloneAPI.Controllers
             {
                 return Unauthorized();
             }
-            Response.Cookies.Append("JWT", "", new CookieOptions { Expires = DateTime.Now.AddDays(-1)});
+            Response.Cookies.Append("JWT", "", new CookieOptions
+            {
+                Expires = DateTime.Now.AddDays(-1),
+                SameSite = SameSiteMode.None,
+                HttpOnly = true,
+            });
             return Ok();
         }
 
