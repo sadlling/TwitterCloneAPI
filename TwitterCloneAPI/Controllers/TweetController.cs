@@ -46,7 +46,6 @@ namespace TwitterCloneAPI.Controllers
         [HttpGet("GetAllTweets")]
         public async Task<IActionResult> GetAllTweets()
         {
-            
             var responce = await _tweetService.GetAllTweets(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (responce.Data is not null)
@@ -140,7 +139,37 @@ namespace TwitterCloneAPI.Controllers
         [HttpGet("GetTweetsByParams")]
         public async Task<IActionResult> GetTweetsByParams([FromQuery(Name="page")]string parameter)
         {
-            return Ok(parameter);
+            var responce = await _tweetService.GetAllTweets(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+            if (responce.Data is not null)
+            {
+                responce.Data.ForEach(x =>
+                {
+                    if (!string.IsNullOrEmpty(x.Image))
+                    {
+                        x.Image = $"{hostUrl}{x.Image}";
+                    }
+                    if (!string.IsNullOrEmpty(x.PostedUserImage))
+                    {
+                        x.PostedUserImage = $"{hostUrl}{x.PostedUserImage}";
+                    }
+                });
+                if (parameter.ToLower() == "latest")
+                {
+                    return Ok(responce);
+                }
+                if(parameter.ToLower() == "top")
+                {
+                    responce.Data = responce.Data.OrderByDescending(x=>x.LikesCount).ToList();
+                    return Ok(responce);
+                }
+                if( parameter.ToLower() == "media")
+                {
+                    responce.Data = responce.Data.Where(x=>!string.IsNullOrEmpty(x.Image)).ToList();
+                    return Ok(responce);
+                }
+            }
+            return BadRequest(responce);
         }
     }
 }
