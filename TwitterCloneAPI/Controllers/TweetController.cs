@@ -136,5 +136,11 @@ namespace TwitterCloneAPI.Controllers
             }
             return BadRequest(responce);
         }
+
+        [HttpGet("GetTweetsByParams")]
+        public async Task<IActionResult> GetTweetsByParams([FromQuery(Name="page")]string parameter)
+        {
+            return Ok(parameter);
+        }
     }
 }

@@ -76,5 +76,41 @@ namespace TwitterCloneAPI.Controllers
             }
             return BadRequest(responce);
         }
+
+        [HttpGet("FilterSavedTweetsByParams")]
+        public async Task<IActionResult> FilterSavedTweetsByParams([FromQuery(Name = "param")] string parameter)
+        {
+            if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
+            {
+                return Unauthorized();
+            }
+            string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+            
+            if(parameter.ToLower() == "media")
+            {
+                var responce = await _savedTweetSevice.GetSavedTweetsWithMedia(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+                if (responce.Data is not null)
+                {
+                    responce.Data.ForEach(x =>
+                    {
+                        if (!string.IsNullOrEmpty(x.Image))
+                        {
+                            x.Image = $"{hostUrl}{x.Image}";
+                        }
+                        if (!string.IsNullOrEmpty(x.PostedUserImage))
+                        {
+                            x.PostedUserImage = $"{hostUrl}{x.PostedUserImage}";
+                        }
+                    });
+                    return Ok(responce);
+                }
+                if (responce.Data is null && responce.Success)
+                {
+                    return Ok(responce);
+                }
+            }
+
+            return BadRequest();
+        }
     }
 }
