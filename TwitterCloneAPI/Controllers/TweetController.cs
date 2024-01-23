@@ -46,10 +46,7 @@ namespace TwitterCloneAPI.Controllers
         [HttpGet("GetAllTweets")]
         public async Task<IActionResult> GetAllTweets()
         {
-            //if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
-            //{
-            //    return Unauthorized();
-            //}
+            
             var responce = await _tweetService.GetAllTweets(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (responce.Data is not null)
@@ -73,7 +70,11 @@ namespace TwitterCloneAPI.Controllers
         [HttpGet("GetUserTweetsAndRetweets{userId}")]
         public async Task<IActionResult> GetUserTweetsAndRetweets(int userId)
         {
-            var responce = await _tweetService.GetCurrentUserTweetsAndRetweets(userId);
+            if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
+            {
+                return Unauthorized();
+            }
+            var responce = await _tweetService.GetCurrentUserTweetsAndRetweets(userId, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (responce.Data is not null)
             {

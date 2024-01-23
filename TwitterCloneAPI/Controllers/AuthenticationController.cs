@@ -138,6 +138,8 @@ namespace TwitterCloneAPI.Controllers
                 Expires = DateTime.Now.AddDays(-1),
                 SameSite = SameSiteMode.None,
                 HttpOnly = true,
+                Path = "/",
+                Secure = true
             });
             return Ok();
         }

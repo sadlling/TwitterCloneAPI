@@ -142,7 +142,7 @@ namespace TwitterCloneAPI.Services.Tweets
 
         }
 
-        public async Task<ResponseModel<List<TweetResponseModel>>> GetCurrentUserTweetsAndRetweets(int userId)
+        public async Task<ResponseModel<List<TweetResponseModel>>> GetCurrentUserTweetsAndRetweets(int userId,int currentUserId)
         {
             ResponseModel<List<TweetResponseModel>> response = new();
             try
@@ -178,15 +178,15 @@ namespace TwitterCloneAPI.Services.Tweets
                     RetweetCount = x.Retweets.Count,
                     LikesCount = x.Likes.Count,
                     SaveCount = x.SavedTweets.Count,
-                    IsOwner = x.UserId == userId
+                    IsOwner = x.UserId == currentUserId
                 }).ToListAsync();
 
                 response.Data = userTweets.Concat(retweets).OrderBy(x => x.CreatedAt).ToList();
 
                 foreach (var item in response.Data)
                 {
-                    item.IsLiked = await _context.Likes.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
-                    item.IsSaved = await _context.SavedTweets.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                    item.IsLiked = await _context.Likes.AnyAsync(x => x.UserId == currentUserId && x.TweetId == item.TweetId);
+                    item.IsSaved = await _context.SavedTweets.AnyAsync(x => x.UserId == currentUserId && x.TweetId == item.TweetId);
                 }
 
                 if (response.Data.Count <= 0)
@@ -244,10 +244,7 @@ namespace TwitterCloneAPI.Services.Tweets
                         }
                         updatedTweet.TweetImage = tweetImagePath;
                     }
-                    //if(request.NewTweetImage is null && request.OldTweetImage is null)
-                    //{
-                    //    updatedTweet.TweetImage = null;
-                    //}
+        
                     updatedTweet.Content = request.Content;
                     updatedTweet.IsPublic = request.IsPublic;
                     updatedTweet.UpdatedAt = DateTime.Now;
