@@ -89,11 +89,11 @@ namespace TwitterCloneAPI.Services.Folowers
             try
             {
                 var followersTweets = new List<TweetResponseModel>();
-                var followersList = await _context.Followers.Where(x => x.UserId == userId).ToListAsync();
+                var followersList = await _context.Followers.Where(x => x.FollowerUserId == userId).ToListAsync();
 
                 foreach (var follower in followersList)
                 {
-                    followersTweets.AddRange(await GetTweetsByUserIdAsync(follower.FollowerUserId));
+                    followersTweets.AddRange(await GetTweetsByUserIdAsync(follower.UserId));
                 }
 
                 response.Data = followersTweets;

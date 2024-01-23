@@ -8,6 +8,5 @@ namespace TwitterCloneAPI.Services.SavedTweets
         public Task<ResponseModel<int>> AddTweetInSaved(int userId, int tweetId);
         public Task<ResponseModel<int>> DeleteTweetInSaved(int userId, int tweetId);
         public Task<ResponseModel<List<TweetResponseModel>>> GetSavedTweets(int userId);
-        public Task<ResponseModel<List<TweetResponseModel>>> GetSavedTweetsWithMedia(int userId);
     }
 }
