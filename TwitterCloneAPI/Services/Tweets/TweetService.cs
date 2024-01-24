@@ -65,6 +65,25 @@ namespace TwitterCloneAPI.Services.Tweets
                 };
                 response.Message = "Tweet Created!";
                 response.Success = true;
+                if (request.Hashtags.Length > 0)
+                {
+                    var existingHashtags = _context.Hashtags.Where(x => request.Hashtags.Select(y => y).Equals(x.Name)).ToList();
+                    var newHashtags = request.Hashtags.Except(existingHashtags.Select(x => x.Name)).ToList();
+                    if(newHashtags.Count> 0)
+                    {
+                        var hashtagsToAdd = newHashtags.Select(x => new Hashtag { Name = x, CreatedAt = DateTime.Now }).ToList();
+                        foreach (var item in hashtagsToAdd)
+                        {
+                            await _context.Hashtags.AddAsync(item);
+                        }
+                        await _context.SaveChangesAsync();
+                        existingHashtags.AddRange(hashtagsToAdd);
+                    }
+                    await _context.TweetHashtags.AddRangeAsync(existingHashtags.Select(x => new TweetHashtag { HashtagId = x.HashtagId, TweetId = newTweet.TweetId }));
+                    await _context.SaveChangesAsync();
+                }
+
+
 
             }
             catch (Exception ex)
@@ -142,7 +161,7 @@ namespace TwitterCloneAPI.Services.Tweets
 
         }
 
-        public async Task<ResponseModel<List<TweetResponseModel>>> GetCurrentUserTweetsAndRetweets(int userId,int currentUserId)
+        public async Task<ResponseModel<List<TweetResponseModel>>> GetCurrentUserTweetsAndRetweets(int userId, int currentUserId)
         {
             ResponseModel<List<TweetResponseModel>> response = new();
             try
@@ -227,7 +246,7 @@ namespace TwitterCloneAPI.Services.Tweets
                     }
                     if (!string.IsNullOrEmpty(request.OldTweetImage) && request.NewTweetImage is null)
                     {
-                        if (!request.OldTweetImage.Contains(updatedTweet.TweetImage?.Replace("\\", "/").Replace("wwwroot/", "")?? ""))
+                        if (!request.OldTweetImage.Contains(updatedTweet.TweetImage?.Replace("\\", "/").Replace("wwwroot/", "") ?? ""))
                         {
                             updatedTweet.TweetImage = null;
                         }
@@ -244,7 +263,7 @@ namespace TwitterCloneAPI.Services.Tweets
                         }
                         updatedTweet.TweetImage = tweetImagePath;
                     }
-        
+
                     updatedTweet.Content = request.Content;
                     updatedTweet.IsPublic = request.IsPublic;
                     updatedTweet.UpdatedAt = DateTime.Now;
