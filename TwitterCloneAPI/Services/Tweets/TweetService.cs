@@ -224,6 +224,49 @@ namespace TwitterCloneAPI.Services.Tweets
             return response;
         }
 
+        public async Task<ResponseModel<List<TweetResponseModel>>> GetTweetsByHashtags(int userId, string[] hashtags)
+        {
+            ResponseModel<List<TweetResponseModel>> response = new();
+            try
+            {
+                
+
+                //response.Data = await _context.Tweets.Include(y => y.User).Select(x => new TweetResponseModel
+                //{
+                //    TweetId = x.TweetId,
+                //    PostedUserId = x.UserId,
+                //    PostedUserName = !string.IsNullOrEmpty(x.User.UserProfile!.FullName) ? x.User.UserProfile!.FullName : x.User.UserProfile!.UserName ?? "",
+                //    PostedUserImage = x.User.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                //    Content = x.Content ?? " ",
+                //    Image = x.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                //    IsPublic = x.IsPublic,
+                //    CreatedAt = x.CreateAt ?? DateTime.Now,
+                //    CommentsCount = x.Comments.Count,
+                //    RetweetCount = x.Retweets.Count,
+                //    LikesCount = x.Likes.Count,
+                //    SaveCount = x.SavedTweets.Count,
+                //    IsOwner = x.UserId == userId
+
+                //}).ToListAsync();
+
+                //foreach (var item in response.Data)
+                //{
+                //    item.IsRetweeted = await _context.Retweets.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                //    item.IsLiked = await _context.Likes.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                //    item.IsSaved = await _context.SavedTweets.AnyAsync(x => x.UserId == userId && x.TweetId == item.TweetId);
+                //}
+
+                response.Success = true;
+                response.Message = "All tweets";
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
         public async Task<ResponseModel<TweetResponseModel>> UpdateTweet(UpdateTweetRequestModel request, int userId, int tweetId)
         {
             var response = new ResponseModel<TweetResponseModel>();
