@@ -3,6 +3,8 @@
     public class NotificationResponseModel
     {
         public int NotificationId { get; set; }
+        public int UserId {  get; set; }
+        public int TweetId {  get; set; }
         public int SourseUserId {  get; set; }
         public string SourseUserName { get; set; } = null!;
         public string SourseUserPhoto {  get; set; } = null!;
