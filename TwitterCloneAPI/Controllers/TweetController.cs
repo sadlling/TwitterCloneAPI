@@ -66,6 +66,29 @@ namespace TwitterCloneAPI.Controllers
             return BadRequest(responce);
 
         }
+        [HttpGet("GetTweetsByHastags")]
+        public async Task<IActionResult> GetTweetsByHastags([FromQuery(Name ="Hastags")] string[] hashtags)
+        {
+            var responce = await _tweetService.GetTweetsByHashtags(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),hashtags);
+            string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+            if (responce.Data is not null)
+            {
+                responce.Data.ForEach(x =>
+                {
+                    if (!string.IsNullOrEmpty(x.Image))
+                    {
+                        x.Image = $"{hostUrl}{x.Image}";
+                    }
+                    if (!string.IsNullOrEmpty(x.PostedUserImage))
+                    {
+                        x.PostedUserImage = $"{hostUrl}{x.PostedUserImage}";
+                    }
+                });
+                return Ok(responce);
+            }
+            return BadRequest(responce);
+
+        }
         [HttpGet("GetUserTweetsAndRetweets{userId}")]
         public async Task<IActionResult> GetUserTweetsAndRetweets(int userId)
         {
