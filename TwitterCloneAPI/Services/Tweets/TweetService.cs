@@ -4,15 +4,18 @@ using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.ServiceResponse;
 using TwitterCloneAPI.Models.TweetRequest;
 using TwitterCloneAPI.Models.TweetResponse;
+using TwitterCloneAPI.Services.HashtagsService;
 
 namespace TwitterCloneAPI.Services.Tweets
 {
     public class TweetService : ITweetService
     {
         private readonly TwitterCloneContext _context;
-        public TweetService(TwitterCloneContext context)
+        private readonly IHashtagService _hashtagService;
+        public TweetService(TwitterCloneContext context, IHashtagService hashtagService)
         {
             _context = context;
+            _hashtagService = hashtagService;
         }
 
         public async Task<ResponseModel<TweetResponseModel>> CreateTweet(TweetRequestModel request, int userId)
@@ -65,24 +68,19 @@ namespace TwitterCloneAPI.Services.Tweets
                 };
                 response.Message = "Tweet Created!";
                 response.Success = true;
-                if (request.Hashtags is not null)
-                {
-                    var existingHashtags = _context.Hashtags.Where(x => request.Hashtags.Select(y => y).Equals(x.Name)).ToList();
-                    var newHashtags = request.Hashtags.Except(existingHashtags.Select(x => x.Name)).ToList();
-                    if(newHashtags.Count> 0)
-                    {
-                        var hashtagsToAdd = newHashtags.Select(x => new Hashtag { Name = x, CreatedAt = DateTime.Now }).ToList();
-                        foreach (var item in hashtagsToAdd)
-                        {
-                            await _context.Hashtags.AddAsync(item);
-                        }
-                        await _context.SaveChangesAsync();
-                        existingHashtags.AddRange(hashtagsToAdd);
-                    }
-                    await _context.TweetHashtags.AddRangeAsync(existingHashtags.Select(x => new TweetHashtag { HashtagId = x.HashtagId, TweetId = newTweet.TweetId }));
-                    await _context.SaveChangesAsync();
-                }
 
+                if(request.Hashtags is not null)
+                {
+                   var resultAddingHashtags =  await _hashtagService.AddHashtags(request.Hashtags, newTweet.TweetId);
+                    if (!resultAddingHashtags.Success)
+                    {
+                        response.Message += "Hashtags not added!";
+                    }
+                    else
+                    {
+                        response.Message += resultAddingHashtags.Message;
+                    }
+                }
 
 
             }

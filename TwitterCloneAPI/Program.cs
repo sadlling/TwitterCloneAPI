@@ -11,6 +11,7 @@ using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Services.CommentLikes;
 using TwitterCloneAPI.Services.Comments;
 using TwitterCloneAPI.Services.Folowers;
+using TwitterCloneAPI.Services.HashtagsService;
 using TwitterCloneAPI.Services.Likes;
 using TwitterCloneAPI.Services.Retweets;
 using TwitterCloneAPI.Services.SavedTweets;
@@ -38,6 +39,7 @@ builder.Services.AddScoped<IRetweetService, RetweetService>();
 builder.Services.AddScoped<ILikeService, LikeService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ICommentLikeService, CommentLikeService>();
+builder.Services.AddScoped<IHashtagService, HashtagService>();
 //add db context
 builder.Services.AddDbContext<TwitterCloneContext>(options =>
 {
