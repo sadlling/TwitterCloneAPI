@@ -65,7 +65,7 @@ namespace TwitterCloneAPI.Services.Tweets
                 };
                 response.Message = "Tweet Created!";
                 response.Success = true;
-                if (request.Hashtags.Length > 0)
+                if (request.Hashtags is not null)
                 {
                     var existingHashtags = _context.Hashtags.Where(x => request.Hashtags.Select(y => y).Equals(x.Name)).ToList();
                     var newHashtags = request.Hashtags.Except(existingHashtags.Select(x => x.Name)).ToList();
