@@ -337,6 +337,18 @@ namespace TwitterCloneAPI.Services.Tweets
                         IsSaved = await _context.SavedTweets.AnyAsync(x => x.UserId == userId && x.TweetId == updatedTweet.TweetId),
                         IsOwner = true,
                     };
+                    if (request.Hashtags is not null)
+                    {
+                        var resultAddingHashtags = await _hashtagService.AddHashtags(request.Hashtags, updatedTweet.TweetId);
+                        if (!resultAddingHashtags.Success)
+                        {
+                            response.Message += "Hashtags not added!";
+                        }
+                        else
+                        {
+                            response.Message += resultAddingHashtags.Message;
+                        }
+                    }
 
                     response.Message = "Tweet Updated!";
                     response.Success = true;
