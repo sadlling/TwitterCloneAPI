@@ -236,18 +236,18 @@ namespace TwitterCloneAPI.Services.Tweets
                     Distinct().
                     ToListAsync();
                 var tweetsByHastags = await _context.Tweets.
-                    Include(x => x.User).
+                    Include(x => x.User.UserProfile).
                     Where(x => hastagsIds.Select(y => y).Contains(x.TweetId)).
                     ToListAsync();
-                //Fix null referense
-                response.Data = tweetsByHastags.Select(x => new TweetResponseModel
+
+                response.Data = new List<TweetResponseModel>(tweetsByHastags.Select(x => new TweetResponseModel
                 {
                     TweetId = x.TweetId,
                     PostedUserId = x.UserId,
-                    PostedUserName = !string.IsNullOrEmpty(x.User.UserProfile?.FullName) ? x.User.UserProfile?.FullName ??"" : x.User.UserProfile?.UserName ?? "",
-                    PostedUserImage = x.User.UserProfile?.ProfilePicture?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                    PostedUserName = !string.IsNullOrEmpty(x.User.UserProfile!.FullName) ? x.User.UserProfile!.FullName ?? "" : x.User.UserProfile!.UserName ?? "",
+                    PostedUserImage = x.User.UserProfile!.ProfilePicture?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     Content = x.Content ?? " ",
-                    Image = x.TweetImage!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                    Image = x.TweetImage?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     IsPublic = x.IsPublic,
                     CreatedAt = x.CreateAt ?? DateTime.Now,
                     CommentsCount = x.Comments.Count,
@@ -255,7 +255,7 @@ namespace TwitterCloneAPI.Services.Tweets
                     LikesCount = x.Likes.Count,
                     SaveCount = x.SavedTweets.Count,
                     IsOwner = x.UserId == userId
-                }).ToList();
+                }).ToList());
 
                 foreach (var item in response.Data)
                 {

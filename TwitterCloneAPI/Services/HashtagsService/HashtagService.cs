@@ -36,7 +36,7 @@ namespace TwitterCloneAPI.Services.HashtagsService
                     await _context.TweetHashtags.AddRangeAsync(existingHashtags.Select(x => new TweetHashtag { HashtagId = x.HashtagId, TweetId = tweetId }));
                     await _context.SaveChangesAsync();
                 }
-                response.Message = "Hashtags added in service";
+                response.Message = "Hashtags added!";
                 response.Success = true;
             }
             catch (Exception ex)
