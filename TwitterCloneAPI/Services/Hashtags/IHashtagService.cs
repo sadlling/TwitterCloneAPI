@@ -1,7 +1,7 @@
 ﻿using TwitterCloneAPI.Models.HashtagResponse;
 using TwitterCloneAPI.Models.ServiceResponse;
 
-namespace TwitterCloneAPI.Services.HashtagsService
+namespace TwitterCloneAPI.Services.Hashtags
 {
     public interface IHashtagService
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TwitterCloneAPI.Services.HashtagsService;
+using TwitterCloneAPI.Services.Hashtags;
 
 namespace TwitterCloneAPI.Controllers
 {

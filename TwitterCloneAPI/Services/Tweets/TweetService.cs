@@ -4,7 +4,7 @@ using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.ServiceResponse;
 using TwitterCloneAPI.Models.TweetRequest;
 using TwitterCloneAPI.Models.TweetResponse;
-using TwitterCloneAPI.Services.HashtagsService;
+using TwitterCloneAPI.Services.Hashtags;
 
 namespace TwitterCloneAPI.Services.Tweets
 {
