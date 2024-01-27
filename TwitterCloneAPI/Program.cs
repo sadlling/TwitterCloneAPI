@@ -11,7 +11,7 @@ using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Services.CommentLikes;
 using TwitterCloneAPI.Services.Comments;
 using TwitterCloneAPI.Services.Folowers;
-using TwitterCloneAPI.Services.HashtagsService;
+using TwitterCloneAPI.Services.Hashtags;
 using TwitterCloneAPI.Services.Likes;
 using TwitterCloneAPI.Services.Retweets;
 using TwitterCloneAPI.Services.SavedTweets;

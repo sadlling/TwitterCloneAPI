@@ -7,7 +7,7 @@
         public int TweetId {  get; set; }
         public int SourseUserId {  get; set; }
         public string SourseUserName { get; set; } = null!;
-        public string SourseUserPhoto {  get; set; } = null!;
+        public string SourseUserImage {  get; set; } = null!;
         public string NotificationType { get; set; } = null!;
         public DateTime? CreatedAt { get; set; } = null!;
         public bool  IsRead { get; set; } = false;

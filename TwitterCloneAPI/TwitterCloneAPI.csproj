@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Models\NotificationRequest\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
