@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TwitterCloneAPI.Services.Likes;
+using TwitterCloneAPI.Services.Notifications;
 
 namespace TwitterCloneAPI.Controllers
 {
@@ -10,12 +11,14 @@ namespace TwitterCloneAPI.Controllers
     public class LikeController : ControllerBase
     {
         private readonly ILikeService _likeService;
-        public LikeController(ILikeService likeService)
+        private readonly INotificationService _notificationService;
+        public LikeController(ILikeService likeService, INotificationService notificationService)
         {
             _likeService = likeService;
+            _notificationService = notificationService;
         }
         [HttpPost("AddTweetInLiked{tweetId}")]
-        public async Task<IActionResult> AddTweetInLiked(int tweetId)
+        public async Task<IActionResult> AddTweetInLiked(int tweetId,int postedUserId)
         {
             if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
             {
@@ -24,6 +27,14 @@ namespace TwitterCloneAPI.Controllers
             var responce = await _likeService.AddTweetInLiked(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), tweetId);
             if (responce.Success)
             {
+                if(await _notificationService.AddNotification(postedUserId, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),tweetId,"Like"))
+                {
+                    responce.Message += " And added notification!";
+                }
+                else
+                {
+                    responce.Message += " Notification not added(";
+                }
                 return Ok(responce);
             }
             return BadRequest(responce);

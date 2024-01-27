@@ -13,6 +13,7 @@ using TwitterCloneAPI.Services.Comments;
 using TwitterCloneAPI.Services.Folowers;
 using TwitterCloneAPI.Services.Hashtags;
 using TwitterCloneAPI.Services.Likes;
+using TwitterCloneAPI.Services.Notifications;
 using TwitterCloneAPI.Services.Retweets;
 using TwitterCloneAPI.Services.SavedTweets;
 using TwitterCloneAPI.Services.Token;
@@ -40,6 +41,7 @@ builder.Services.AddScoped<ILikeService, LikeService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ICommentLikeService, CommentLikeService>();
 builder.Services.AddScoped<IHashtagService, HashtagService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 //add db context
 builder.Services.AddDbContext<TwitterCloneContext>(options =>
 {

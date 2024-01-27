@@ -27,6 +27,7 @@ namespace TwitterCloneAPI.Services.Notifications
                     IsReading = false,
                     CreatedAt = DateTime.Now,
                 });
+                await _context.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -45,7 +46,8 @@ namespace TwitterCloneAPI.Services.Notifications
                     Include(x=>x.User).
                     Where(x=>x.UserId == userId).
                     Select(x=> new NotificationResponseModel 
-                    { NotificationId = x.NotificationId,
+                    {
+                      NotificationId = x.NotificationId,
                       UserId = userId,
                       TweetId =x.TweetId,
                       SourseUserId=x.SourseUserId,
