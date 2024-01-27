@@ -13,10 +13,11 @@ namespace TwitterCloneAPI.Services.Notifications
             _context = context;
         }
 
-        public async Task<bool> AddNotification(int userId, int sourseUserId, int tweetId,string notificationType)
+        public async Task<bool> AddNotification(int userId,int tweetId,string notificationType)
         {
             try
             {
+                var sourseUserId = await _context.Tweets.Where(x=>x.TweetId==tweetId).Select(x=>x.UserId).FirstAsync();
                 var notificationTypeId = await _context.NotificationTypes.Where(x => x.Name!.ToLower() == notificationType).Select(x => x.TypeId).FirstAsync();
                 await _context.AddAsync( new Notification
                 {

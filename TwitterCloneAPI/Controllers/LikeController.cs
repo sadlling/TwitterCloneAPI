@@ -17,7 +17,7 @@ namespace TwitterCloneAPI.Controllers
             _likeService = likeService;
             _notificationService = notificationService;
         }
-        [HttpPost("AddTweetInLiked{tweetId}")]
+        [HttpPost("AddTweetInLiked{tweetId,postedUserId}")]
         public async Task<IActionResult> AddTweetInLiked(int tweetId,int postedUserId)
         {
             if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
@@ -27,7 +27,7 @@ namespace TwitterCloneAPI.Controllers
             var responce = await _likeService.AddTweetInLiked(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), tweetId);
             if (responce.Success)
             {
-                if(await _notificationService.AddNotification(postedUserId, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),tweetId,"Like"))
+                if(await _notificationService.AddNotification(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),tweetId,"Like"))
                 {
                     responce.Message += " And added notification!";
                 }

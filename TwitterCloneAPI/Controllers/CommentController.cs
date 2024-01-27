@@ -5,6 +5,7 @@ using System.Security.Claims;
 using TwitterCloneAPI.Models.CommentRequest;
 using TwitterCloneAPI.Models.TweetRequest;
 using TwitterCloneAPI.Services.Comments;
+using TwitterCloneAPI.Services.Notifications;
 
 namespace TwitterCloneAPI.Controllers
 {
@@ -13,13 +14,15 @@ namespace TwitterCloneAPI.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentService _commentService;
-        public CommentController(ICommentService commentService)
+        private readonly INotificationService _notificationService;
+        public CommentController(ICommentService commentService, INotificationService notificationService)
         {
             _commentService = commentService;
+            _notificationService = notificationService;
         }
 
         [HttpPost("CreateComment{tweetId}")]
-        public async Task<IActionResult> CreateTweet([FromForm] CommentRequestModel request,int tweetId)
+        public async Task<IActionResult> CreateComment([FromForm] CommentRequestModel request,int tweetId)
         {
             if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
             {
@@ -37,6 +40,16 @@ namespace TwitterCloneAPI.Controllers
                 {
                     response.Data.PostedUserImage = $"{hostUrl}{response.Data.PostedUserImage}";
                 }
+
+                if (await _notificationService.AddNotification(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), tweetId, "Like"))
+                {
+                    response.Message += " And added notification!";
+                }
+                else
+                {
+                    response.Message += " Notification not added(";
+                }
+
                 return Ok(response);
             }
             return BadRequest(response);

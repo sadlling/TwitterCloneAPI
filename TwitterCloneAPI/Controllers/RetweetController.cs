@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using TwitterCloneAPI.Services.Notifications;
 using TwitterCloneAPI.Services.Retweets;
 
 namespace TwitterCloneAPI.Controllers
@@ -10,13 +11,15 @@ namespace TwitterCloneAPI.Controllers
     public class RetweetController : ControllerBase
     {
         private readonly IRetweetService _retweetsService;
-        public RetweetController(IRetweetService retweetsService)
+        private readonly INotificationService _notificationService;
+        public RetweetController(IRetweetService retweetsService, INotificationService notificationService)
         {
             _retweetsService = retweetsService;
+            _notificationService = notificationService;
         }
 
-        [HttpPost("AddTweetInRetweets{tweetId}")]
-        public async Task<IActionResult> AddTweetInRetweets(int tweetId)
+        [HttpPost("AddTweetInRetweets{tweetId,postedUserId}")]
+        public async Task<IActionResult> AddTweetInRetweets(int tweetId,int postedUserId)
         {
             if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
             {
@@ -25,6 +28,14 @@ namespace TwitterCloneAPI.Controllers
             var responce = await _retweetsService.AddTweetInRetweets(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),tweetId);
             if (responce.Success)
             {
+                if (await _notificationService.AddNotification( Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), tweetId, "Retweet"))
+                {
+                    responce.Message += " And added notification!";
+                }
+                else
+                {
+                    responce.Message += " Notification not added(";
+                }
                 return Ok(responce);
             }
             return BadRequest(responce);
