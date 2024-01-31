@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TwitterCloneAPI.Models;
+using TwitterCloneAPI.Models.ServiceResponse;
 using TwitterCloneAPI.Models.TweetRequest;
 using TwitterCloneAPI.Services.Tweets;
 
@@ -44,9 +45,17 @@ namespace TwitterCloneAPI.Controllers
         }
 
         [HttpGet("GetAllTweets")]
-        public async Task<IActionResult> GetAllTweets()
+        public async Task<IActionResult> GetAllTweets([FromQuery(Name = "Hastags")] string[] hashtags)
         {
-            var responce = await _tweetService.GetAllTweets(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var  responce = new ResponseModel<List<Models.TweetResponse.TweetResponseModel>>();
+            if(hashtags.Length<=0)
+            {
+                responce = await _tweetService.GetAllTweets(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            }
+            else
+            {
+                responce = await _tweetService.GetTweetsByHashtags(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), hashtags);
+            }
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (responce.Data is not null)
             {
