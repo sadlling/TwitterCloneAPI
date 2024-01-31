@@ -91,5 +91,36 @@ namespace TwitterCloneAPI.Services.Notifications
             }
             return response;
         }
+        public async Task<ResponseModel<List<NotificationResponseModel>>> GetUnreadNotifications(int userId)
+        {
+            var response = new ResponseModel<List<NotificationResponseModel>>();
+            try
+            {
+                response.Data = await _context.Notifications.
+                    Include(x => x.User).
+                    Where(x => x.UserId == userId && !x.IsReading).
+                    Select(x => new NotificationResponseModel
+                    {
+                        NotificationId = x.NotificationId,
+                        UserId = userId,
+                        TweetId = x.TweetId ?? 0,
+                        SourseUserId = x.SourseUserId,
+                        SourseUserName = !string.IsNullOrEmpty(x.SourseUser.UserProfile!.FullName) ? x.SourseUser.UserProfile!.FullName : x.SourseUser.UserProfile!.UserName ?? "",
+                        SourseUserImage = x.SourseUser.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
+                        NotificationType = x.NotificationTypeNavigation.Name ?? "",
+                        CreatedAt = x.CreatedAt,
+                        IsRead = x.IsReading
+                    }).ToListAsync();
+                response.Success = true;
+                response.Message = "Unread notifications";
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+
+            }
+            return response;
+        }
     }
 }
