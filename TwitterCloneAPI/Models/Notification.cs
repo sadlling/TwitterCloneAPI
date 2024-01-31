@@ -13,7 +13,7 @@ public partial class Notification
 
     public int SourseUserId { get; set; }
 
-    public int TweetId { get; set; }
+    public int? TweetId { get; set; }
 
     public bool IsReading { get; set; }
 

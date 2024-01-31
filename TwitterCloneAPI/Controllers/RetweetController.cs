@@ -18,8 +18,8 @@ namespace TwitterCloneAPI.Controllers
             _notificationService = notificationService;
         }
 
-        [HttpPost("AddTweetInRetweets{tweetId,postedUserId}")]
-        public async Task<IActionResult> AddTweetInRetweets(int tweetId,int postedUserId)
+        [HttpPost("AddTweetInRetweets{tweetId}")]
+        public async Task<IActionResult> AddTweetInRetweets(int tweetId)
         {
             if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
             {
@@ -28,7 +28,7 @@ namespace TwitterCloneAPI.Controllers
             var responce = await _retweetsService.AddTweetInRetweets(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),tweetId);
             if (responce.Success)
             {
-                if (await _notificationService.AddNotification( Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), tweetId, "Retweet"))
+                if (await _notificationService.AddTweetNotification(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), tweetId, "Retweet"))
                 {
                     responce.Message += " And added notification!";
                 }

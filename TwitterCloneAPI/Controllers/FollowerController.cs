@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Services.Folowers;
+using TwitterCloneAPI.Services.Notifications;
 
 namespace TwitterCloneAPI.Controllers
 {
@@ -10,8 +13,10 @@ namespace TwitterCloneAPI.Controllers
     public class FollowerController : ControllerBase
     {
         private readonly IFolowerService _followerService;
-        public FollowerController(IFolowerService followerService)
+        private readonly INotificationService _notificationService;
+        public FollowerController(IFolowerService followerService, INotificationService notificationService) 
         {
+            _notificationService = notificationService;
             _followerService = followerService;
         }
 
@@ -25,6 +30,14 @@ namespace TwitterCloneAPI.Controllers
             var responce = await _followerService.AddFollower(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), followerId);
             if (responce.Success)
             {
+                if (await _notificationService.AddFollowNotification(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), followerId, "Follow"))
+                {
+                    responce.Message += " And added notification!";
+                }
+                else
+                {
+                    responce.Message += " Notification not added(";
+                }
                 return Ok(responce);
             }
             return BadRequest(responce);

@@ -41,7 +41,7 @@ namespace TwitterCloneAPI.Controllers
                     response.Data.PostedUserImage = $"{hostUrl}{response.Data.PostedUserImage}";
                 }
 
-                if (await _notificationService.AddNotification(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), tweetId, "Like"))
+                if (await _notificationService.AddTweetNotification(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), tweetId, "Like"))
                 {
                     response.Message += " And added notification!";
                 }

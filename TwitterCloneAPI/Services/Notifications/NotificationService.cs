@@ -13,7 +13,29 @@ namespace TwitterCloneAPI.Services.Notifications
             _context = context;
         }
 
-        public async Task<bool> AddNotification(int userId,int tweetId,string notificationType)
+        public async Task<bool> AddFollowNotification(int userId,int sourseUserId, string notificationType)
+        {
+            try
+            {
+                var notificationTypeId = await _context.NotificationTypes.Where(x => x.Name!.ToLower() == notificationType).Select(x => x.TypeId).FirstAsync();
+                await _context.AddAsync(new Notification
+                {
+                    UserId = userId,
+                    SourseUserId = sourseUserId,
+                    NotificationType = notificationTypeId,
+                    IsReading = false,
+                    CreatedAt = DateTime.Now,
+                });
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<bool> AddTweetNotification(int userId,int tweetId,string notificationType)
         {
             try
             {
@@ -50,7 +72,7 @@ namespace TwitterCloneAPI.Services.Notifications
                     {
                       NotificationId = x.NotificationId,
                       UserId = userId,
-                      TweetId =x.TweetId,
+                      TweetId = x.TweetId ?? 0,
                       SourseUserId=x.SourseUserId,
                       SourseUserName = !string.IsNullOrEmpty(x.SourseUser.UserProfile!.FullName) ? x.SourseUser.UserProfile!.FullName : x.SourseUser.UserProfile!.UserName ?? "",
                       SourseUserImage = x.SourseUser.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
