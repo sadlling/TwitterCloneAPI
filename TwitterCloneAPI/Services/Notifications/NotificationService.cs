@@ -79,7 +79,7 @@ namespace TwitterCloneAPI.Services.Notifications
                       NotificationType = x.NotificationTypeNavigation.Name?? "",
                       CreatedAt = x.CreatedAt,
                       IsRead = x.IsReading
-                    }).ToListAsync();
+                    }).OrderByDescending(x=>x.CreatedAt).ToListAsync();
                 response.Success = true;
                 response.Message = "All notifications";
             }
@@ -110,7 +110,7 @@ namespace TwitterCloneAPI.Services.Notifications
                         NotificationType = x.NotificationTypeNavigation.Name ?? "",
                         CreatedAt = x.CreatedAt,
                         IsRead = x.IsReading
-                    }).ToListAsync();
+                    }).OrderByDescending(x => x.CreatedAt).ToListAsync();
                 response.Success = true;
                 response.Message = "Unread notifications";
             }
