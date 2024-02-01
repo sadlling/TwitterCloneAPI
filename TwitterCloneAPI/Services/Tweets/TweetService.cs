@@ -350,7 +350,7 @@ namespace TwitterCloneAPI.Services.Tweets
                         }
                     }
 
-                    response.Message = "Tweet Updated!";
+                    response.Message += "Tweet Updated!";
                     response.Success = true;
                 }
             }
