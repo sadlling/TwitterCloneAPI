@@ -45,7 +45,7 @@ namespace TwitterCloneAPI.Controllers
         }
 
         [HttpGet("GetAllTweets")]
-        public async Task<IActionResult> GetAllTweets([FromQuery(Name = "Hastags")] string[] hashtags)
+        public async Task<IActionResult> GetAllTweets([FromHeader]string[] hashtags)
         {
             var  responce = new ResponseModel<List<Models.TweetResponse.TweetResponseModel>>();
             if(hashtags.Length<=0)

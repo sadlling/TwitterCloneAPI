@@ -20,8 +20,8 @@ namespace TwitterCloneAPI.Services.Notifications
                 var notificationTypeId = await _context.NotificationTypes.Where(x => x.Name!.ToLower() == notificationType).Select(x => x.TypeId).FirstAsync();
                 await _context.AddAsync(new Notification
                 {
-                    UserId = userId,
-                    SourseUserId = sourseUserId,
+                    UserId = sourseUserId,
+                    SourseUserId = userId,
                     NotificationType = notificationTypeId,
                     IsReading = false,
                     CreatedAt = DateTime.Now,
@@ -43,8 +43,8 @@ namespace TwitterCloneAPI.Services.Notifications
                 var notificationTypeId = await _context.NotificationTypes.Where(x => x.Name!.ToLower() == notificationType).Select(x => x.TypeId).FirstAsync();
                 await _context.AddAsync( new Notification
                 {
-                    UserId = userId,
-                    SourseUserId = sourseUserId,
+                    UserId = sourseUserId,
+                    SourseUserId = userId,
                     TweetId = tweetId,
                     NotificationType =  notificationTypeId,
                     IsReading = false,
