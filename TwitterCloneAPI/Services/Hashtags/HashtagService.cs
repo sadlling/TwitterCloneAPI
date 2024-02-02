@@ -21,7 +21,7 @@ namespace TwitterCloneAPI.Services.Hashtags
             {
                 if (hashtags.Length > 0)
                 {
-                    var existingHashtags = _context.Hashtags.Where(x => hashtags.Select(y => y).Contains(x.Name)).ToList();
+                    var existingHashtags = await _context.Hashtags.Where(x => hashtags.Select(y => y).Contains(x.Name)).ToListAsync();
                     var newHashtags = hashtags.Except(existingHashtags.Select(x => x.Name)).ToList();
                     if (newHashtags.Count > 0)
                     {
@@ -34,9 +34,16 @@ namespace TwitterCloneAPI.Services.Hashtags
                         existingHashtags.AddRange(hashtagsToAdd);
                     }
 
-                    var existingTweetHashtags = await _context.TweetHashtags
-                        .Where(th => th.TweetId == tweetId && existingHashtags.Select(x => x.HashtagId).Contains(th.HashtagId))
-                        .ToListAsync();
+                    var existingTweetHashtags = await _context.TweetHashtags.Include(x => x.Hashtag)
+                        .Where(th => th.TweetId == tweetId).ToListAsync();
+
+                    foreach (var item in existingTweetHashtags)
+                    {
+                        if (!existingHashtags.Select(x => x.Name).Contains(item.Hashtag.Name))
+                        {
+                            _context.TweetHashtags.Remove(item);
+                        }
+                    }
 
                     var newTweetHashtags = existingHashtags
                         .Where(eh => !existingTweetHashtags.Select(x => x.HashtagId).Contains(eh.HashtagId))
@@ -45,8 +52,8 @@ namespace TwitterCloneAPI.Services.Hashtags
                     if (newHashtags is not null)
                     {
                         await _context.TweetHashtags.AddRangeAsync(newTweetHashtags);
-                        await _context.SaveChangesAsync();
                     }
+                    await _context.SaveChangesAsync();
                 }
                 response.Message = "Hashtags added!";
                 response.Success = true;
