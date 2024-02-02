@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "C0lkxPglfDQorMqbVES6Tw46cdUMG/JTcfJBPY6EDd3WD10ib5iat/DmsD0tqwRkAGslr9ulof1Iw6ORtc/6MA==",
+  "dgSpecHash": "jvtL2kxYLPKpF8XkJR6iN/YuJC1u5d2aHCJhoT4fDX0aTQfQJh6g3tMhDSq8Jw9h53y68kKmraOkY3/17mGiig==",
   "success": true,
   "projectFilePath": "E:\\Learning\\Projects\\ASP.NET\\TwitterCloneAPI\\TwitterCloneAPI\\TwitterCloneAPI.csproj",
   "expectedPackageFiles": [
@@ -47,6 +47,7 @@
     "C:\\Users\\Igor\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.19.5\\microsoft.visualstudio.azure.containers.tools.targets.1.19.5.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
+    "C:\\Users\\Igor\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",

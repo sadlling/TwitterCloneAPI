@@ -1,10 +1,13 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Security.Claims;
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.ServiceResponse;
 using TwitterCloneAPI.Models.TweetRequest;
+using TwitterCloneAPI.Models.TweetResponse;
+using TwitterCloneAPI.Paging;
 using TwitterCloneAPI.Services.Tweets;
 
 namespace TwitterCloneAPI.Controllers
@@ -45,10 +48,10 @@ namespace TwitterCloneAPI.Controllers
         }
 
         [HttpGet("GetAllTweets")]
-        public async Task<IActionResult> GetAllTweets([FromHeader]string[] hashtags)
+        public async Task<IActionResult> GetAllTweets([FromHeader] string[] hashtags, [FromQuery] QueryStringParameters parameters)
         {
-            var  responce = new ResponseModel<List<Models.TweetResponse.TweetResponseModel>>();
-            if(hashtags.Length<=0)
+            var responce = new ResponseModel<List<TweetResponseModel>>();
+            if (hashtags.Length <= 0)
             {
                 responce = await _tweetService.GetAllTweets(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             }
@@ -70,15 +73,26 @@ namespace TwitterCloneAPI.Controllers
                         x.PostedUserImage = $"{hostUrl}{x.PostedUserImage}";
                     }
                 });
-                return Ok(responce);
+                var pagedResult = PagedList<TweetResponseModel>.ToPagedList(responce.Data, parameters.PageNumber, parameters.PageSize);
+                var metadata = new
+                {
+                    pagedResult.TotalCount,
+                    pagedResult.PageSize,
+                    pagedResult.CurrentPage,
+                    pagedResult.TotalPages,
+                    pagedResult.HasNext,
+                    pagedResult.HasPrevious
+                };
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                return Ok(pagedResult);
             }
             return BadRequest(responce);
 
         }
         [HttpGet("GetTweetsByHastags")]
-        public async Task<IActionResult> GetTweetsByHastags([FromQuery(Name ="Hastags")] string[] hashtags)
+        public async Task<IActionResult> GetTweetsByHastags([FromQuery(Name = "Hastags")] string[] hashtags)
         {
-            var responce = await _tweetService.GetTweetsByHashtags(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),hashtags);
+            var responce = await _tweetService.GetTweetsByHashtags(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), hashtags);
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (responce.Data is not null)
             {
@@ -130,16 +144,16 @@ namespace TwitterCloneAPI.Controllers
 
         }
 
-      
+
 
         [HttpPut("UpdateTweet{tweetId}")]
-        public async Task<IActionResult> UpdateTweet([FromForm] UpdateTweetRequestModel request,int tweetId)
+        public async Task<IActionResult> UpdateTweet([FromForm] UpdateTweetRequestModel request, int tweetId)
         {
             if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
             {
                 return Unauthorized();
             }
-            var response = await _tweetService.UpdateTweet(request, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),tweetId);
+            var response = await _tweetService.UpdateTweet(request, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)), tweetId);
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (response.Data is not null)
             {
@@ -171,6 +185,6 @@ namespace TwitterCloneAPI.Controllers
             return BadRequest(responce);
         }
 
-       
+
     }
 }

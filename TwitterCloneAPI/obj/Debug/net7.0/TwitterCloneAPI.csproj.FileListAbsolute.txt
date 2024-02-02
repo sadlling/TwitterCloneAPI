@@ -111,3 +111,4 @@ E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\BC
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\TwitterCloneAPI.staticwebassets.runtime.json
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\obj\Debug\net7.0\TwitterCloneAPI.sourcelink.json
+E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\bin\Debug\net7.0\Newtonsoft.Json.dll
