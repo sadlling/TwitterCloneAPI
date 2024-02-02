@@ -107,13 +107,14 @@ namespace TwitterCloneAPI.Controllers
                         x.PostedUserImage = $"{hostUrl}{x.PostedUserImage}";
                     }
                 });
+
                 return Ok(responce);
             }
             return BadRequest(responce);
 
         }
         [HttpGet("GetUserTweetsAndRetweets{userId}")]
-        public async Task<IActionResult> GetUserTweetsAndRetweets(int userId)
+        public async Task<IActionResult> GetUserTweetsAndRetweets(int userId, [FromQuery] QueryStringParameters parameters)
         {
             if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
             {
@@ -134,7 +135,18 @@ namespace TwitterCloneAPI.Controllers
                         x.PostedUserImage = $"{hostUrl}{x.PostedUserImage}";
                     }
                 });
-                return Ok(responce);
+                var pagedResult = PagedList<TweetResponseModel>.ToPagedList(responce.Data, parameters.PageNumber, parameters.PageSize);
+                var metadata = new
+                {
+                    pagedResult.TotalCount,
+                    pagedResult.PageSize,
+                    pagedResult.CurrentPage,
+                    pagedResult.TotalPages,
+                    pagedResult.HasNext,
+                    pagedResult.HasPrevious
+                };
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                return Ok(pagedResult);
             }
             if (responce.Data is null && responce.Success)
             {

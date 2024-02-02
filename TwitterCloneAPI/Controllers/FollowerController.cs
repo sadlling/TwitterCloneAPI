@@ -1,8 +1,11 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Security.Claims;
 using TwitterCloneAPI.Models;
+using TwitterCloneAPI.Models.TweetResponse;
+using TwitterCloneAPI.Paging;
 using TwitterCloneAPI.Services.Folowers;
 using TwitterCloneAPI.Services.Notifications;
 
@@ -14,7 +17,7 @@ namespace TwitterCloneAPI.Controllers
     {
         private readonly IFolowerService _followerService;
         private readonly INotificationService _notificationService;
-        public FollowerController(IFolowerService followerService, INotificationService notificationService) 
+        public FollowerController(IFolowerService followerService, INotificationService notificationService)
         {
             _notificationService = notificationService;
             _followerService = followerService;
@@ -85,7 +88,7 @@ namespace TwitterCloneAPI.Controllers
             return BadRequest(responce);
         }
         [HttpGet("GetFollowersTweetsByParams")]
-        public async Task<IActionResult> GetFollowersTweetsByParams([FromQuery(Name = "page")] string parameter)
+        public async Task<IActionResult> GetFollowersTweetsByParams([FromQuery(Name = "page")] string? parameter, [FromQuery] QueryStringParameters parameters)
         {
             if (Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)) <= 0)
             {
@@ -106,20 +109,34 @@ namespace TwitterCloneAPI.Controllers
                         x.PostedUserImage = $"{hostUrl}{x.PostedUserImage}";
                     }
                 });
-                if (parameter.ToLower() == "latest")
+                if (!string.IsNullOrEmpty(parameter))
                 {
-                    return Ok(responce);
+                    if(parameter.ToLower() == "latest")
+                    {
+                        responce.Data = responce.Data.OrderByDescending(x=>x.CreatedAt).ToList();
+                    }
+                    if (parameter.ToLower() == "top")
+                    {
+                        responce.Data = responce.Data.OrderByDescending(x => x.LikesCount).ToList();
+                    }
+                    if (parameter.ToLower() == "media")
+                    {
+                        responce.Data = responce.Data.Where(x => !string.IsNullOrEmpty(x.Image)).ToList();
+                    }
                 }
-                if (parameter.ToLower() == "top")
+
+                var pagedResult = PagedList<TweetResponseModel>.ToPagedList(responce.Data, parameters.PageNumber, parameters.PageSize);
+                var metadata = new
                 {
-                    responce.Data = responce.Data.OrderByDescending(x => x.LikesCount).ToList();
-                    return Ok(responce);
-                }
-                if (parameter.ToLower() == "media")
-                {
-                    responce.Data = responce.Data.Where(x => !string.IsNullOrEmpty(x.Image)).ToList();
-                    return Ok(responce);
-                }
+                    pagedResult.TotalCount,
+                    pagedResult.PageSize,
+                    pagedResult.CurrentPage,
+                    pagedResult.TotalPages,
+                    pagedResult.HasNext,
+                    pagedResult.HasPrevious
+                };
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                return Ok(pagedResult);
             }
             return BadRequest(responce);
         }
