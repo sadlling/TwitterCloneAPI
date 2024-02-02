@@ -51,7 +51,7 @@ namespace TwitterCloneAPI.Services.UserProfiles
             return response;
         }
 
-        public async Task<ResponseModel<UserResponseModel>> GetProfileByUserId(int userId)
+        public async Task<ResponseModel<UserResponseModel>> GetProfileByUserId(int userId,int currentUserId)
         {
             ResponseModel<UserResponseModel> response = new();
             try
@@ -73,7 +73,8 @@ namespace TwitterCloneAPI.Services.UserProfiles
                     BackPicture = user.UserProfile!.BackPicture?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     QuantityOfFollowers = user.FollowerUsers.Count(),
                     QuantityOfFollowing = user.FollowerFollowerUsers.Count(),
-                    ProfileDescription = user.UserProfile?.Bio ?? ""
+                    ProfileDescription = user.UserProfile?.Bio ?? "",
+                    IsSubscribed = await _context.Followers.AnyAsync(x=>x.UserId==userId && x.FollowerUserId ==currentUserId) 
                 };
                 response.Success = true;
                 response.Message = "Profile found";
@@ -86,7 +87,7 @@ namespace TwitterCloneAPI.Services.UserProfiles
             return response;
         }
 
-        public async Task<ResponseModel<List<UserResponseModel>>> GetTwoPopularProfiles()
+        public async Task<ResponseModel<List<UserResponseModel>>> GetTwoPopularProfiles(int currentUserId)
         {
             ResponseModel<List<UserResponseModel>> response = new();
             try
@@ -99,7 +100,7 @@ namespace TwitterCloneAPI.Services.UserProfiles
                  .OrderByDescending(x => x.FollowerUsers.Count())
                  .Take(2).ToListAsync();
 
-                response.Data = users.Select(x => new UserResponseModel
+                response.Data = users.Select(x =>new UserResponseModel
                 {
                     UserId = x.UserId,
                     UserEmail = x.Email,
@@ -109,7 +110,8 @@ namespace TwitterCloneAPI.Services.UserProfiles
                     BackPicture = x.UserProfile!.BackPicture?.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
                     QuantityOfFollowers = x.FollowerUsers.Count(),
                     QuantityOfFollowing = x.FollowerFollowerUsers.Count(),
-                    ProfileDescription = x.UserProfile?.Bio ?? ""
+                    ProfileDescription = x.UserProfile?.Bio ?? "",
+                    IsSubscribed = _context.Followers.Any(y => y.UserId == x.UserId && y.FollowerUserId == currentUserId)
                 }).ToList();
 
                 response.Success = true;

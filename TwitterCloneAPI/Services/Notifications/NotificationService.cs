@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 using TwitterCloneAPI.Models;
 using TwitterCloneAPI.Models.NotificationResponse;
 using TwitterCloneAPI.Models.ServiceResponse;
@@ -37,6 +38,7 @@ namespace TwitterCloneAPI.Services.Notifications
 
         public async Task<bool> AddTweetNotification(int userId,int tweetId,string notificationType)
         {
+
             try
             {
                 var sourseUserId = await _context.Tweets.Where(x=>x.TweetId==tweetId).Select(x=>x.UserId).FirstAsync();
@@ -50,6 +52,7 @@ namespace TwitterCloneAPI.Services.Notifications
                     IsReading = false,
                     CreatedAt = DateTime.Now,
                 });
+
                 await _context.SaveChangesAsync();
             }
             catch (Exception)

@@ -24,7 +24,7 @@ namespace TwitterCloneAPI.Controllers
         [HttpGet("GetUserProfileById{userId}")]
         public async Task<IActionResult> GetProfileByUserId(int userId)
         {
-            var response = await _userProfileService.GetProfileByUserId(userId);
+            var response = await _userProfileService.GetProfileByUserId(userId, Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (response.Data is not null)
             {
@@ -68,7 +68,7 @@ namespace TwitterCloneAPI.Controllers
         [HttpGet("GetTwoPopularProfiles")]
         public async Task<IActionResult> GetTwoPopularProfiles()
         {
-            var response = await _userProfileService.GetTwoPopularProfiles();
+            var response = await _userProfileService.GetTwoPopularProfiles(Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
             if (response.Data is not null)
             {

@@ -11,7 +11,8 @@
         public int QuantityOfFollowers { get; set; }
         public int QuantityOfFollowing { get; set; }
         public string ProfileDescription { get; set; } = string.Empty;
-
+        public bool IsSubscribed {  get; set; } = false;
+        
 
 
 
