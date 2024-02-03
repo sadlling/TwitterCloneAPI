@@ -26,6 +26,7 @@ E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\obj\Release\net7.0\
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\obj\Release\net7.0\PubTmp\Out\Microsoft.OpenApi.dll
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\obj\Release\net7.0\PubTmp\Out\Microsoft.SqlServer.Server.dll
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\obj\Release\net7.0\PubTmp\Out\Microsoft.Win32.SystemEvents.dll
+E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\obj\Release\net7.0\PubTmp\Out\Newtonsoft.Json.dll
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\obj\Release\net7.0\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\obj\Release\net7.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
 E:\Learning\Projects\ASP.NET\TwitterCloneAPI\TwitterCloneAPI\obj\Release\net7.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll

@@ -67,5 +67,29 @@ namespace TwitterCloneAPI.Controllers
             }
             return BadRequest(responce);
         }
+
+        [HttpPut("UpdateNotifications")]
+        public async Task<IActionResult> UpdateNotifications(int[] notificationIds)
+        {
+           
+            var responce = await _notificationService.UpdateNotifications(notificationIds);
+            string hostUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+            if (responce.Data is not null)
+            {
+                responce.Data.ForEach(x =>
+                {
+                    if (!string.IsNullOrEmpty(x.SourseUserImage))
+                    {
+                        x.SourseUserImage = $"{hostUrl}{x.SourseUserImage}";
+                    }
+                });
+                return Ok(responce);
+            }
+            if (responce.Data is null && responce.Success)
+            {
+                return Ok(responce);
+            }
+            return BadRequest(responce);
+        }
     }
 }
