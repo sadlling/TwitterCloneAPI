@@ -84,7 +84,8 @@ if (builder.Environment.IsProduction())
             policy.SetIsOriginAllowed(_ => true)
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .AllowCredentials();
+            .AllowCredentials()
+            .WithExposedHeaders("X-Pagination");
         });
     });
 }
