@@ -81,7 +81,7 @@ namespace TwitterCloneAPI.Services.Notifications
                         SourseUserId = x.SourseUserId,
                         SourseUserName = !string.IsNullOrEmpty(x.SourseUser.UserProfile!.FullName) ? x.SourseUser.UserProfile!.FullName : x.SourseUser.UserProfile!.UserName ?? "",
                         SourseUserImage = x.SourseUser.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
-                        NotificationType = x.NotificationTypeNavigation.Name ?? "",
+                        NotificationType = GetNotificationText(x.NotificationTypeNavigation.Name ?? ""),
                         CreatedAt = x.CreatedAt,
                         IsRead = x.IsReading
                     }).OrderByDescending(x => x.CreatedAt).ToListAsync();
@@ -112,7 +112,7 @@ namespace TwitterCloneAPI.Services.Notifications
                         SourseUserId = x.SourseUserId,
                         SourseUserName = !string.IsNullOrEmpty(x.SourseUser.UserProfile!.FullName) ? x.SourseUser.UserProfile!.FullName : x.SourseUser.UserProfile!.UserName ?? "",
                         SourseUserImage = x.SourseUser.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
-                        NotificationType = x.NotificationTypeNavigation.Name ?? "",
+                        NotificationType = GetNotificationText(x.NotificationTypeNavigation.Name ?? ""),
                         CreatedAt = x.CreatedAt,
                         IsRead = x.IsReading
                     }).OrderByDescending(x => x.CreatedAt).ToListAsync();
@@ -150,7 +150,7 @@ namespace TwitterCloneAPI.Services.Notifications
                     SourseUserId = x.SourseUserId,
                     SourseUserName = !string.IsNullOrEmpty(x.SourseUser.UserProfile!.FullName) ? x.SourseUser.UserProfile!.FullName : x.SourseUser.UserProfile!.UserName ?? "",
                     SourseUserImage = x.SourseUser.UserProfile!.ProfilePicture!.Replace("\\", "/").Replace("wwwroot/", "") ?? "",
-                    NotificationType = x.NotificationTypeNavigation?.Name ?? "",
+                    NotificationType = GetNotificationText(x.NotificationTypeNavigation?.Name ?? ""),
                     CreatedAt = x.CreatedAt,
                     IsRead = x.IsReading
                 }).OrderByDescending(x => x.CreatedAt).ToList();
@@ -166,5 +166,15 @@ namespace TwitterCloneAPI.Services.Notifications
             }
             return response;
         }
+
+        private static string GetNotificationText(string notificationType) => notificationType switch
+        {
+            "Like" => "Liked your tweet",
+            "Retweet" => "Retweeted your tweet",
+            "Comment" => "Commented your tweet",
+            "Follow" => "Subscribed to you",
+            _ => notificationType
+        };
+
     }
 }
