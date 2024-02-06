@@ -23,7 +23,7 @@ public partial class Notification
 
     public virtual UserAuthentication SourseUser { get; set; } = null!;
 
-    public virtual Tweet Tweet { get; set; } = null!;
+    public virtual Tweet? Tweet { get; set; }
 
     public virtual UserAuthentication User { get; set; } = null!;
 }
